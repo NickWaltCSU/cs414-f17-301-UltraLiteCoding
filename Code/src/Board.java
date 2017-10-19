@@ -128,6 +128,24 @@ public class Board {
 			}
 		}
 	}
+	
+	public String saveBoard() {
+		String output = "";
+		Token token;
+		for(int i=0; i<tiles.size(); i++) {
+			if(tiles.get(i) == null) {
+				output += "XXX ";
+			}else {
+				token = tiles.get(i).getToken();
+				output += token.abbreviate();
+				if(token.isFaceUp()) {
+					output += "U ";
+				}else output += "D ";
+			}
+		}
+		
+		return output;
+	}
 
 	public void printBoard() {
 		int i = 0;
