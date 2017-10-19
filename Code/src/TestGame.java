@@ -14,6 +14,35 @@ public class TestGame {
 	
 	@Test
 	public void testGameLogic() {
+		//In this test method, we create a game, assign it players,
+		// set a current player, set a current color (the current
+		// players color).
+		// We then call switchPlayer() and check that the active player,
+		// and the active color, have been swapped.
+		Game game = new Game();
+		User user = new User();
+		User user2 = new User();
+		game.setPlayers(user, user2);
+		game.setCurrentPlayer(game.getPlayers().get(0));
+		game.setCurrentColor(Color.RED);
+		
+		assertEquals(user, game.getCurrentPlayer());
+		game.switchPlayer();
+		assertEquals(user2, game.getCurrentPlayer());
+		assertEquals(Color.BLACK, game.getCurrentColor());
+		
+		//We then take some token on the board and flip it, and then
+		// check that it has been flipped. We then try to flip it again.
+		assertFalse(game.getBoard().getToken(2, 4).isFaceUp());
+		game.flipToken(2, 4);
+		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
+		game.flipToken(2, 4);
+		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
+		
+		//We then use moveToken() to move some token into some other
+		// EMPTY tile next to it, and then some other tile not next to it.
+		// Then we try to move a token into another token, attacking that
+		// token.
 		
 	}
 	
