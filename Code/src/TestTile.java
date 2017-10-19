@@ -8,4 +8,8 @@ public class TestTile {
 		
 	}
 	
+	@Test
+	public void testGettersSetters() {
+		
+	}
 }

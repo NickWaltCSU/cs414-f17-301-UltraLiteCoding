@@ -39,11 +39,21 @@ public class TestGame {
 		game.flipToken(2, 4);
 		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
 		
-		//We then use moveToken() to move some token into some other
-		// EMPTY tile next to it, and then some other tile not next to it.
-		// Then we try to move a token into another token, attacking that
-		// token.
+		//We then use moveToken() to move some token into all of the
+		// tokens around it (as all spaces are occupied).
+		game.flipToken(5, 4);
 		
+		game.flipToken(3, 4);
+		game.flipToken(6, 1);
+		game.flipToken(7, 4);
+		game.flipToken(5, 3);
+		
+		game.getBoard().getToken(5, 4).printToken();
+		game.getBoard().getToken(3, 4).printToken();
+		game.moveToken(5, 4, 3, 4);
+		game.getBoard().getToken(5, 4).printToken();
+		game.getBoard().getToken(3, 4).printToken();
+		game.getBoard().printBoard();
 	}
 	
 	@Test
