@@ -41,17 +41,12 @@ public class TestGame {
 		
 		//We then use moveToken() to move some token into all of the
 		// tokens around it (as all spaces are occupied).
-		game.flipToken(5, 4);
-		
+		game.flipToken(3, 3);
 		game.flipToken(3, 4);
-		game.flipToken(6, 1);
-		game.flipToken(7, 4);
-		game.flipToken(5, 3);
+		game.getBoard().printBoard();
 		
-		game.getBoard().getToken(5, 4).printToken();
-		game.getBoard().getToken(3, 4).printToken();
-		game.moveToken(5, 4, 3, 4);
-		game.getBoard().getToken(5, 4).printToken();
+		game.moveToken(3, 3, 3, 4);
+		game.getBoard().getToken(3, 3).printToken();
 		game.getBoard().getToken(3, 4).printToken();
 		game.getBoard().printBoard();
 	}

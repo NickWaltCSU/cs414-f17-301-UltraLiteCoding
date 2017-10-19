@@ -156,15 +156,4 @@ public class Game {
 			}else return false;
 		}
 	}
-	
-	public static void main(String [] args) {
-		Game g = new Game();
-		g.flipToken(1, 1);
-		g.flipToken(1, 4);
-		
-		String s = g.getBoard().saveBoard();
-		
-		g.getBoard().printBoard();
-		System.out.println(s);
-	}
 }
