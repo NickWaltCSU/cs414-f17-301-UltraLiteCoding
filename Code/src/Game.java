@@ -114,6 +114,8 @@ public class Game {
 //		if(token.getType() == Type.CANNON) {
 //			//TODO Deal with cannon movement here
 //		}else {
+			//Make sure the correct player is the one making the move here!
+			//Als make sure they are attempting to move the correct piece!
 			if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
 				return false;
 			}else if(Math.abs(endX-startX) > 1) {
