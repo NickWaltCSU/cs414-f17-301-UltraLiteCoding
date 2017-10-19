@@ -14,6 +14,13 @@ public class Board {
 		setBoard();
 	}
 	
+	public Board(ArrayList<Tile> _tiles, ArrayList<Token> _tokens, ArrayList<Token> _graveyard) {
+		tokens = _tokens;
+		tiles = _tiles;
+		graveyard = _graveyard;
+		presetBoard();
+	}
+	
 	public Token getToken(int x, int y) {
 		for(int i=0; i<tiles.size(); i++) {
 			if(tiles.get(i).getPosition()[0] == x) {
@@ -101,6 +108,12 @@ public class Board {
 		createAllTokens();
 		createTiles();
 		Collections.shuffle(tokens);
+		for(int i=0; i<tokens.size(); i++) {
+			tiles.get(i).setToken(tokens.get(i));
+		}
+	}
+	
+	public void presetBoard() {
 		for(int i=0; i<tokens.size(); i++) {
 			tiles.get(i).setToken(tokens.get(i));
 		}
