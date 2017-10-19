@@ -108,18 +108,36 @@ public class Board {
 	
 	public void moveToGraveyard(Token token) {
 		graveyard.add(token);
+		tokens.remove(token);
+		for(int i=0; i<tiles.size(); i++) {
+			if(tiles.get(i).getToken().equals(token)) {
+				tiles.get(i).setToken(null);
+			}
+		}
 	}
 
 	public void printBoard() {
 		int i = 0;
 		for(int y=1; y<5; y++) {
 			for(int x=1; x<9; x++) {
-				if(!tiles.get(i).getToken().isFaceUp()) {
+				if(tiles.get(i).getToken() == null) {
+					System.out.print("   ");
+				}else if(!tiles.get(i).getToken().isFaceUp()){
 					System.out.print("## ");
-				}else System.out.print(tiles.get(i).getToken().abbreviate() + " ");
+				}else {
+					System.out.print(tiles.get(i).getToken().abbreviate() + " ");
+				}
 				i++;
 			}
 			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	public void printGraveyard() {
+		System.out.print("Graveyard: ");
+		for(int i=0; i<graveyard.size(); i++) {
+			System.out.print(graveyard.get(i).abbreviate() + " ");
 		}
 		System.out.println();
 	}
