@@ -14,6 +14,13 @@ public class Board {
 		setBoard();
 	}
 	
+	public Board(ArrayList<Tile> _tiles, ArrayList<Token> _tokens, ArrayList<Token> _graveyard) {
+		tokens = _tokens;
+		tiles = _tiles;
+		graveyard = _graveyard;
+		presetBoard();
+	}
+	
 	public Token getToken(int x, int y) {
 		for(int i=0; i<tiles.size(); i++) {
 			if(tiles.get(i).getPosition()[0] == x) {
@@ -79,8 +86,8 @@ public class Board {
 	}
 	
 	public void createTiles() {
-		for(int x=1; x<9; x++) {
-			for(int y=1; y<5; y++) {
+		for(int y=4; y>0; y--) {
+			for(int x=1; x<9; x++) {
 				tiles.add(new Tile(x, y));
 			}
 		}
@@ -106,20 +113,62 @@ public class Board {
 		}
 	}
 	
+	public void presetBoard() {
+		for(int i=0; i<tokens.size(); i++) {
+			tiles.get(i).setToken(tokens.get(i));
+		}
+	}
+	
 	public void moveToGraveyard(Token token) {
 		graveyard.add(token);
+		tokens.remove(token);
+		for(int i=0; i<tiles.size(); i++) {
+			if(tiles.get(i).getToken().equals(token)) {
+				tiles.get(i).setToken(null);
+			}
+		}
+	}
+	
+	public String saveBoard() {
+		String output = "";
+		Token token;
+		for(int i=0; i<tiles.size(); i++) {
+			if(tiles.get(i) == null) {
+				output += "XXX ";
+			}else {
+				token = tiles.get(i).getToken();
+				output += token.abbreviate();
+				if(token.isFaceUp()) {
+					output += "U ";
+				}else output += "D ";
+			}
+		}
+		
+		return output;
 	}
 
 	public void printBoard() {
 		int i = 0;
 		for(int y=1; y<5; y++) {
 			for(int x=1; x<9; x++) {
-				if(!tiles.get(i).getToken().isFaceUp()) {
+				if(tiles.get(i).getToken() == null) {
+					System.out.print("   ");
+				}else if(!tiles.get(i).getToken().isFaceUp()){
 					System.out.print("## ");
-				}else System.out.print(tiles.get(i).getToken().abbreviate() + " ");
+				}else {
+					System.out.print(tiles.get(i).getToken().abbreviate() + " ");
+				}
 				i++;
 			}
 			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	public void printGraveyard() {
+		System.out.print("Graveyard: ");
+		for(int i=0; i<graveyard.size(); i++) {
+			System.out.print(graveyard.get(i).abbreviate() + " ");
 		}
 		System.out.println();
 	}

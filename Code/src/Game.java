@@ -92,21 +92,23 @@ public class Game {
 		}
 	}
 	
-	public void moveToken(int startX, int startY, int endX, int endY) {
+	public boolean moveToken(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
 		if(isValidMove(startX, startY, endX, endY)) {
 			if(board.getToken(endX, endY) == null) {
 				board.getTile(endX, endY).setToken(token);
 				board.getTile(startX, startY).setToken(null);
+				return true;
 			}else {
 				Token token2 = board.getToken(endX, endY);
 				if(isValidAttack(token, token2)) {
 					board.moveToGraveyard(token2);
 					board.getTile(endX, endY).setToken(token);
 					board.getTile(startX, startY).setToken(null);
-				}
+					return true;
+				}else return false;
 			}
-		}
+		}else return false;
 	}
 	
 	public boolean isValidMove(int startX, int startY, int endX, int endY) {
@@ -114,6 +116,8 @@ public class Game {
 //		if(token.getType() == Type.CANNON) {
 //			//TODO Deal with cannon movement here
 //		}else {
+			//Make sure the correct player is the one making the move here!
+			//Also make sure they are attempting to move the correct piece!
 			if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
 				return false;
 			}else if(Math.abs(endX-startX) > 1) {
@@ -151,5 +155,16 @@ public class Game {
 				return true;
 			}else return false;
 		}
+	}
+	
+	public static void main(String [] args) {
+		Game g = new Game();
+		g.flipToken(1, 1);
+		g.flipToken(1, 4);
+		
+		String s = g.getBoard().saveBoard();
+		
+		g.getBoard().printBoard();
+		System.out.println(s);
 	}
 }
