@@ -1,4 +1,11 @@
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class TestGame {
 
+	@Test
+	public void testConstructor() {
+		
+	}
+	
 }
