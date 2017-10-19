@@ -13,6 +13,8 @@ public class Game {
 		status = Status.ACTIVE;
 		log = new Log();
 		board = new Board();
+		
+		players = new ArrayList<User>();
 	}
 	
 	public Status getStatus() {
