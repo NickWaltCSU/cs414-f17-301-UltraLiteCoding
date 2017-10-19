@@ -79,8 +79,8 @@ public class Board {
 	}
 	
 	public void createTiles() {
-		for(int x=1; x<9; x++) {
-			for(int y=1; y<5; y++) {
+		for(int y=4; y>0; y--) {
+			for(int x=1; x<9; x++) {
 				tiles.add(new Tile(x, y));
 			}
 		}
