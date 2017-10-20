@@ -166,6 +166,10 @@ public class Board {
 		createTiles();
 		
 		for(int i=0; i<split.length; i++) {
+			if(split[i].equals("XXX")) {
+				continue;
+			}
+			
 			if(split[i].charAt(0) == 'B') {
 				color = Color.BLACK;
 			}else color = Color.RED;
