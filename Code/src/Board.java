@@ -166,6 +166,10 @@ public class Board {
 		createTiles();
 		
 		for(int i=0; i<split.length; i++) {
+			if(split[i].equals("XXX")) {
+				continue;
+			}
+			
 			if(split[i].charAt(0) == 'B') {
 				color = Color.BLACK;
 			}else color = Color.RED;
@@ -181,7 +185,7 @@ public class Board {
 				default: type = null;
 			}
 			
-			if(split[i].charAt(3) == 'U') {
+			if(split[i].charAt(2) == 'U') {
 				isFaceUp = true;
 			}else isFaceUp = false;
 			
