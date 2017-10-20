@@ -7,6 +7,7 @@ public class Tile {
 		position = new int[2];
 		position[0] = x;
 		position[1] = y;
+		token = null;
 	}
 	
 	public int[] getPosition(){
