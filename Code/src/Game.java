@@ -118,6 +118,9 @@ public class Game {
 //		}else {
 			//Make sure the correct player is the one making the move here!
 			//Also make sure they are attempting to move the correct piece!
+			if(token.getColor().equals(board.getToken(endX, endY).getColor())) {
+				return false;
+			}
 			if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
 				return false;
 			}else if(Math.abs(endX-startX) > 1) {
