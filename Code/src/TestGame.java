@@ -19,13 +19,12 @@ public class TestGame {
 		// players color).
 		// We then call switchPlayer() and check that the active player,
 		// and the active color, have been swapped.
-		Game game = new Game();
 		
 		//Testing loadBoard - which also helps with testing of everything else below.
-		game.getBoard().loadBoard("B1U B2D XXX XXX XXX XXX XXX XXX"
-								+ "R1U XXX XXX XXX XXX XXX XXX XXX"
-								+ "B1U B7U R3U XXX XXX XXX XXX XXX"
-								+ "R1U XXX XXX XXX XXX XXX XXX XXX");
+		Game game = new Game("B1U B2D XXX XXX XXX XXX XXX XXX "
+						   + "R1U XXX XXX XXX XXX XXX XXX XXX "
+						   + "B1U B7U R3U XXX XXX XXX XXX XXX "
+						   + "R1U XXX XXX XXX XXX XXX XXX XXX ");
 		
 		//If these are failing, it is because the board is not being loaded properly.
 		assertNotEquals(null, game.getBoard().getToken(1, 1));
@@ -56,12 +55,14 @@ public class TestGame {
 		game.flipToken(2, 4);
 		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
 		
+		
 		//We then use moveToken() to move some token into the tiles around it.
 	//B1U B2U XXX XXX XXX XXX XXX XXX
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 	//B1U B7U R3U XXX XXX XXX XXX XXX
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		Token token = game.getBoard().getToken(2, 2);
+		
 		game.moveToken(2, 2, 3, 2);
 		assertEquals(token, game.getBoard().getToken(3, 2));
 		assertEquals(null, game.getBoard().getToken(2, 2));		
@@ -87,6 +88,7 @@ public class TestGame {
 	//B1U XXX B7U XXX XXX XXX XXX XXX
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		token = game.getBoard().getToken(1, 3);
+		
 		game.moveToken(1, 3, 2, 3);
 		assertEquals(token, game.getBoard().getToken(2, 3));
 		assertEquals(null, game.getBoard().getToken(1, 3));
@@ -103,12 +105,12 @@ public class TestGame {
 	//R1U XXX B7U XXX XXX XXX XXX XXX
 	//XXX XXX XXX XXX XXX XXX XXX XXX
 		//Check that save board returns the correct output - including the graveyard!
-			//This assumes that the graveyard is printed in the order in which tokens are entered into it -
-			// I'm pretty sure the order here is correct.
-		assertEquals("XXX B2U XXX XXX XXX XXX XXX XXX"
-				   + "XXX B1U XXX XXX XXX XXX XXX XXX"
-				   + "R1U XXX B7U XXX XXX XXX XXX XXX"
-				   + "XXX XXX XXX XXX XXX XXX XXX XXX, R3U R1U B1U", game.getBoard().saveBoard());
+		//This assumes that the graveyard is printed in the order in which tokens are entered into it -
+		// I'm pretty sure the order here is correct.
+		assertEquals("XXX B2U XXX XXX XXX XXX XXX XXX "
+				   + "XXX B1U XXX XXX XXX XXX XXX XXX "
+				   + "R1U XXX B7U XXX XXX XXX XXX XXX "
+				   + "XXX XXX XXX XXX XXX XXX XXX XXX , R3U R1U B1U ", game.getBoard().saveBoard());
 	}
 	
 	@Test

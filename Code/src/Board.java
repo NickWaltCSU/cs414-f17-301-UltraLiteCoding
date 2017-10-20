@@ -15,6 +15,9 @@ public class Board {
 	}
 	
 	public Board(String string) {
+		tokens = new ArrayList<Token>();
+		tiles = new ArrayList<Tile>();
+		graveyard = new ArrayList<Token>();
 		loadBoard(string);
 	}
 	
@@ -120,7 +123,7 @@ public class Board {
 		graveyard.add(token);
 		tokens.remove(token);
 		for(int i=0; i<tiles.size(); i++) {
-			if(tiles.get(i).getToken().equals(token)) {
+			if(tiles.get(i).getToken() == token) {
 				tiles.get(i).setToken(null);
 			}
 		}
@@ -130,7 +133,7 @@ public class Board {
 		String output = "";
 		Token token;
 		for(int i=0; i<tiles.size(); i++) {
-			if(tiles.get(i) == null) {
+			if(tiles.get(i).getToken() == null) {
 				output += "XXX ";
 			}else {
 				token = tiles.get(i).getToken();
@@ -141,9 +144,9 @@ public class Board {
 			}
 		}
 		
-		output += ",";
+		output += ", ";
 		for(int i=0; i<graveyard.size(); i++) {
-			token = tiles.get(i).getToken();
+			token = graveyard.get(i);
 			output += token.abbreviate();
 			if(token.isFaceUp()) {
 				output += "U ";
@@ -174,14 +177,15 @@ public class Board {
 				color = Color.BLACK;
 			}else color = Color.RED;
 			
-			switch(split[i].charAt(1)) {
-				case 7: type=Type.GENERAL; break;
-				case 6: type=Type.ADVISOR; break;
-				case 5: type=Type.ELEPHANT; break;
-				case 4: type=Type.CHARIOT; break;
-				case 3: type=Type.HORSE; break;
-				case 2: type=Type.CANNON; break;
-				case 1: type=Type.SOLDIER; break;
+			int temp = split[i].charAt(1);
+			switch(temp) {
+				case '7': type = Type.GENERAL; break;
+				case '6': type = Type.ADVISOR; break;
+				case '5': type = Type.ELEPHANT; break;
+				case '4': type = Type.CHARIOT; break;
+				case '3': type = Type.HORSE; break;
+				case '2': type = Type.CANNON; break;
+				case '1': type = Type.SOLDIER; break;
 				default: type = null;
 			}
 			
@@ -193,6 +197,7 @@ public class Board {
 			if(isFaceUp) {
 				token.flipToken();
 			}
+			
 			tokens.add(token);
 			tiles.get(i).setToken(token);
 		}
@@ -200,12 +205,12 @@ public class Board {
 
 	public void printBoard() {
 		int i = 0;
-		for(int y=1; y<5; y++) {
+		for(int y=4; y>0; y--) {
 			for(int x=1; x<9; x++) {
 				if(tiles.get(i).getToken() == null) {
-					System.out.print("   ");
+					System.out.print("-- ");
 				}else if(!tiles.get(i).getToken().isFaceUp()){
-					System.out.print("## ");
+					System.out.print("[] ");
 				}else {
 					System.out.print(tiles.get(i).getToken().abbreviate() + " ");
 				}

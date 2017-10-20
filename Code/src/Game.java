@@ -13,7 +13,13 @@ public class Game {
 		status = Status.ACTIVE;
 		log = new Log();
 		board = new Board();
-		
+		players = new ArrayList<User>();
+	}
+	
+	public Game(String _board) {
+		status = Status.ACTIVE;
+		log = new Log();
+		board = new Board(_board);
 		players = new ArrayList<User>();
 	}
 	
@@ -94,6 +100,9 @@ public class Game {
 	
 	public boolean moveToken(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
+		if(!token.isFaceUp()) {
+			return false;
+		}
 		if(isValidMove(startX, startY, endX, endY)) {
 			if(board.getToken(endX, endY) == null) {
 				board.getTile(endX, endY).setToken(token);
@@ -118,34 +127,50 @@ public class Game {
 //		}else {
 			//Make sure the correct player is the one making the move here!
 			//Also make sure they are attempting to move the correct piece!
-			if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
-				return false;
-			}else if(Math.abs(endX-startX) > 1) {
-				return false;
-			}else if(Math.abs(endY-startY) > 1) {
-				return false;
-			}else {
-				if(Math.abs(endX-startX) == 1) {
-					if(Math.abs(endY-startY) != 0) {
-						return false;
-					}else return true;
-				}else if(Math.abs(endY-startY) == 1) {
-					if(Math.abs(endX-startX) != 0) {
-						return false;
-					}else return true;
+			if(board.getToken(endX, endY) == null) {
+				if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
+					return false;
+				}else if(Math.abs(endX-startX) > 1) {
+					return false;
+				}else if(Math.abs(endY-startY) > 1) {
+					return false;
+				}else {
+					if(Math.abs(endX-startX) == 1) {
+						if(Math.abs(endY-startY) != 0) {
+							return false;
+						}else return true;
+					}else if(Math.abs(endY-startY) == 1) {
+						if(Math.abs(endX-startX) != 0) {
+							return false;
+						}else return true;
+					}
 				}
+			}else if(board.getToken(endX, endY) != null) {
+				Token token2 = board.getToken(endX, endY);
+				if(isValidAttack(token, token2)) {
+					board.moveToGraveyard(token2);
+					board.getTile(endX, endY).setToken(token);
+					board.getTile(startX, startY).setToken(null);
+					return true;
+				}else return false;
 			}
 //		}
-		return false;
+			return false;
 	}
 	
 	public boolean isValidAttack(Token token, Token token2) {
+		if(token.getColor().equals(token2.getColor())) {
+			return false;
+		}
+		
 		if(token.getType() == Type.GENERAL) {
 			if(token2.getType() == Type.SOLDIER) {
 				return false;
 			}else return true;
 		}else if(token.getType() == Type.SOLDIER) {
 			if(token2.getType() == Type.GENERAL) {
+				return true;
+			}else if(token2.getType() == Type.SOLDIER) {
 				return true;
 			}else return false;
 		}else if(token.getType() == Type.CANNON) {
