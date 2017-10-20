@@ -181,7 +181,7 @@ public class Board {
 				default: type = null;
 			}
 			
-			if(split[i].charAt(3) == 'U') {
+			if(split[i].charAt(2) == 'U') {
 				isFaceUp = true;
 			}else isFaceUp = false;
 			
