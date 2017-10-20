@@ -94,6 +94,9 @@ public class Game {
 	
 	public boolean moveToken(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
+		if(!token.isFaceUp()) {
+			return false;
+		}
 		if(isValidMove(startX, startY, endX, endY)) {
 			if(board.getToken(endX, endY) == null) {
 				board.getTile(endX, endY).setToken(token);
