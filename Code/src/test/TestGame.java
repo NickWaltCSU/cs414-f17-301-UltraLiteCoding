@@ -1,5 +1,14 @@
 package test;
 import org.junit.Test;
+
+
+import model.Color;
+import model.Game;
+import model.Log;
+import model.Status;
+import model.User;
+
+
 import static org.junit.Assert.*;
 
 public class TestGame {
@@ -20,6 +29,7 @@ public class TestGame {
 		// players color).
 		// We then call switchPlayer() and check that the active player,
 		// and the active color, have been swapped.
+
 		
 		//Testing loadBoard - which also helps with testing of everything else below.
 		Game game = new Game("B1U B2D XXX XXX XXX XXX XXX XXX "
@@ -36,6 +46,7 @@ public class TestGame {
 		assertNotEquals(null, game.getBoard().getToken(2, 4));
 		assertNotEquals(null, game.getBoard().getToken(3, 2));
 		
+
 		User user = new User();
 		User user2 = new User();
 		game.setPlayers(user, user2);
@@ -48,14 +59,17 @@ public class TestGame {
 		assertEquals(Color.BLACK, game.getCurrentColor());
 		
 		//We then take some token on the board and flip it, and then
+
 		// check that it has been flipped. We then try to flip it again;
 		// a token shouldn't be able to be flipped again once face-up.
+
 		assertFalse(game.getBoard().getToken(2, 4).isFaceUp());
 		game.flipToken(2, 4);
 		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
 		game.flipToken(2, 4);
 		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
 		
+
 		
 		//We then use moveToken() to move some token into the tiles around it.
 	//B1U B2U XXX XXX XXX XXX XXX XXX
@@ -112,6 +126,7 @@ public class TestGame {
 				   + "XXX B1U XXX XXX XXX XXX XXX XXX "
 				   + "R1U XXX B7U XXX XXX XXX XXX XXX "
 				   + "XXX XXX XXX XXX XXX XXX XXX XXX , R3U R1U B1U ", game.getBoard().saveBoard());
+
 	}
 	
 	@Test

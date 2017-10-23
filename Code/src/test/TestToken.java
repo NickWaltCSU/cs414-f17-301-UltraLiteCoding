@@ -1,5 +1,11 @@
 package test;
 import org.junit.Test;
+
+import model.Color;
+import model.Status;
+import model.Token;
+import model.Type;
+
 import static org.junit.Assert.*;
 
 public class TestToken {

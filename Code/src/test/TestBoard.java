@@ -1,5 +1,9 @@
 package test;
 import org.junit.Test;
+import model.Board;
+import model.Tile;
+import model.Token;
+
 import static org.junit.Assert.*;
 
 public class TestBoard {
@@ -57,6 +61,7 @@ public class TestBoard {
 		//indeed flipped and the other piece removed. Of course, we've
 		//already checked for that above. Still, it is nice to see.
 		board.printBoard();
+
 		board.printGraveyard();
 		
 		board.resetBoard();

@@ -14,6 +14,7 @@ public class Game {
 		status = Status.ACTIVE;
 		log = new Log();
 		board = new Board();
+
 		players = new ArrayList<User>();
 	}
 	
@@ -99,6 +100,7 @@ public class Game {
 		}
 	}
 	
+
 	public boolean moveToken(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
 		if(!token.isFaceUp()) {
@@ -163,7 +165,6 @@ public class Game {
 		if(token.getColor().equals(token2.getColor())) {
 			return false;
 		}
-		
 		if(token.getType() == Type.GENERAL) {
 			if(token2.getType() == Type.SOLDIER) {
 				return false;
@@ -171,6 +172,7 @@ public class Game {
 		}else if(token.getType() == Type.SOLDIER) {
 			if(token2.getType() == Type.GENERAL) {
 				return true;
+
 			}else if(token2.getType() == Type.SOLDIER) {
 				return true;
 			}else return false;

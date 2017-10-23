@@ -14,13 +14,21 @@ public class Board {
 		graveyard = new ArrayList<Token>();
 		setBoard();
 	}
-	
-	public Board(String string) {
+  
+  public Board(String string) {
 		tokens = new ArrayList<Token>();
 		tiles = new ArrayList<Tile>();
 		graveyard = new ArrayList<Token>();
 		loadBoard(string);
+
 	}
+	
+
+	public ArrayList<Token> getGraveyard(){
+		return graveyard;
+  }
+
+	
 	
 	public Token getToken(int x, int y) {
 		for(int i=0; i<tiles.size(); i++) {
@@ -87,6 +95,7 @@ public class Board {
 	}
 	
 	public void createTiles() {
+
 		for(int y=4; y>0; y--) {
 			for(int x=1; x<9; x++) {
 				tiles.add(new Tile(x, y));
@@ -114,6 +123,7 @@ public class Board {
 		}
 	}
 	
+
 	public void presetBoard() {
 		for(int i=0; i<tokens.size(); i++) {
 			tiles.get(i).setToken(tokens.get(i));
@@ -206,6 +216,7 @@ public class Board {
 
 	public void printBoard() {
 		int i = 0;
+
 		for(int y=4; y>0; y--) {
 			for(int x=1; x<9; x++) {
 				if(tiles.get(i).getToken() == null) {
@@ -221,7 +232,7 @@ public class Board {
 		}
 		System.out.println();
 	}
-	
+
 	public void printGraveyard() {
 		System.out.print("Graveyard: ");
 		for(int i=0; i<graveyard.size(); i++) {
