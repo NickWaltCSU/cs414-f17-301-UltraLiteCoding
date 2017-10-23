@@ -1,3 +1,4 @@
+package model;
 import java.util.ArrayList;
 
 public class Game {
@@ -94,18 +95,22 @@ public class Game {
 	
 	public void moveToken(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
-		if(isValidMove(startX, startY, endX, endY)) {
-			if(board.getToken(endX, endY) == null) {
-				board.getTile(endX, endY).setToken(token);
-				board.getTile(startX, startY).setToken(null);
-			}else {
-				Token token2 = board.getToken(endX, endY);
-				if(isValidAttack(token, token2)) {
-					board.moveToGraveyard(token2);
+		if(token.isFaceUp()){
+			if(isValidMove(startX, startY, endX, endY)) {
+				if(board.getToken(endX, endY) == null) {
 					board.getTile(endX, endY).setToken(token);
 					board.getTile(startX, startY).setToken(null);
+				}else {
+					Token token2 = board.getToken(endX, endY);
+					if(isValidAttack(token, token2)) {
+						board.moveToGraveyard(token2);
+						board.getTile(endX, endY).setToken(token);
+						board.getTile(startX, startY).setToken(null);
+					}
 				}
 			}
+		}else{
+			flipToken(startX,startY);
 		}
 	}
 	

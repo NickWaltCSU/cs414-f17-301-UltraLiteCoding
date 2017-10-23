@@ -1,4 +1,12 @@
+package test;
 import org.junit.Test;
+
+import model.Color;
+import model.Game;
+import model.Log;
+import model.Status;
+import model.User;
+
 import static org.junit.Assert.*;
 
 public class TestGame {

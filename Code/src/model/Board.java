@@ -1,3 +1,4 @@
+package model;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -12,6 +13,10 @@ public class Board {
 		tiles = new ArrayList<Tile>();
 		graveyard = new ArrayList<Token>();
 		setBoard();
+	}
+	
+	public ArrayList<Token> getGraveyard(){
+		return graveyard;
 	}
 	
 	public Token getToken(int x, int y) {

@@ -1,3 +1,4 @@
+package test;
 //this Test Suite is created with help from [https://examples.javacodegeeks.com/core-java/junit/junit-suite-test-example/]
 
 import org.junit.runner.RunWith;
