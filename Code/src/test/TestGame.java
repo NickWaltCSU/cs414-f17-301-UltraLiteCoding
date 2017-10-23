@@ -6,6 +6,7 @@ import model.Color;
 import model.Game;
 import model.Log;
 import model.Status;
+import model.Token;
 import model.User;
 
 
