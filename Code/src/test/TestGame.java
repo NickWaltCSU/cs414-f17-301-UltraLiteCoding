@@ -1,11 +1,13 @@
 package test;
 import org.junit.Test;
 
+
 import model.Color;
 import model.Game;
 import model.Log;
 import model.Status;
 import model.User;
+
 
 import static org.junit.Assert.*;
 
@@ -27,7 +29,24 @@ public class TestGame {
 		// players color).
 		// We then call switchPlayer() and check that the active player,
 		// and the active color, have been swapped.
-		Game game = new Game();
+
+		
+		//Testing loadBoard - which also helps with testing of everything else below.
+		Game game = new Game("B1U B2D XXX XXX XXX XXX XXX XXX "
+						   + "R1U XXX XXX XXX XXX XXX XXX XXX "
+						   + "B1U B7U R3U XXX XXX XXX XXX XXX "
+						   + "R1U XXX XXX XXX XXX XXX XXX XXX ");
+		
+		//If these are failing, it is because the board is not being loaded properly.
+		assertNotEquals(null, game.getBoard().getToken(1, 1));
+		assertNotEquals(null, game.getBoard().getToken(1, 2));
+		assertNotEquals(null, game.getBoard().getToken(1, 3));
+		assertNotEquals(null, game.getBoard().getToken(1, 4));
+		assertNotEquals(null, game.getBoard().getToken(2, 2));
+		assertNotEquals(null, game.getBoard().getToken(2, 4));
+		assertNotEquals(null, game.getBoard().getToken(3, 2));
+		
+
 		User user = new User();
 		User user2 = new User();
 		game.setPlayers(user, user2);
@@ -40,28 +59,74 @@ public class TestGame {
 		assertEquals(Color.BLACK, game.getCurrentColor());
 		
 		//We then take some token on the board and flip it, and then
-		// check that it has been flipped. We then try to flip it again.
+
+		// check that it has been flipped. We then try to flip it again;
+		// a token shouldn't be able to be flipped again once face-up.
+
 		assertFalse(game.getBoard().getToken(2, 4).isFaceUp());
 		game.flipToken(2, 4);
 		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
 		game.flipToken(2, 4);
 		assertTrue(game.getBoard().getToken(2, 4).isFaceUp());
 		
-		//We then use moveToken() to move some token into all of the
-		// tokens around it (as all spaces are occupied).
-		game.flipToken(5, 4);
+
 		
-		game.flipToken(3, 4);
-		game.flipToken(6, 1);
-		game.flipToken(7, 4);
-		game.flipToken(5, 3);
+		//We then use moveToken() to move some token into the tiles around it.
+	//B1U B2U XXX XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+	//B1U B7U R3U XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+		Token token = game.getBoard().getToken(2, 2);
 		
-		game.getBoard().getToken(5, 4).printToken();
-		game.getBoard().getToken(3, 4).printToken();
-		game.moveToken(5, 4, 3, 4);
-		game.getBoard().getToken(5, 4).printToken();
-		game.getBoard().getToken(3, 4).printToken();
-		game.getBoard().printBoard();
+		game.moveToken(2, 2, 3, 2);
+		assertEquals(token, game.getBoard().getToken(3, 2));
+		assertEquals(null, game.getBoard().getToken(2, 2));		
+	//B1U B2U XXX XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+	//B1U XXX B7U XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+		assertEquals(null, game.getBoard().getToken(2, 3));
+		token = game.getBoard().getToken(1, 3);
+		game.moveToken(1, 3, 2, 3);
+		assertEquals(token, game.getBoard().getToken(2, 3));
+		assertEquals(null, game.getBoard().getToken(1, 3));
+	//B1U B2U XXX XXX XXX XXX XXX XXX
+	//XXX R1U XXX XXX XXX XXX XXX XXX
+	//B1U XXX B7U XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+		token = game.getBoard().getToken(1, 4);
+		game.moveToken(1, 4, 1, 3);
+		assertEquals(token, game.getBoard().getToken(1, 3));
+		assertEquals(null, game.getBoard().getToken(1, 4));
+	//XXX B2U XXX XXX XXX XXX XXX XXX
+	//B1U R1U XXX XXX XXX XXX XXX XXX
+	//B1U XXX B7U XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+		token = game.getBoard().getToken(1, 3);
+		
+		game.moveToken(1, 3, 2, 3);
+		assertEquals(token, game.getBoard().getToken(2, 3));
+		assertEquals(null, game.getBoard().getToken(1, 3));
+	//XXX B2U XXX XXX XXX XXX XXX XXX
+	//XXX B1U XXX XXX XXX XXX XXX XXX
+	//B1U XXX B7U XXX XXX XXX XXX XXX
+	//R1U XXX XXX XXX XXX XXX XXX XXX
+		token = game.getBoard().getToken(1, 1);
+		game.moveToken(1, 1, 1, 2);
+		assertEquals(token, game.getBoard().getToken(1, 2));
+		assertEquals(null, game.getBoard().getToken(1, 1));
+	//XXX B2U XXX XXX XXX XXX XXX XXX
+	//XXX B1U XXX XXX XXX XXX XXX XXX
+	//R1U XXX B7U XXX XXX XXX XXX XXX
+	//XXX XXX XXX XXX XXX XXX XXX XXX
+		//Check that save board returns the correct output - including the graveyard!
+		//This assumes that the graveyard is printed in the order in which tokens are entered into it -
+		// I'm pretty sure the order here is correct.
+		assertEquals("XXX B2U XXX XXX XXX XXX XXX XXX "
+				   + "XXX B1U XXX XXX XXX XXX XXX XXX "
+				   + "R1U XXX B7U XXX XXX XXX XXX XXX "
+				   + "XXX XXX XXX XXX XXX XXX XXX XXX , R3U R1U B1U ", game.getBoard().saveBoard());
+
 	}
 	
 	@Test

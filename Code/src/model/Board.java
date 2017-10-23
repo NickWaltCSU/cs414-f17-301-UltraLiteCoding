@@ -14,10 +14,21 @@ public class Board {
 		graveyard = new ArrayList<Token>();
 		setBoard();
 	}
+  
+  public Board(String string) {
+		tokens = new ArrayList<Token>();
+		tiles = new ArrayList<Tile>();
+		graveyard = new ArrayList<Token>();
+		loadBoard(string);
+
+	}
 	
+
 	public ArrayList<Token> getGraveyard(){
 		return graveyard;
-	}
+  }
+
+	
 	
 	public Token getToken(int x, int y) {
 		for(int i=0; i<tiles.size(); i++) {
@@ -84,8 +95,9 @@ public class Board {
 	}
 	
 	public void createTiles() {
-		for(int x=1; x<9; x++) {
-			for(int y=1; y<5; y++) {
+
+		for(int y=4; y>0; y--) {
+			for(int x=1; x<9; x++) {
 				tiles.add(new Tile(x, y));
 			}
 		}
@@ -111,20 +123,120 @@ public class Board {
 		}
 	}
 	
+
+	public void presetBoard() {
+		for(int i=0; i<tokens.size(); i++) {
+			tiles.get(i).setToken(tokens.get(i));
+		}
+	}
+	
 	public void moveToGraveyard(Token token) {
 		graveyard.add(token);
+		tokens.remove(token);
+		for(int i=0; i<tiles.size(); i++) {
+			if(tiles.get(i).getToken() == token) {
+				tiles.get(i).setToken(null);
+			}
+		}
+	}
+	
+	public String saveBoard() {
+		String output = "";
+		Token token;
+		for(int i=0; i<tiles.size(); i++) {
+			if(tiles.get(i).getToken() == null) {
+				output += "XXX ";
+			}else {
+				token = tiles.get(i).getToken();
+				output += token.abbreviate();
+				if(token.isFaceUp()) {
+					output += "U ";
+				}else output += "D ";
+			}
+		}
+		
+		output += ", ";
+		for(int i=0; i<graveyard.size(); i++) {
+			token = graveyard.get(i);
+			output += token.abbreviate();
+			if(token.isFaceUp()) {
+				output += "U ";
+			}else output += "D ";
+		}
+		
+		return output;
+	}
+	
+	public void loadBoard(String string) {
+		String[] graveyardSplit = string.split(",");
+		String[] split = graveyardSplit[0].split(" ");
+		Color color;
+		Type type;
+		boolean isFaceUp;
+		Token token;
+		
+		tokens.clear();
+		tiles.clear();
+		createTiles();
+		
+		for(int i=0; i<split.length; i++) {
+			if(split[i].equals("XXX")) {
+				continue;
+			}
+			
+			if(split[i].charAt(0) == 'B') {
+				color = Color.BLACK;
+			}else color = Color.RED;
+			
+			int temp = split[i].charAt(1);
+			switch(temp) {
+				case '7': type = Type.GENERAL; break;
+				case '6': type = Type.ADVISOR; break;
+				case '5': type = Type.ELEPHANT; break;
+				case '4': type = Type.CHARIOT; break;
+				case '3': type = Type.HORSE; break;
+				case '2': type = Type.CANNON; break;
+				case '1': type = Type.SOLDIER; break;
+				default: type = null;
+			}
+			
+			if(split[i].charAt(2) == 'U') {
+				isFaceUp = true;
+			}else isFaceUp = false;
+			
+			token = new Token(type, color);
+			if(isFaceUp) {
+				token.flipToken();
+			}
+			
+			tokens.add(token);
+			tiles.get(i).setToken(token);
+		}
 	}
 
 	public void printBoard() {
 		int i = 0;
-		for(int y=1; y<5; y++) {
+
+		for(int y=4; y>0; y--) {
 			for(int x=1; x<9; x++) {
-				if(!tiles.get(i).getToken().isFaceUp()) {
-					System.out.print("## ");
-				}else System.out.print(tiles.get(i).getToken().abbreviate() + " ");
+				if(tiles.get(i).getToken() == null) {
+					System.out.print("-- ");
+				}else if(!tiles.get(i).getToken().isFaceUp()){
+					System.out.print("[] ");
+				}else {
+					System.out.print(tiles.get(i).getToken().abbreviate() + " ");
+				}
 				i++;
 			}
 			System.out.println();
+		}
+		System.out.println();
+	}
+
+	public void printGraveyard() {
+		System.out.print("Graveyard: ");
+		for(int i=0; i<graveyard.size(); i++) {
+			System.out.print(graveyard.get(i).abbreviate() + " ");
 		}
 		System.out.println();
 	}
