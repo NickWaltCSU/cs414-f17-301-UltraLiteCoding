@@ -1,3 +1,7 @@
+//Code in this class is paraphrased from the following online swing example of checkers
+//<https://www.javaworld.com/article/3014190/learn-java/checkers-anyone.html> 
+//author-Jeff Friesen DEC 13, 2015 12:48 PM PT
+
 package userInterface;
 
 //import model.Game;
