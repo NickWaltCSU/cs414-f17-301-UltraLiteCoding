@@ -103,24 +103,29 @@ public class Game {
 
 	public boolean moveToken(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
-		if(!token.isFaceUp()) {
-			return false;
-		}
-		if(isValidMove(startX, startY, endX, endY)) {
-			if(board.getToken(endX, endY) == null) {
-				board.getTile(endX, endY).setToken(token);
-				board.getTile(startX, startY).setToken(null);
-				return true;
-			}else {
-				Token token2 = board.getToken(endX, endY);
-				if(isValidAttack(token, token2)) {
-					board.moveToGraveyard(token2);
+		Token token2 = board.getToken(endX, endY);
+		if(token.isFaceUp()&&(token2==null||token2.isFaceUp())) {
+			if(isValidMove(startX, startY, endX, endY)) {
+				if(board.getToken(endX, endY) == null) {
 					board.getTile(endX, endY).setToken(token);
 					board.getTile(startX, startY).setToken(null);
 					return true;
-				}else return false;
-			}
-		}else return false;
+				}else {
+					token2 = board.getToken(endX, endY);
+					if(isValidAttack(token, token2)) {
+						board.moveToGraveyard(token2);
+						board.getTile(endX, endY).setToken(token);
+						board.getTile(startX, startY).setToken(null);
+						return true;
+					}else return false;
+				}
+			}else return false;
+		}else if(!token.isFaceUp()){
+			flipToken(startX, startY);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public boolean isValidMove(int startX, int startY, int endX, int endY) {

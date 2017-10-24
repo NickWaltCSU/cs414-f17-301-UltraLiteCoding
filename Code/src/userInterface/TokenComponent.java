@@ -2,6 +2,8 @@
 //<https://www.javaworld.com/article/3014190/learn-java/checkers-anyone.html> 
 //author-Jeff Friesen DEC 13, 2015 12:48 PM PT
 
+//This code renders individual tokens.
+
 package userInterface;
 
 import java.awt.Color;
@@ -11,10 +13,6 @@ public final class TokenComponent {
 	
 	private final int diameter = 80;
 	
-	//token type
-	//token face up
-	//token color
-	//token active
 	public boolean faceUp;
 	
 	public boolean active;
@@ -40,7 +38,7 @@ public final class TokenComponent {
 				g.fillOval(X, Y, diameter, diameter);
 				g.setColor(Color.white);
 				g.drawOval(X, Y, diameter, diameter);
-				g.drawString(this.name, cX-(int)(10*name.length()/2), cY);
+				g.drawString(this.name, cX-(int)(8*name.length()/2), cY);
 		    }else{
 		    	g.setColor(Color.white);
 		    	g.fillOval(X, Y, diameter, diameter);
