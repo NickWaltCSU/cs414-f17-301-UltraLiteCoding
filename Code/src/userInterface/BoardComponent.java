@@ -2,6 +2,8 @@
 //<https://www.javaworld.com/article/3014190/learn-java/checkers-anyone.html> 
 //author-Jeff Friesen DEC 13, 2015 12:48 PM PT
 
+//This code renders the board, all tokens and facilitates drag-and-drop game play
+
 package userInterface;
 
 //import model.Game;
@@ -49,7 +51,6 @@ public class BoardComponent extends JComponent {
 	
 	private boolean dragging = false;
 	
-	private int deltaX, deltaY, oldCX, oldCY;
 	
 
 	Game game = new Game();
@@ -62,10 +63,11 @@ public class BoardComponent extends JComponent {
 	
 	public BoardComponent(){
 		
+		//Listens for mouse button events
 		addMouseListener(new MouseAdapter()
 				{
 					
-					
+					//Collects coordinates of button press
 					@Override
 					public void mousePressed(MouseEvent me){
 						mouseX = me.getX();
@@ -75,7 +77,7 @@ public class BoardComponent extends JComponent {
                         //get tile coordinates.
                         tileX=mouseX/squareSize;
                         tileY=(mouseY-boardStartY1)/squareSize;
-                        System.out.println(tileX+" "+tileY);
+                        //System.out.println(tileX+" "+tileY);
                         //game.getBoard().getTile(tileX+1, tileY+1).getToken().flipToken();
                         dragToken = game.getBoard().getTile(tileX+1, tileY+1).getToken();
                         dragging = true;
@@ -83,6 +85,8 @@ public class BoardComponent extends JComponent {
                         //repaint();
 					}
 					
+					//Collects coordinates of mouse release and calls for a game move from
+					//mouse press to mouse release then calls repaint to update the board.
 					@Override
 					public void mouseReleased(MouseEvent me){
 						dragging=false;
@@ -99,7 +103,7 @@ public class BoardComponent extends JComponent {
                         
                         }
                         
-                        System.out.println(tileX2+" "+tileY2);
+                        //System.out.println(tileX2+" "+tileY2);
                         
                         repaint();
                         
@@ -110,6 +114,8 @@ public class BoardComponent extends JComponent {
 				}
 				);
 		
+		
+		//For collecting mouse drag coordinates
 		addMouseMotionListener(new MouseMotionAdapter(){
 			
 			@Override
@@ -129,32 +135,17 @@ public class BoardComponent extends JComponent {
 		
 		
 	}
-	
-	@Override
-	   protected void paintComponent(Graphics g){
-		
-	      /*
-	      TokenComponent token = new TokenComponent(Color.red,"KING",true,true);
-	      
-
-	      TokenComponent token2 = new TokenComponent(Color.black,"Cannon",true,true);
-	      
-	      TokenComponent tokenDown = new TokenComponent(Color.black,"Pawn",false,true);
-	      
-	      TokenComponent tokenInactive = new TokenComponent(Color.black,"Pawn",true,false);
-	      
-	      TokenComponent tokenActive = new TokenComponent(Color.black,"Pawn",true,true);
-	      
-	      */
-	      //this.squareSize = (int) (token.getDiameter()*1.25);
+		//Paint entire board, called by "repaint()"
+		@Override
+	    protected void paintComponent(Graphics g){
 		
 	      paintBanqiBoard(g);
 	      
 	      
 	      
-	      Board board = game.getBoard();
+	      Board board = game.getBoard();//This will need to be changed<<<<<<<<<<<<<<<<<<
 	      
-	      
+	      //Place active tokens on the board
 	      for(int y=0;y<4;y++){
 	      	for(int x=0;x<8;x++){
 	      		//Tile tile = board.getTile(x+1, y+1);
@@ -166,14 +157,16 @@ public class BoardComponent extends JComponent {
 	      	}
 	      }
 	      
-	      ArrayList<Token> graveyard = board.getGraveyard();
 	      
+	      //Place captured tokens in their respective grave yards.
+	      ArrayList<Token> graveyard = board.getGraveyard();
 	      Iterator<Token> graveyardIterator = graveyard.iterator();
 	      int redX,redY,blackX,blackY;
 	      redX=redY=blackX=blackY=0;
 	      while(graveyardIterator.hasNext()){
 	    	  Token token = graveyardIterator.next();
 	    	  TokenComponent gToken = new TokenComponent(javaColor(token.getColor()),stringType(token.getType()),token.isFaceUp(),true);
+	    	  //Top grave yard
 	    	  if(token.getColor()==model.Color.RED){
 	    		  if(redX/8==1){
 	    			  redX=0;
@@ -182,6 +175,7 @@ public class BoardComponent extends JComponent {
 	    		  gToken.draw(g, redX*squareSize+squareSize/2, redY*squareSize+squareSize/2);
 	    		  redX++;
 	    	  }
+	    	  //Bottom grave yard
 	    	  if(token.getColor()==model.Color.BLACK){
 	    		  if(blackX/8==1){
 	    			  blackX=0;
@@ -192,20 +186,6 @@ public class BoardComponent extends JComponent {
 	    	  }
 	    	  
 	      }
-	      
-	      /*
-	      token2.draw(g, 0*squareSize+squareSize/2, 0*squareSize+squareSize/2+boardStartY1);
-	      token2.draw(g, 0*squareSize+squareSize/2, 1*squareSize+squareSize/2+boardStartY1);
-	      token.draw(g, 1*squareSize+squareSize/2, 1*squareSize+squareSize/2+boardStartY1);
-
-	      token.draw(g, 2*squareSize+squareSize/2, 1*squareSize+squareSize/2+boardStartY1);
-	      tokenDown.draw(g, 1*squareSize+squareSize/2, 0*squareSize+squareSize/2+boardStartY1);
-
-	      tokenDown.draw(g, 2*squareSize+squareSize/2, 0*squareSize+squareSize/2+boardStartY1);
-	      
-	      tokenInactive.draw(g, 3*squareSize+squareSize/2, 0*squareSize+squareSize/2+boardStartY1);
-	      tokenActive.draw(g, 4*squareSize+squareSize/2, 1*squareSize+squareSize/2+boardStartY1);
-	      */
 	      
 	      
 	      
@@ -219,11 +199,13 @@ public class BoardComponent extends JComponent {
 	      
 	   }
 	
-	   private void paintBanqiBoard(Graphics g){
+	
+		//Paint the background of the game board and grave yards
+	    private void paintBanqiBoard(Graphics g){
 	      ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 	                                        RenderingHints.VALUE_ANTIALIAS_ON);
 	      
-	      // paint opponent graveYard
+	      //Trace top graveYard
 	      
 	      for (int row = 0; row < 2; row++){
 	         g.setColor(Color.BLACK);
@@ -244,7 +226,7 @@ public class BoardComponent extends JComponent {
 	         }
 	      }
 	      
-	      // pant your graveYard
+	      //Trace bottom graveYard
 	      
 	      for (int row = 0; row < 2; row++){
 	         g.setColor(Color.BLACK);
@@ -260,10 +242,12 @@ public class BoardComponent extends JComponent {
 		   return boardWidth;
 	   }
 	   
+	   
 	   public int getBoardHeight(){
 		   return boardHeight;
 	   }
 	   
+	   //Change the model.Type enum to a string
 	   private String stringType(Type type){
 				switch(type) {
 				case GENERAL: return "GENERAL";
@@ -277,6 +261,7 @@ public class BoardComponent extends JComponent {
 			}
 	   }
 	   
+	   //Change the model.Status enum to a boolean
 	   private boolean boolStatus(Status status){
 		   switch(status){
 		   case INACTIVE: return false;
@@ -285,6 +270,8 @@ public class BoardComponent extends JComponent {
 		   }
 	   }
 	   
+	   
+	   //Change the model.Color enum to a java.awt.Color color
 	   private Color javaColor(model.Color color){
 		   if(color==model.Color.RED){
 			   return Color.RED;
