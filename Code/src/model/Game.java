@@ -156,10 +156,33 @@ public class Game {
 			}else if(board.getToken(endX, endY) != null) {
 				Token token2 = board.getToken(endX, endY);
 				if(isValidAttack(token, token2)) {
-					board.moveToGraveyard(token2);
-					board.getTile(endX, endY).setToken(token);
-					board.getTile(startX, startY).setToken(null);
-					return true;
+					if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
+						return false;
+					}else if(Math.abs(endX-startX) > 1) {
+						return false;
+					}else if(Math.abs(endY-startY) > 1) {
+						return false;
+					}else {
+						if(Math.abs(endX-startX) == 1) {
+							if(Math.abs(endY-startY) != 0) {
+								return false;
+							}else {
+								board.moveToGraveyard(token2);
+								board.getTile(endX, endY).setToken(token);
+								board.getTile(startX, startY).setToken(null);
+								return true;
+							}
+						}else if(Math.abs(endY-startY) == 1) {
+							if(Math.abs(endX-startX) != 0) {
+								return false;
+							}else {
+								board.moveToGraveyard(token2);
+								board.getTile(endX, endY).setToken(token);
+								board.getTile(startX, startY).setToken(null);
+								return true;
+							}
+						}
+					}
 				}else return false;
 			}
 //		}
