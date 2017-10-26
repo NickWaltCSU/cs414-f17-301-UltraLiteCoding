@@ -7,7 +7,10 @@
 package userInterface;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+
+//import model.Type;
 
 public final class TokenComponent {
 	
@@ -32,13 +35,19 @@ public final class TokenComponent {
 		
 		int X = cX - diameter / 2;
 	    int Y = cY - diameter / 2;
+	    Font nameFont = new Font(g.getFont().getFontName(), Font.BOLD,12);
+	    Font powerFont = new Font(g.getFont().getFontName(), Font.BOLD, 20);
+	    
 		if(active){
 		    if(faceUp){
 				g.setColor(this.color);
 				g.fillOval(X, Y, diameter, diameter);
 				g.setColor(Color.white);
 				g.drawOval(X, Y, diameter, diameter);
+				g.setFont(nameFont);
 				g.drawString(this.name, cX-(int)(8*name.length()/2), cY);
+				g.setFont(powerFont);
+				g.drawString(power(name), cX-8, cY+22);
 		    }else{
 		    	g.setColor(Color.white);
 		    	g.fillOval(X, Y, diameter, diameter);
@@ -52,4 +61,17 @@ public final class TokenComponent {
 	public int getDiameter(){
 		return this.diameter;
 	}
+	
+	private String power(String type){
+		switch(type) {
+		case "GENERAL": return "7";
+		case "ADVISOR": return "6";
+		case "ELEPHANT": return "5";
+		case "CHARIOT": return "4";
+		case "HORSE": return "3";
+		case "CANNON": return "2";
+		case "SOLDIER": return "1";
+		default: System.out.println("Doesn't have a power."); return "-1";
+	}
+}
 }

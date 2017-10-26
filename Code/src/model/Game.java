@@ -106,19 +106,10 @@ public class Game {
 		Token token2 = board.getToken(endX, endY);
 		if(token.isFaceUp()&&(token2==null||token2.isFaceUp())) {
 			if(isValidMove(startX, startY, endX, endY)) {
-				if(board.getToken(endX, endY) == null) {
-					board.getTile(endX, endY).setToken(token);
-					board.getTile(startX, startY).setToken(null);
-					return true;
-				}else {
-					token2 = board.getToken(endX, endY);
-					if(isValidAttack(token, token2)) {
-						board.moveToGraveyard(token2);
-						board.getTile(endX, endY).setToken(token);
-						board.getTile(startX, startY).setToken(null);
-						return true;
-					}else return false;
-				}
+				if(token2!=null) board.moveToGraveyard(token2);
+				board.getTile(endX, endY).setToken(token);
+				board.getTile(startX, startY).setToken(null);
+				return true;
 			}else return false;
 		}else if(!token.isFaceUp()){
 			flipToken(startX, startY);
@@ -128,65 +119,97 @@ public class Game {
 		}
 	}
 	
+	
+	
 	public boolean isValidMove(int startX, int startY, int endX, int endY) {
 		Token token = board.getToken(startX, startY);
-//		if(token.getType() == Type.CANNON) {
-//			//TODO Deal with cannon movement here
-//		}else {
-			//Make sure the correct player is the one making the move here!
-			//Also make sure they are attempting to move the correct piece!
-			if(board.getToken(endX, endY) == null) {
-				if(endX < 1 || endX > 8 || endY < 1 || endY > 4) {
-					return false;
-				}else if(Math.abs(endX-startX) > 1) {
-					return false;
-				}else if(Math.abs(endY-startY) > 1) {
-					return false;
-				}else {
-					if(Math.abs(endX-startX) == 1) {
-						if(Math.abs(endY-startY) != 0) {
-							return false;
-						}else return true;
-					}else if(Math.abs(endY-startY) == 1) {
-						if(Math.abs(endX-startX) != 0) {
-							return false;
-						}else return true;
+		if(board.getToken(endX, endY) == null) {
+			
+			if((Math.abs(endX-startX) == 1 && Math.abs(endY-startY) == 0) || 
+			(Math.abs(endX-startX) == 0 && Math.abs(endY-startY) == 1)) {
+				return true;
+			}else{
+				return false;
+			}
+			
+		}else{
+			Token token2 = board.getToken(endX, endY);
+			if(isValidAttack(token, token2)) {
+				if(token.getType()==Type.CANNON){
+					return cannonAttack(startX,startY,endX,endY);
+				}else if((Math.abs(endX-startX) == 1 && Math.abs(endY-startY) == 0) || 
+						(Math.abs(endX-startX) == 0 && Math.abs(endY-startY) == 1)) {
+					return true;
+				} else return false;
+			}else return false;
+		}
+	}
+	
+	
+	
+	private boolean cannonAttack(int startX, int startY, int endX, int endY){
+
+		int jumped = 0;
+		//check Y path
+		if(startX==endX && Math.abs(startY-endY)>=2){
+			if(startY<endY){
+				for(int y=startY+1; y<endY; y++){//Y move down
+					if(board.getToken(startX, y)!=null){
+						jumped++;
 					}
 				}
-			}else if(board.getToken(endX, endY) != null) {
-				Token token2 = board.getToken(endX, endY);
-				if(isValidAttack(token, token2)) {
-					board.moveToGraveyard(token2);
-					board.getTile(endX, endY).setToken(token);
-					board.getTile(startX, startY).setToken(null);
-					return true;
-				}else return false;
+			}else{
+				for(int y=startY-1; y>endY; y--){//Y move up
+					if(board.getToken(startX, y)!=null){
+						jumped++;
+					}
+				}
 			}
-//		}
+			
+		//check X path
+		}else if(startY==endY && Math.abs(startX-endX)>=2){
+			
+			if(startX<endX){
+				for(int x=startX+1; x<endX; x++){//X move right
+					if(board.getToken(x, startY)!=null){
+						jumped++;
+					}
+				}
+			}else{
+				for(int x=startX-1; x>endX; x--){//X move left
+					if(board.getToken(x, startY)!=null){
+						jumped++;
+					}
+				}
+			}
+			
+		}else return false;
+		
+		//System.out.println(jumped);
+		if(jumped==1){
+			return true;
+		}else{
 			return false;
+		}
 	}
 	
 	public boolean isValidAttack(Token token, Token token2) {
 		if(token.getColor().equals(token2.getColor())) {
 			return false;
 		}
-		if(token.getType() == Type.GENERAL) {
-			if(token2.getType() == Type.SOLDIER) {
-				return false;
-			}else return true;
-		}else if(token.getType() == Type.SOLDIER) {
-			if(token2.getType() == Type.GENERAL) {
+		if(token.getType() == Type.GENERAL && token2.getType() == Type.SOLDIER){
+			return false;
+		}
+		if(token.getType() == Type.SOLDIER && token2.getType() == Type.GENERAL) {
 				return true;
-
-			}else if(token2.getType() == Type.SOLDIER) {
-				return true;
-			}else return false;
-		}else if(token.getType() == Type.CANNON) {
+		}
+		if(token.getType() == Type.CANNON) {
 			return true;
-		}else {
-			if(token.value() >= token2.value()) {
+		}
+		if(token.value() >= token2.value()) {
 				return true;
-			}else return false;
+		}else{
+			return false;
 		}
 	}
 }
