@@ -90,6 +90,7 @@ public class BoardComponent extends JComponent {
 					@Override
 					public void mouseReleased(MouseEvent me){
 						dragging=false;
+						dragToken=null;
 						mouseX2=me.getX();
 						mouseY2=me.getY();
                         
@@ -150,9 +151,11 @@ public class BoardComponent extends JComponent {
 	      	for(int x=0;x<8;x++){
 	      		//Tile tile = board.getTile(x+1, y+1);
 	      		Token token = board.getToken(x+1, y+1);
-	      		if(token!=null){
-		      		TokenComponent gToken = new TokenComponent(javaColor(token.getColor()),stringType(token.getType()),token.isFaceUp(),boolStatus(token.getStatus()));
-		      		gToken.draw(g, x*squareSize+squareSize/2, y*squareSize+squareSize/2+boardStartY1);
+	      		if(token!=dragToken){
+		      		if(token!=null){
+			      		TokenComponent gToken = new TokenComponent(javaColor(token.getColor()),stringType(token.getType()),token.isFaceUp(),boolStatus(token.getStatus()));
+			      		gToken.draw(g, x*squareSize+squareSize/2, y*squareSize+squareSize/2+boardStartY1);
+		      		}
 	      		}
 	      	}
 	      }
