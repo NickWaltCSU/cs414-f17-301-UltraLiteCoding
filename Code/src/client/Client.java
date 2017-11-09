@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
+	
 
     private static final String host = "localhost";
     private static final int portNumber = 4444;
