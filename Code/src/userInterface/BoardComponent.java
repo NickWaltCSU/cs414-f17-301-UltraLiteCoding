@@ -105,11 +105,12 @@ public class BoardComponent extends JComponent {
                         }
                         
                         //System.out.println(tileX2+" "+tileY2);
+                        if(game.isOver()) {
+							System.out.println("Winning Player: " + game.getWinningPlayer());
+							System.out.println("Winning Color: " + game.getWinningColor());
+						}
                         
                         repaint();
-                        
-                        
-						
 						
 					}
 				}

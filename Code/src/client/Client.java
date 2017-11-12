@@ -46,6 +46,8 @@ public class Client {
             Thread serverAccessThread = new Thread(serverThread);
             serverAccessThread.start();
             while(serverAccessThread.isAlive()){
+            	//TODO This is where Client sends messages (as typed into the console)
+            	//TODO If you want to send anything else (like a query line), just do serverThread.addNextMessage("QUERY HERE")
                 if(scan.hasNextLine()){
                     serverThread.addNextMessage(scan.nextLine());
                 }

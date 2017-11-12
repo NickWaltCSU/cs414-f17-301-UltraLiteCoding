@@ -4,12 +4,14 @@ import java.util.ArrayList;
 public class Game {
 
 	private Status status;
+	private Color winningColor;
+	private User winningPlayer;
 	private User currentPlayer;
 	private Color currentColor;
 	private ArrayList<User> players;
 	private Log log;
 	private Board board;
-	private String gameID;
+  private String gameID;
 	
 	public Game() {
 		status = Status.ACTIVE;
@@ -74,6 +76,14 @@ public class Game {
 	
 	public void setBoard() {
 		board.resetBoard();
+	}
+	
+	public User getWinningPlayer() {
+		return winningPlayer;
+	}
+	
+	public Color getWinningColor() {
+		return winningColor;
 	}
 	
 	//Game actions and logic starts here
@@ -212,5 +222,33 @@ public class Game {
 		}else{
 			return false;
 		}
+	}
+	
+	public boolean isOver() {
+		String state = board.saveBoard();
+		String[] graveyardSplit = state.split(",");
+		if(!graveyardSplit[0].contains("R")) {
+			if(currentColor == Color.BLACK) {
+				winningColor = Color.BLACK;
+				winningPlayer = currentPlayer;
+			}else{
+				//TODO switchPlayer();
+				winningColor = Color.BLACK;
+				winningPlayer = currentPlayer;
+			}
+			return true;
+		}
+		else if(!graveyardSplit[0].contains("B")){
+			if(currentColor == Color.RED) {
+				winningColor = Color.RED;
+				winningPlayer = currentPlayer;
+			}else{
+				//TODO switchPlayer();
+				winningColor = Color.RED;
+				winningPlayer = currentPlayer;
+			}
+			return true;
+		}
+		else return false;
 	}
 }

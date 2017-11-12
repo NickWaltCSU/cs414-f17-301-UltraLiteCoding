@@ -32,7 +32,9 @@ public class ClientThread implements Runnable {
                 if(in.hasNextLine()){
                     String input = in.nextLine();
                     // NOTE: if you want to check server can read input, uncomment next line and check server file console.
-                    // System.out.println(input);
+                    //TODO Input is what is being sent from the Client, so this is where (instead of sending chat messages)
+                    //TODO 		we will be writing Database queries to the thread and sending those. Read those thread lines here
+                    System.out.println(input);
                     for(ClientThread thatClient : server.getClients()){
                         PrintWriter thatClientOut = thatClient.getWriter();
                         if(thatClientOut != null){
