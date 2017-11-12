@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import controller.Controller;
+
 public class User {
 	
 	private String email, password;
@@ -10,33 +12,47 @@ public class User {
 	private ArrayList<Invitation> invitations = new ArrayList<Invitation>();
 	
 	public User() {
-		//beaware that this constructor for User is used in testGettersSetters()
-		//in TestGame.java - if you change this constructor, that
-		//testing method may be broken. If it is, please fix it :) - Nicholas
+		//Empty constructor for test purposes
 	}
 	
-	public Invitation createInvitation() {
-		return null;
-	}
-	
-	public void acceptInvitation() {
+	public boolean register(String email, String nickname, String password) {
+		if(!Controller.registerEmailPW(email, nickname, password)){
+			return false;
+		}
 		
-	}
-	
-	public Game createGame() {
-		return null;
-	}
-	
-	public void playGame() {
+		this.email = email;
+		this.password = password;
+		this.profile = new Profile(nickname, new ArrayList<Log>(), 0.0, this);
 		
+		return true;
 	}
 	
-	public void viewProfile() {
+	public boolean login(String email, String password) {
+		if(!Controller.checkEmailPW(email, password)) {
+			return false;
+		}
 		
-	}
-	
-	public void quitGame() {
+		this.email = email;
+		this.password = password;
 		
+		this.profile = Controller.getProfile(email);
+		
+		return true;
 	}
 	
+	public ArrayList<Game> getGames(){
+		return games;
+	}
+	
+	public ArrayList<Invitation> getInvitations(){
+		return invitations;
+	}
+	
+	public void setGames(ArrayList<Game> games){
+		this.games = games;
+	}
+	
+	public void setInvitations(ArrayList<Invitation> invitations){
+		this.invitations = invitations;
+	}
 }

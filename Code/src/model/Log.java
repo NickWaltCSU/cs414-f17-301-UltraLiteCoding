@@ -6,22 +6,34 @@ public class Log {
 	
 	private double startTime, endTime;
 	
+	private boolean ended = false;
+	
 	public Log() {
-		//beaware that this constructor is used in testGettersSetters()
-		//in TestGame.java - if you change this constructor, that
-		//testing method may be broken. If it is, please fix it :) - Nicholas
+		//for testing purposes
 	}
 	
-	public void logStartTime() {
-		
+	public Log(User creator, User acceptor, double startTime) {
+		this.creator = creator;
+		this.acceptor = acceptor;
+		this.startTime = startTime;
 	}
 	
-	public void logEndTime() {
-		
+	public void logEndTime(double endTime) {
+		this.endTime = endTime;
+		ended = true;
 	}
 	
-	public void logOutcome() {
-		
+	public void logOutcome(User winner, User loser) {
+		this.winner = winner;
+		this.loser = loser;
+		ended = true;
 	}
 	
+	public boolean isWinner(User user) {
+		return user == winner;
+	}
+
+	public boolean isOver() {
+		return ended;
+	}
 }
