@@ -1,5 +1,7 @@
 package userInterface;
 
+
+import model.User;
 import java.awt.EventQueue;
 
 import javax.swing.JButton;
@@ -8,19 +10,22 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 public class Dashboard {
 
 	private JFrame frame;
+	private User activeUser;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(User mUser) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Dashboard window = new Dashboard();
+					Dashboard window = new Dashboard(mUser);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -32,7 +37,8 @@ public class Dashboard {
 	/**
 	 * Create the application.
 	 */
-	public Dashboard() {
+	public Dashboard(User aUser) {
+		this.activeUser=aUser;
 		initialize();
 	}
 
@@ -46,6 +52,11 @@ public class Dashboard {
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnDeregister = new JButton("Deregister");
+		btnDeregister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!");
+			}
+		});
 		btnDeregister.setBounds(12, 13, 110, 25);
 		frame.getContentPane().add(btnDeregister);
 		
@@ -69,14 +80,29 @@ public class Dashboard {
 		btnNewButton.setBounds(12, 89, 110, 25);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton btnViewPlayers = new JButton("view players");
-		btnViewPlayers.addActionListener(new ActionListener() {
+		
+		String testGames[] = {"Game1","Game2","Game3"};
+		JComboBox gamesBox = new JComboBox(testGames);
+		gamesBox.setSelectedIndex(2);
+		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String loginMessage="NO PLAYERS!!!";
-				JOptionPane.showMessageDialog(null, loginMessage);
+				String selectedGame = (String)gamesBox.getSelectedItem();
+				System.out.println(selectedGame);
 			}
 		});
-		btnViewPlayers.setBounds(130, 13, 97, 25);
-		frame.getContentPane().add(btnViewPlayers);
+		gamesBox.setBounds(12, 160, 176, 22);
+		frame.getContentPane().add(gamesBox);
+		
+		JComboBox PlayersBox = new JComboBox();
+		PlayersBox.setBounds(239, 160, 160, 22);
+		frame.getContentPane().add(PlayersBox);
+		
+		JLabel lblActiveGamesinvites = new JLabel("Active Games/Invites");
+		lblActiveGamesinvites.setBounds(12, 135, 160, 16);
+		frame.getContentPane().add(lblActiveGamesinvites);
+		
+		JLabel lblViewPlayerProfiles = new JLabel("View player Profiles");
+		lblViewPlayerProfiles.setBounds(239, 135, 160, 16);
+		frame.getContentPane().add(lblViewPlayerProfiles);
 	}
 }
