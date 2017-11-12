@@ -3,6 +3,7 @@ package userInterface;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JButton;
 
 public class GameBoard {
 
@@ -43,6 +44,15 @@ public class GameBoard {
 		BoardComponent board = new BoardComponent();
 		board.setBounds(0, 0, board.getBoardWidth()+2, board.getBoardHeight()*2+22);
 		frame.getContentPane().add(board);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(10, 835, 97, 25);
+		frame.getContentPane().add(btnCancel);
+		
+		JButton btnQuit = new JButton("Quit");
+		btnQuit.setToolTipText("In Banqi it is common to forfit if you can see no way of winning.");
+		btnQuit.setBounds(705, 835, 97, 25);
+		frame.getContentPane().add(btnQuit);
 		
 	}
 

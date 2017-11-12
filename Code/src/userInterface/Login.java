@@ -13,6 +13,9 @@ import java.awt.Font;
 import java.awt.Window;
 
 import javax.swing.SwingConstants;
+
+import model.User;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -74,13 +77,16 @@ public class Login {
 		lblPassword.setBounds(70, 97, 74, 16);
 		frame.getContentPane().add(lblPassword);
 		
+		
+		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String loginMessage="Logging in as: "+txtEmail.getText();
 				JOptionPane.showMessageDialog(null, loginMessage);
-				Dashboard dashboard=new Dashboard();
-				dashboard.main(null);
+				User regUser = new User(); 
+				Dashboard dashboard=new Dashboard(regUser);
+				dashboard.main(regUser);
 				frame.setVisible(false);
 			}
 		});
@@ -89,7 +95,10 @@ public class Login {
 		JButton btnCreateAccount = new JButton("Create account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//create account 
+				String[] info={txtEmail.getText(),txtPassword.getText()};
+				
+				CreateAccount createAccountWindow= new CreateAccount(txtEmail.getText(),txtPassword.getText());
+				createAccountWindow.main(info);
 			}
 		});
 		btnCreateAccount.setBounds(197, 129, 124, 25);
