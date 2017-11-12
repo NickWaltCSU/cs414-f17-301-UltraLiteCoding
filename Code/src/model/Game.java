@@ -9,6 +9,7 @@ public class Game {
 	private ArrayList<User> players;
 	private Log log;
 	private Board board;
+	private String gameID;
 	
 	public Game() {
 		status = Status.ACTIVE;
