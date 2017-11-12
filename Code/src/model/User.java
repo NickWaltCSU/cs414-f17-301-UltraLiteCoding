@@ -40,24 +40,19 @@ public class User {
 		return true;
 	}
 	
-	public Invitation createInvitation() {
-		return null;
+	public ArrayList<Game> getGames(){
+		return games;
 	}
 	
-	public void acceptInvitation() {
-		
+	public ArrayList<Invitation> getInvitations(){
+		return invitations;
 	}
 	
-	public void playGame() {
-		
+	public void setGames(ArrayList<Game> games){
+		this.games = games;
 	}
 	
-	public void viewProfile() {
-		
+	public void setInvitations(ArrayList<Invitation> invitations){
+		this.invitations = invitations;
 	}
-	
-	public void quitGame() {
-		
-	}
-	
 }
