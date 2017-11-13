@@ -64,13 +64,11 @@ public class CreateAccount {
 		frame.getContentPane().setLayout(null);
 		
 		txtEmail = new JTextField();
-		txtEmail.setText("email");
 		txtEmail.setBounds(120, 58, 200, 22);
 		frame.getContentPane().add(txtEmail);
 		txtEmail.setColumns(10);
 		
 		txtPassword = new JPasswordField();
-		txtPassword.setText("password");
 		txtPassword.setBounds(120, 93, 200, 22);
 		frame.getContentPane().add(txtPassword);
 		txtPassword.setColumns(10);

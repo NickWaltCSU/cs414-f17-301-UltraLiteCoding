@@ -80,6 +80,7 @@ public class Login {
 		
 		
 		JButton btnLogin = new JButton("Login");
+		btnLogin.setToolTipText("If you are a user, enter your info and click this button.");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String loginMessage="Logging in as: "+txtEmail.getText();
@@ -93,6 +94,7 @@ public class Login {
 		btnLogin.setBounds(70, 129, 115, 25);
 		frame.getContentPane().add(btnLogin);
 		JButton btnCreateAccount = new JButton("Create account");
+		btnCreateAccount.setToolTipText("If this is your first time playing this game, enter your desired email and password.");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] info={txtEmail.getText(),txtPassword.getText()};
