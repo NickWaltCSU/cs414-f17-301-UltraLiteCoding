@@ -8,7 +8,7 @@ public class User {
 	
 	private String email, password;
 	private Profile profile;
-	private ArrayList<Game> games = new ArrayList<Game>();
+	private ArrayList<Game> games;
 	private ArrayList<Invitation> invitations = new ArrayList<Invitation>();
 	
 	public User() {
@@ -36,7 +36,7 @@ public class User {
 		this.password = password;
 		
 		this.profile = Controller.getProfile(email);
-		
+		this.games= Controller.getGames(profile.getNickname());
 		return true;
 	}
 	
