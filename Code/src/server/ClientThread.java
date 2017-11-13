@@ -10,6 +10,7 @@ public class ClientThread implements Runnable {
     private PrintWriter clientOut;
     private ChatServer server;
     private Database db;
+    
 
     public ClientThread(ChatServer server, Socket socket){
         this.server = server;
@@ -19,6 +20,20 @@ public class ClientThread implements Runnable {
 
     private PrintWriter getWriter(){
         return clientOut;
+    }
+    
+    public String parseMessage(String string){
+    	String success = "";
+    	String delims = "[;]";
+    	String[] tokens = string.split(delims);
+    	if(tokens[0] == "1"){
+    		executeQuery(tokens[1]);
+    		success = "Query executed";
+    	}else if(tokens[0] == "2"){
+    		updateQuery(tokens[1]);
+    		success = "Query updated";
+    	}
+    	return success;
     }
 
     
@@ -55,4 +70,10 @@ public class ClientThread implements Runnable {
     public String executeQuery(String query) {
         return db.executeQuery(query);
     }
+    
+    public void updateQuery(String query){
+    	db.executeUpdate(query);
+    }
+    
+   
 }
