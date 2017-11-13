@@ -1,6 +1,7 @@
 package userInterface;
 
 
+import model.Game;
 import model.User;
 import java.awt.EventQueue;
 
@@ -9,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,6 +19,7 @@ public class Dashboard {
 
 	private JFrame frame;
 	private User activeUser;
+	private ArrayList<Game> playerGames;
 
 	/**
 	 * Launch the application.
@@ -39,6 +42,7 @@ public class Dashboard {
 	 */
 	public Dashboard(User aUser) {
 		this.activeUser=aUser;
+		this.playerGames=activeUser.getGames();
 		initialize();
 	}
 
@@ -81,9 +85,9 @@ public class Dashboard {
 		frame.getContentPane().add(btnNewButton);
 		
 		
-		String testGames[] = {"Game1","Game2","Game3"};
-		JComboBox gamesBox = new JComboBox(testGames);
-		gamesBox.setSelectedIndex(2);
+		//String testGames[] = {"Game1","Game2","Game3"};
+		JComboBox gamesBox = new JComboBox(gameNames());
+		gamesBox.setSelectedIndex(0);
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String selectedGame = (String)gamesBox.getSelectedItem();
@@ -94,6 +98,11 @@ public class Dashboard {
 		frame.getContentPane().add(gamesBox);
 		
 		JComboBox PlayersBox = new JComboBox();
+		PlayersBox.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				//
+			}
+		});
 		PlayersBox.setBounds(239, 160, 160, 22);
 		frame.getContentPane().add(PlayersBox);
 		
@@ -105,4 +114,23 @@ public class Dashboard {
 		lblViewPlayerProfiles.setBounds(239, 135, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 	}
+	
+	private void refresh(){
+		this.playerGames=activeUser.getGames();
+	}
+	
+	private String[] gameNames(){
+		String[] gameNames;
+		
+		gameNames = new String[playerGames.size()];
+		
+		for(int i=0;i<playerGames.size();i++){
+			gameNames[i]=playerGames.get(i).getPlayers().get(0).getProfile().getNickname();
+			gameNames[i]+=" vs. ";
+			gameNames[i]+=playerGames.get(i).getPlayers().get(1).getProfile().getNickname();
+		}
+		
+		return gameNames;
+	}
+	
 }

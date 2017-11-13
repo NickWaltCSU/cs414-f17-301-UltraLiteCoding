@@ -84,10 +84,14 @@ public class Login {
 			public void actionPerformed(ActionEvent e) {
 				String loginMessage="Logging in as: "+txtEmail.getText();
 				JOptionPane.showMessageDialog(null, loginMessage);
-				User regUser = new User(); 
-				Dashboard dashboard=new Dashboard(regUser);
-				dashboard.main(regUser);
-				frame.setVisible(false);
+				User regUser = new User();
+				if(regUser.login(txtEmail.getText(), txtPassword.getText())){
+					Dashboard dashboard=new Dashboard(regUser);
+					dashboard.main(regUser);
+					frame.setVisible(false);
+				}else{
+					JOptionPane.showMessageDialog(null, "Login failed check info.");
+				}
 			}
 		});
 		btnLogin.setBounds(70, 129, 115, 25);

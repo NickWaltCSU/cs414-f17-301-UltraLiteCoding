@@ -10,6 +10,9 @@ import javax.swing.JPasswordField;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import model.User;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -109,12 +112,13 @@ public class CreateAccount {
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(email1.equals(txtEmail.getText())&&password1.equals(txtPassword.getText())){
-					//to get Email call txtEmail.getText()
-					//to get password call txtPassword.getText()
-					//to get nickname call txtNickname.getText()
-					//create accouunt
-					//eg.
-					//createAccount(txtEmail.getText(),txtPassword.getText(),txtNickname.getText());
+					//make new user
+					User newUser = new User();
+					if(newUser.register(txtEmail.getText(), txtNickname.getText(), txtPassword.getText())){
+						JOptionPane.showMessageDialog(null, txtNickname.getText()+" Has created a new account!");
+					}else{
+						JOptionPane.showMessageDialog(null, "Registration fail!\nEmail or nickname may not be unique.");
+					}
 				}else{
 					//System.out.println(email1);
 					JOptionPane.showMessageDialog(null, "Email and/or password do not match first entry.");
