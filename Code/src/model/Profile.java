@@ -7,7 +7,6 @@ public class Profile {
 	private String nickname;
 	private ArrayList<Log> history;
 	private double winLossRatio = 0.0;
-	private User user;
 
 	double wins = 0.0, losses = 0.0;
 	
@@ -15,13 +14,11 @@ public class Profile {
 		this.nickname = nickname;
 		this.history = history;
 		this.winLossRatio = winLossRatio;
-		this.user = user;
 	}
 	
 	public Profile(String nickname, ArrayList<Log> history, User user) {
 		this.nickname = nickname;
 		this.history = history;
-		this.user = user;
 		computeWLR();
 	}
 	
@@ -33,7 +30,7 @@ public class Profile {
 		
 		//add logs
 		for(int i = 0; i<this.history.size(); i++){
-			profileString+=this.history.get(i).toString(user);
+			profileString+=this.history.get(i).toString();
 		}
 		
 		
@@ -52,11 +49,11 @@ public class Profile {
 				continue;
 			}
 			
-			if(log.isWinner(user)) {
-				this.wins++;
-			}else {
+			//if(log.getWinner()) {
+			//	this.wins++;
+			//}else {
 				this.losses++;
-			}
+			//}
 		}
 		
 		winLossRatio = wins/losses;
