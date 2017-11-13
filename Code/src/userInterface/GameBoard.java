@@ -60,5 +60,9 @@ public class GameBoard {
 		frame.getContentPane().add(btnQuit);
 		
 	}
+	
+	private String gameName(){
+		return game.getPlayers().get(0).getProfile().getNickname()+" vs. "+game.getPlayers().get(1).getProfile().getNickname();
+	}
 
 }
