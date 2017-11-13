@@ -29,7 +29,7 @@ public class Controller {
 	 * @return whether or not the email-password is a valid combination.
 	 */
 	public static boolean checkEmailPW(String email, String password) {
-		String result = client.sendQuery("SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");
+		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");
 		//String[] resultsplit = result.split("\\|");
 		return !(result.equals(""));
 	}
@@ -42,14 +42,14 @@ public class Controller {
 	 * @return
 	 */
 	public static boolean registerEmailPW(String email, String nickname, String password) {
-		String emailResult = client.sendQuery("SELECT * FROM user WHERE email='" + email + "'");
+		String emailResult = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "'");
         System.out.println("email result " + emailResult);
 		//boolean uniqueEmail = (emailResult.equals(""));
-		String nicknameResult = client.sendQuery("SELECT * FROM user WHERE username='" + nickname + "'");
+		String nicknameResult = client.sendQuery("1;SELECT * FROM user WHERE username='" + nickname + "'");
         //System.out.println("nickname result " + nicknameResult);
 		boolean uniqueNickname = (nicknameResult.equals(""));
 		if (uniqueEmail && uniqueNickname) {
-			client.sendQuery("INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + password + "')");
+			client.sendQuery("2;INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + password + "')");
 			return true;
 		} 
 		else {
