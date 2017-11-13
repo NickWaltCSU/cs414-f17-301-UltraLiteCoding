@@ -7,14 +7,18 @@ import model.Invitation;
 import model.Log;
 import model.Profile;
 import model.User;
+import userInterface.Login;
 import client.Client;
 
 public class Controller {
 
 	public static void main(String[] args){
 		Controller c = new Controller();
+		System.out.println("hello");
 		boolean bool = c.checkEmailPW("spencerlofing@gmail.com", "password");
 		System.out.println(c.registerEmailPW("hello@gmail.com", "slofadope", "pass"));
+		Login runLogin = new Login();
+		runLogin.main(null);
 	}
 	private static Client client;
 	public Controller(){
