@@ -36,7 +36,7 @@ public class User {
 		this.password = password;
 		
 		this.profile = Controller.getProfile(email);
-		this.games= Controller.getGames(profile.getNickname());
+		//this.games= Controller.getGames(profile.getNickname());
 		return true;
 	}
 	
