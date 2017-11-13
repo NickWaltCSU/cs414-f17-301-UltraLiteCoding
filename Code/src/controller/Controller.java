@@ -109,7 +109,7 @@ public class Controller {
 	 * @return Profile object for some user, including history/etc.
 	 */
 	public static Profile getProfile(User user){
-		
+	    	
         return null;
 	}
 	
