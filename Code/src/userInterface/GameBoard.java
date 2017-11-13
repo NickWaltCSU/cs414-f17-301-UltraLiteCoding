@@ -46,7 +46,7 @@ public class GameBoard {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		BoardComponent board = new BoardComponent();
+		BoardComponent board = new BoardComponent(game);
 		board.setBounds(0, 0, board.getBoardWidth()+2, board.getBoardHeight()*2+22);
 		frame.getContentPane().add(board);
 		

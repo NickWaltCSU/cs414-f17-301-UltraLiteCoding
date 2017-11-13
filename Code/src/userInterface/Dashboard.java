@@ -93,11 +93,11 @@ public class Dashboard {
 		
 		//String testGames[] = {"Game1","Game2","Game3"};
 		JComboBox gamesBox = new JComboBox(gameNames());
-		gamesBox.setSelectedIndex(0);
+		//gamesBox.setSelectedIndex(0);
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String selectedGame = (String)gamesBox.getSelectedItem();
-				System.out.println(selectedGame);
+				GameBoard activeGame = new GameBoard(playerGames.get(gamesBox.getSelectedIndex()));
+				activeGame.main(playerGames.get(gamesBox.getSelectedIndex()));
 			}
 		});
 		gamesBox.setBounds(12, 129, 176, 22);
