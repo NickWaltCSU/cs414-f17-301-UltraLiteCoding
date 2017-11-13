@@ -24,12 +24,10 @@ public class ClientThread implements Runnable {
     
     public String parseMessage(String string){
     	String success = "";
-    	String delims = "[;]";
-    	String[] tokens = string.split(delims);
-    	if(tokens[0] == "1"){
-    		executeQuery(tokens[1]);
-    		success = "Query executed";
-    	}else if(tokens[0] == "2"){
+    	String[] tokens = string.split(";");
+    	if(tokens[0].equals("1")){
+    		success = executeQuery(tokens[1]);
+    	}else if(tokens[0].equals("2")){
     		updateQuery(tokens[1]);
     		success = "Query updated";
     	}
@@ -53,8 +51,9 @@ public class ClientThread implements Runnable {
                     // NOTE: if you want to check server can read input, uncomment next line and check server file console.
                     //TODO Input is what is being sent from the Client, so this is where (instead of sending chat messages)
                     //TODO 		we will be writing Database queries to the thread and sending those. Read those thread lines here
-                    String result = executeQuery(input);
-                    System.out.println(result);
+                    //String result = executeQuery(input);
+                    //System.out.println(result);
+                    String result = parseMessage(input);
                     //PrintWriter thatClientOut = thatClient.getWriter();
                     if(this.clientOut != null){
                         this.clientOut.write(result + "\r\n");
