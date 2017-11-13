@@ -6,25 +6,35 @@ public class Profile {
 
 	private String nickname;
 	private ArrayList<Log> history;
-	private double winLossRatio;
+	private double winLossRatio = 0.0;
 	private User user;
 
 	double wins = 0.0, losses = 0.0;
 	
-	public Profile(String nickname, ArrayList<Log> history, double winLossRatio, User user) {
+	public Profile(String nickname, ArrayList<Log> history, double winLossRatio) {
 		this.nickname = nickname;
 		this.history = history;
 		this.winLossRatio = winLossRatio;
 		this.user = user;
 	}
 	
+	public Profile(String nickname, ArrayList<Log> history, User user) {
+		this.nickname = nickname;
+		this.history = history;
+		this.user = user;
+		computeWLR();
+	}
+	
 	public String toString(){
 		computeWLR();
 		String profileString = null;
 		profileString+= nickname+"\n";
-		profileString+=this.wins+" Wins "+this.losses+" losses "+this.winLossRatio+" win/loss ratio";
+		profileString+=this.wins+" Wins "+this.losses+" losses "+this.winLossRatio+" win/loss ratio\n";
 		
 		//add logs
+		for(int i = 0; i<this.history.size(); i++){
+			profileString+=this.history.get(i).toString(user);
+		}
 		
 		
 		return profileString;

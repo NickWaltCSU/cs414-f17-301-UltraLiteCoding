@@ -61,7 +61,7 @@ public class Dashboard {
 				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!");
 			}
 		});
-		btnDeregister.setBounds(12, 13, 110, 25);
+		btnDeregister.setBounds(310, 215, 110, 25);
 		frame.getContentPane().add(btnDeregister);
 		
 		JButton btnViewProfile = new JButton("View Profile");
@@ -87,7 +87,7 @@ public class Dashboard {
 				
 			}
 		});
-		btnNewButton.setBounds(12, 89, 110, 25);
+		btnNewButton.setBounds(289, 51, 110, 25);
 		frame.getContentPane().add(btnNewButton);
 		
 		
@@ -100,7 +100,7 @@ public class Dashboard {
 				System.out.println(selectedGame);
 			}
 		});
-		gamesBox.setBounds(12, 160, 176, 22);
+		gamesBox.setBounds(12, 129, 176, 22);
 		frame.getContentPane().add(gamesBox);
 		
 		JComboBox PlayersBox = new JComboBox();
@@ -109,15 +109,15 @@ public class Dashboard {
 				//
 			}
 		});
-		PlayersBox.setBounds(239, 160, 160, 22);
+		PlayersBox.setBounds(239, 129, 160, 22);
 		frame.getContentPane().add(PlayersBox);
 		
 		JLabel lblActiveGamesinvites = new JLabel("Active Games/Invites");
-		lblActiveGamesinvites.setBounds(12, 135, 160, 16);
+		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
 		frame.getContentPane().add(lblActiveGamesinvites);
 		
 		JLabel lblViewPlayerProfiles = new JLabel("View player Profiles");
-		lblViewPlayerProfiles.setBounds(239, 135, 160, 16);
+		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 	}
 	

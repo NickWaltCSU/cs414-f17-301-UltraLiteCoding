@@ -36,4 +36,22 @@ public class Log {
 	public boolean isOver() {
 		return ended;
 	}
+	
+	public String getOpponent(User user1){
+		if(user1.equals(acceptor)){
+			return creator.getNickname();
+		}else{
+			return acceptor.getNickname();
+		}
+	}
+	
+	public String toString(User user){
+		String outcome;
+		if(user.equals(winner)){
+			outcome = "Y";
+		}else{
+			outcome = "N";
+		}
+		return getOpponent(user)+" "+outcome;
+	}
 }
