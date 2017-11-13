@@ -63,6 +63,8 @@ public class Client {
     }
     
     public void sendUpdate(String update) {
+    	
+    }
 	
 
     private void startClient(){

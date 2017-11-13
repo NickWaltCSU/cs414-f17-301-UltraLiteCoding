@@ -67,13 +67,11 @@ public class CreateAccount {
 		frame.getContentPane().setLayout(null);
 		
 		txtEmail = new JTextField();
-		txtEmail.setText("email");
 		txtEmail.setBounds(120, 58, 200, 22);
 		frame.getContentPane().add(txtEmail);
 		txtEmail.setColumns(10);
 		
 		txtPassword = new JPasswordField();
-		txtPassword.setText("password");
 		txtPassword.setBounds(120, 93, 200, 22);
 		frame.getContentPane().add(txtPassword);
 		txtPassword.setColumns(10);
@@ -99,7 +97,6 @@ public class CreateAccount {
 		frame.getContentPane().add(lblCreateAUser);
 		
 		txtNickname = new JTextField();
-		txtNickname.setText("nickname");
 		txtNickname.setBounds(120, 157, 200, 22);
 		frame.getContentPane().add(txtNickname);
 		txtNickname.setColumns(10);
@@ -114,7 +111,9 @@ public class CreateAccount {
 				if(email1.equals(txtEmail.getText())&&password1.equals(txtPassword.getText())){
 					//make new user
 					User newUser = new User();
+					//System.out.println(txtEmail.getText()+" "+txtNickname.getText()+" "+txtPassword.getText());
 					if(newUser.register(txtEmail.getText(), txtNickname.getText(), txtPassword.getText())){
+						
 						JOptionPane.showMessageDialog(null, txtNickname.getText()+" Has created a new account!");
 					}else{
 						JOptionPane.showMessageDialog(null, "Registration fail!\nEmail or nickname may not be unique.");
