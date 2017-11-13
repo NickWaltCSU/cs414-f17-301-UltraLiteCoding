@@ -9,10 +9,12 @@ public class ClientThread implements Runnable {
     private Socket socket;
     private PrintWriter clientOut;
     private ChatServer server;
+    private Database db;
 
     public ClientThread(ChatServer server, Socket socket){
         this.server = server;
         this.socket = socket;
+        db = new Database("root", "password", "129.82.44.147", "5123"); 
     }
 
     private PrintWriter getWriter(){
@@ -29,23 +31,28 @@ public class ClientThread implements Runnable {
 
             // start communicating
             while(!socket.isClosed()){
+		//System.out.println("waiting");
                 if(in.hasNextLine()){
                     String input = in.nextLine();
+		    System.out.println(input);
                     // NOTE: if you want to check server can read input, uncomment next line and check server file console.
                     //TODO Input is what is being sent from the Client, so this is where (instead of sending chat messages)
                     //TODO 		we will be writing Database queries to the thread and sending those. Read those thread lines here
-                    System.out.println(input);
-                    for(ClientThread thatClient : server.getClients()){
-                        PrintWriter thatClientOut = thatClient.getWriter();
-                        if(thatClientOut != null){
-                            thatClientOut.write(input + "\r\n");
-                            thatClientOut.flush();
-                        }
+                    String result = executeQuery(input);
+                    System.out.println(result);
+                    //PrintWriter thatClientOut = thatClient.getWriter();
+                    if(this.clientOut != null){
+                        this.clientOut.write(result + "\r\n");
+                        this.clientOut.flush();
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String executeQuery(String query) {
+        return db.executeQuery(query);
     }
 }

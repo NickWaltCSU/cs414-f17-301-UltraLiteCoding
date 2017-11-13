@@ -7,15 +7,27 @@ import model.Invitation;
 import model.Log;
 import model.Profile;
 import model.User;
+import client.Client;
 
 public class Controller {
 
+	public static void main(String[] args){
+		Controller c = new Controller();
+		boolean bool = c.checkEmailPW("spencerlofing@gmail.com", "password");
+		System.out.println(c.registerEmailPW("hello@gmail.com", "slofadope", "pass"));
+	}
+	private static Client client;
+	public Controller(){
+		client = new Client();
+	}
 	/**
 	 * For some user trying to log in, checkEmailPW verifies that the email & password correlate to a user in the database.
 	 * @return whether or not the email-password is a valid combination.
 	 */
 	public static boolean checkEmailPW(String email, String password) {
-		return false;
+		String result = client.sendQuery("SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");
+		//String[] resultsplit = result.split("\\|");
+		return !(result.equals(""));
 	}
 	
 	/**
@@ -26,7 +38,21 @@ public class Controller {
 	 * @return
 	 */
 	public static boolean registerEmailPW(String email, String nickname, String password) {
-		return false;
+		String emailResult = client.sendQuery("SELECT * FROM user WHERE email='" + email + "'");
+		System.out.println("Result = " + emailResult);
+		String[] emailResultSplit = emailResult.split("\\|");
+		System.out.println("length " + emailResultSplit.length);
+		boolean uniqueEmail = (emailResult.equals(""));
+		String nicknameResult = client.sendQuery("SELECT * FROM user WHERE username='" + nickname + "'");
+		String[] nicknameResultSplit = nicknameResult.split("\\|");
+		boolean uniqueNickname = (nicknameResult.equals(""));
+		if (uniqueEmail && uniqueNickname) {
+			client.sendQuery("INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + password + "')");
+			return true;
+		} 
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -40,8 +66,15 @@ public class Controller {
 	
 	/**
 	 * @return all registered users in the system.
+	 * need to update user class to do this
 	 */
 	public static ArrayList<User> getRegisteredUsers(){
+		String result = client.sendQuery("SELECT * FROM user");
+		String[] resultArray = result.split("|");
+		ArrayList<User> resultList = new ArrayList<User>();
+		for(String user : resultArray) {
+			String[] userArray = user.split(",");
+		}
 		return null;
 	}
 	
@@ -51,6 +84,7 @@ public class Controller {
 	 * @return
 	 */
 	public static ArrayList<Game> getGames(User user){
+		//String result = client.sendQuery("SELECT * FROM game WHERE
 		return null;
 	}
 	
