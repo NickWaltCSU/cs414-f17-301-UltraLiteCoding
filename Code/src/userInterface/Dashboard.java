@@ -65,6 +65,12 @@ public class Dashboard {
 		frame.getContentPane().add(btnDeregister);
 		
 		JButton btnViewProfile = new JButton("View Profile");
+		btnViewProfile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ViewProfile profWindow = new ViewProfile(activeUser,activeUser);
+				profWindow.main(activeUser,activeUser);
+			}
+		});
 		btnViewProfile.setBounds(12, 51, 110, 25);
 		frame.getContentPane().add(btnViewProfile);
 		
@@ -119,18 +125,26 @@ public class Dashboard {
 		this.playerGames=activeUser.getGames();
 	}
 	
+	public User getUser(){
+		return activeUser;
+	}
+	
 	private String[] gameNames(){
 		String[] gameNames;
 		
-		gameNames = new String[playerGames.size()];
-		
-		for(int i=0;i<playerGames.size();i++){
-			gameNames[i]=playerGames.get(i).getPlayers().get(0).getProfile().getNickname();
-			gameNames[i]+=" vs. ";
-			gameNames[i]+=playerGames.get(i).getPlayers().get(1).getProfile().getNickname();
+		if(playerGames!=null){
+			gameNames = new String[playerGames.size()];
+			
+			for(int i=0;i<playerGames.size();i++){
+				gameNames[i]=playerGames.get(i).getPlayers().get(0).getProfile().getNickname();
+				gameNames[i]+=" vs. ";
+				gameNames[i]+=playerGames.get(i).getPlayers().get(1).getProfile().getNickname();
+			}
+			return gameNames;
 		}
+		String[] empty={"No active games."};
 		
-		return gameNames;
+		return empty;
 	}
 	
 }
