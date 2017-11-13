@@ -8,11 +8,26 @@ public class User {
 	
 	private String email, password;
 	private Profile profile;
-	private ArrayList<Game> games;
+	private ArrayList<Game> games = new ArrayList<Game>();
 	private ArrayList<Invitation> invitations = new ArrayList<Invitation>();
 	
 	public User() {
 		//Empty constructor for test purposes
+	}
+	
+	
+	public User(String email, String password, Profile profile, ArrayList<Game> games, ArrayList<Invitation> invitations) {
+		this.email = email;
+		this.password = password;
+		this.profile = profile;
+		this.games = games;
+		this.invitations = invitations;
+	}
+	
+	public User(String email, String password, Profile profile) {
+		this.email = email;
+		this.password = password;
+		this.profile = profile;
 	}
 	
 	public boolean register(String email, String nickname, String password) {
