@@ -69,7 +69,7 @@ public class Database {
 		st.executeUpdate(statement);
 	}
 	catch(SQLException sqle) {
-		System.out.println(sqle.getmessage());
+		System.out.println(sqle.getMessage());
 	}
     }
 }

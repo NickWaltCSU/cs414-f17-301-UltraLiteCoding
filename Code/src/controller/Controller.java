@@ -39,12 +39,8 @@ public class Controller {
 	 */
 	public static boolean registerEmailPW(String email, String nickname, String password) {
 		String emailResult = client.sendQuery("SELECT * FROM user WHERE email='" + email + "'");
-		System.out.println("Result = " + emailResult);
-		String[] emailResultSplit = emailResult.split("\\|");
-		System.out.println("length " + emailResultSplit.length);
 		boolean uniqueEmail = (emailResult.equals(""));
 		String nicknameResult = client.sendQuery("SELECT * FROM user WHERE username='" + nickname + "'");
-		String[] nicknameResultSplit = nicknameResult.split("\\|");
 		boolean uniqueNickname = (nicknameResult.equals(""));
 		if (uniqueEmail && uniqueNickname) {
 			client.sendQuery("INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + password + "')");
@@ -61,7 +57,8 @@ public class Controller {
 	 * @return
 	 */
 	public static Profile getProfile(String email) {
-		return null;
+		Profile p = new Profile(
+        return null;
 	}
 	
 	/**
@@ -83,9 +80,21 @@ public class Controller {
 	 * @param user
 	 * @return
 	 */
-	public static ArrayList<Game> getGames(User user){
-		//String result = client.sendQuery("SELECT * FROM game WHERE
-		return null;
+	public static ArrayList<Game> getGames(User username){
+		String result = client.sendQuery("SELECT * FROM game WHERE playerCreator='" + user.username + "' OR playerOther='" + user.username + "'");
+        String[] gamesArray = split("\\|");
+        ArrayList<Game> gamesList = new ArrayList<Game>();
+        for(String game : gamesArray) {
+            String[] gameArray = game.split(",");
+            String id = gameArray[0];
+            String playerCreator = gameArray[1];
+            String playerAcceptor = gameArray[2];
+            String state = gameArray[3];
+            String logID = gameArray[4];
+            Game g = new Game();
+            gamesList.add(g);
+        }
+		return gamesList;
 	}
 	
 	/**
@@ -94,7 +103,8 @@ public class Controller {
 	 * @return Profile object for some user, including history/etc.
 	 */
 	public static Profile getProfile(User user){
-		return null;
+		
+        return null;
 	}
 	
 	/**
