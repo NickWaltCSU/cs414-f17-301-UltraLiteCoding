@@ -8,15 +8,16 @@ import java.util.Scanner;
 
 public class ServerThread implements Runnable {
     private Socket socket;
-    private String userName;
     private boolean isAlived;
     private final LinkedList<String> messagesToSend;
+    public final LinkedList<String> receivedMessages;
     private boolean hasMessages = false;
+    public boolean hasReceivedMessages = false;
 
-    public ServerThread(Socket socket, String userName){
+    public ServerThread(Socket socket){
         this.socket = socket;
-        this.userName = userName;
         messagesToSend = new LinkedList<String>();
+	receivedMessages = new LinkedList<String>();
     }
 
     public void addNextMessage(String message){
@@ -26,10 +27,16 @@ public class ServerThread implements Runnable {
         }
     }
 
+    public void addReceivedMessage(String message) {
+	synchronized (receivedMessages) {
+	    hasReceivedMessages = true;
+	    receivedMessages.push(message);
+	}
+    }
+
+
     @Override
     public void run(){
-        System.out.println("Welcome :" + userName);
-
         System.out.println("Local Port :" + socket.getLocalPort());
         System.out.println("Server = " + socket.getRemoteSocketAddress() + ":" + socket.getPort());
 
@@ -39,11 +46,14 @@ public class ServerThread implements Runnable {
             Scanner serverIn = new Scanner(serverInStream);
             // BufferedReader userBr = new BufferedReader(new InputStreamReader(userInStream));
             // Scanner userIn = new Scanner(userInStream);
-
             while(!socket.isClosed()){
                 if(serverInStream.available() > 0){
                     if(serverIn.hasNextLine()){
-                        System.out.println(serverIn.nextLine());
+                    	String received = serverIn.nextLine();
+                        synchronized(receivedMessages) {
+			    receivedMessages.push(received);
+			    hasReceivedMessages = !receivedMessages.isEmpty();
+			}
                     }
                 }
                 if(hasMessages){
@@ -52,7 +62,7 @@ public class ServerThread implements Runnable {
                         nextSend = messagesToSend.pop();
                         hasMessages = !messagesToSend.isEmpty();
                     }
-                    serverOut.println(userName + " > " + nextSend);
+                    serverOut.println(nextSend);
                     serverOut.flush();
                 }
             }
