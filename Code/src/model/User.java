@@ -59,4 +59,8 @@ public class User {
 	public Profile getProfile(){
 		return this.profile;
 	}
+	
+	public String getNickname(){
+		return profile.getNickname();
+	}
 }

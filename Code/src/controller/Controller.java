@@ -17,6 +17,7 @@ public class Controller {
 		//System.out.println("hello");
 		boolean bool = c.checkEmailPW("spencerlofing@gmail.com", "password");
 		System.out.println(c.registerEmailPW("hello@gmail.com", "slofadope", "pass"));
+		//System.out.println("hello2");
 		Login runLogin = new Login();
 		runLogin.main(null);
 	}

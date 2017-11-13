@@ -22,9 +22,12 @@ public class Profile {
 		computeWLR();
 		String profileString = null;
 		profileString+= nickname+"\n";
-		profileString+=this.wins+" Wins "+this.losses+" losses "+this.winLossRatio+" win/loss ratio";
+		profileString+=this.wins+" Wins "+this.losses+" losses "+this.winLossRatio+" win/loss ratio\n";
 		
 		//add logs
+		for(int i = 0; i<this.history.size(); i++){
+			profileString+=this.history.get(i).toString(user);
+		}
 		
 		
 		return profileString;
