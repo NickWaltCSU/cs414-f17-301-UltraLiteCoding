@@ -60,8 +60,8 @@ public class Board {
 		}
 	}
 	
-	public void createAllTokens() {
-		Color color = Color.RED;
+	public void createTokenSet(Color _color) {
+		Color color = _color;
 		Type type = Type.GENERAL;
 		createToken(type, color, 1);
 		type = Type.ADVISOR;
@@ -76,22 +76,11 @@ public class Board {
 		createToken(type, color, 2);
 		type = Type.SOLDIER;
 		createToken(type, color, 5);
-		
-		color = Color.BLACK;
-		type = Type.GENERAL;
-		createToken(type, color, 1);
-		type = Type.ADVISOR;
-		createToken(type, color, 2);
-		type = Type.ELEPHANT;
-		createToken(type, color, 2);
-		type = Type.CHARIOT;
-		createToken(type, color, 2);
-		type = Type.HORSE;
-		createToken(type, color, 2);
-		type = Type.CANNON;
-		createToken(type, color, 2);
-		type = Type.SOLDIER;
-		createToken(type, color, 5);
+	}
+	
+	public void createAllTokens() {
+		createTokenSet(Color.RED);
+		createTokenSet(Color.BLACK);
 	}
 	
 	public void createTiles() {
