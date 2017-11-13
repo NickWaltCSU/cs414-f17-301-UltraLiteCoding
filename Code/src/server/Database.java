@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 
@@ -14,6 +15,7 @@ public class Database {
     public static void main(String[] args) {
 	Database db = new Database("root", "password", "129.82.44.147", "5123");
 	System.out.println(db.executeQuery("SELECT * FROM user"));
+        db.executeUpdate("INSERT INTO user (username, email, password) VALUES ('random', 'random', 'random')");
     }
 
     private Connection conn;
@@ -65,8 +67,8 @@ public class Database {
 
     public void executeUpdate(String statement) {
 	try {
-		Statement st = conn.createStatement();
-		st.executeUpdate(statement);
+		PreparedStatement st = conn.prepareStatement(statement);
+		st.executeUpdate();
 	}
 	catch(SQLException sqle) {
 		System.out.println(sqle.getMessage());

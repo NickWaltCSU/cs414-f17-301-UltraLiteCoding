@@ -43,8 +43,10 @@ public class Controller {
 	 */
 	public static boolean registerEmailPW(String email, String nickname, String password) {
 		String emailResult = client.sendQuery("SELECT * FROM user WHERE email='" + email + "'");
-		boolean uniqueEmail = (emailResult.equals(""));
+        System.out.println("email result " + emailResult);
+		//boolean uniqueEmail = (emailResult.equals(""));
 		String nicknameResult = client.sendQuery("SELECT * FROM user WHERE username='" + nickname + "'");
+        //System.out.println("nickname result " + nicknameResult);
 		boolean uniqueNickname = (nicknameResult.equals(""));
 		if (uniqueEmail && uniqueNickname) {
 			client.sendQuery("INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + password + "')");
@@ -61,7 +63,7 @@ public class Controller {
 	 * @return
 	 */
 	public static Profile getProfile(String email) {
-		Profile p = new Profile(
+		//Profile p = new Profile(
         return null;
 	}
 	
@@ -84,9 +86,9 @@ public class Controller {
 	 * @param user
 	 * @return
 	 */
-	public static ArrayList<Game> getGames(User username){
-		String result = client.sendQuery("SELECT * FROM game WHERE playerCreator='" + user.username + "' OR playerOther='" + user.username + "'");
-        String[] gamesArray = split("\\|");
+	public static ArrayList<Game> getGames(String username){
+		String result = client.sendQuery("SELECT * FROM game WHERE playerCreator='" + username + "' OR playerOther='" + username + "'");
+        String[] gamesArray = result.split("\\|");
         ArrayList<Game> gamesList = new ArrayList<Game>();
         for(String game : gamesArray) {
             String[] gameArray = game.split(",");
