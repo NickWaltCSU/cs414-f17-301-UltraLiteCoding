@@ -37,7 +37,7 @@ public class User {
 		
 		this.email = email;
 		this.password = password;
-		this.profile = new Profile(nickname, new ArrayList<Log>(), 0.0, this);
+		this.profile = new Profile(nickname, new ArrayList<Log>(), this);
 		
 		return true;
 	}
