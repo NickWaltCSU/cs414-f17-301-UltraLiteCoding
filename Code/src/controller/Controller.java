@@ -43,8 +43,8 @@ public class Controller {
 	 */
 	public static boolean registerEmailPW(String email, String nickname, String password) {
 		String emailResult = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "'");
-        System.out.println("email result " + emailResult);
-		//boolean uniqueEmail = (emailResult.equals(""));
+        //System.out.println("email result " + emailResult);
+		boolean uniqueEmail = (emailResult.equals(""));
 		String nicknameResult = client.sendQuery("1;SELECT * FROM user WHERE username='" + nickname + "'");
         //System.out.println("nickname result " + nicknameResult);
 		boolean uniqueNickname = (nicknameResult.equals(""));
