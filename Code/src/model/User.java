@@ -55,4 +55,8 @@ public class User {
 	public void setInvitations(ArrayList<Invitation> invitations){
 		this.invitations = invitations;
 	}
+	
+	public Profile getProfile(){
+		return this.profile;
+	}
 }

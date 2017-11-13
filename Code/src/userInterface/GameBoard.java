@@ -3,20 +3,24 @@ package userInterface;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
+import model.Game;
+
 import javax.swing.JButton;
 
 public class GameBoard {
 
 	private JFrame frame;
+	private Game game;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(Game mGame) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GameBoard window = new GameBoard();
+					GameBoard window = new GameBoard(mGame);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -28,7 +32,8 @@ public class GameBoard {
 	/**
 	 * Create the application.
 	 */
-	public GameBoard() {
+	public GameBoard(Game aGame) {
+		this.game=aGame;
 		initialize();
 	}
 

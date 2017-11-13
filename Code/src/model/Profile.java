@@ -47,4 +47,8 @@ public class Profile {
 		return winLossRatio;
 	}
 	
+	public String getNickname(){
+		return this.nickname;
+	}
+	
 }
