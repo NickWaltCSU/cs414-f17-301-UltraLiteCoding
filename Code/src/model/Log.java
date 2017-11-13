@@ -29,29 +29,22 @@ public class Log {
 		ended = true;
 	}
 	
-	public boolean isWinner(User user) {
-		return user == winner;
+	public User getWinner(User user) {
+		return winner;
 	}
 
 	public boolean isOver() {
 		return ended;
 	}
 	
-	public String getOpponent(User user1){
-		if(user1.equals(acceptor)){
-			return creator.getNickname();
-		}else{
-			return acceptor.getNickname();
-		}
-	}
 	
-	public String toString(User user){
+	public String toString(){
 		String outcome;
-		if(user.equals(winner)){
+		if(equals(winner)){
 			outcome = "Y";
 		}else{
 			outcome = "N";
 		}
-		return getOpponent(user)+" "+outcome;
+		return " "+outcome;
 	}
 }

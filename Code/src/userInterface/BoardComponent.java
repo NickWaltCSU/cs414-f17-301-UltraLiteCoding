@@ -51,9 +51,11 @@ public class BoardComponent extends JComponent {
 	
 	private boolean dragging = false;
 	
+	Game game;
+	
 	
 
-	Game game = new Game();
+	//Game game = new Game();
 	
 	Token dragToken;
 	
@@ -61,7 +63,9 @@ public class BoardComponent extends JComponent {
 	
 	int tileX,tileY,tileX2,tileY2;
 	
-	public BoardComponent(){
+	public BoardComponent(Game game){
+		
+		this.game=game;
 		
 		//Listens for mouse button events
 		addMouseListener(new MouseAdapter()
@@ -145,7 +149,7 @@ public class BoardComponent extends JComponent {
 	      
 	      
 	      
-	      Board board = game.getBoard();//This will need to be changed<<<<<<<<<<<<<<<<<<
+	      Board board = game.getBoard();//
 	      
 	      //Place active tokens on the board
 	      for(int y=0;y<4;y++){
