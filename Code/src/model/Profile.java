@@ -23,6 +23,7 @@ public class Profile {
 		String profileString = null;
 		profileString+= nickname+"\n";
 		profileString+=this.wins+" Wins "+this.losses+" losses "+this.winLossRatio+" win/loss ratio";
+		
 		//add logs
 		
 		
