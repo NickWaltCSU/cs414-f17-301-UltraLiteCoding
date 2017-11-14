@@ -49,6 +49,7 @@ public class Controller {
 	}
 
 	public static String[] getGames(User user) {
+		//array of "GameID - opponent Nickname"
 		return null;
 	}
 	
@@ -59,4 +60,35 @@ public class Controller {
 	public static String[] getUsers() {
 		return null;
 	}
+	
+	public static String[] getInvites(User user) {
+		//array of "InvitationID - sender Nickname"
+		return null;
+	}
+	
+	public static String getProfile(String nickname) {
+		//returns everything that we need for viewing a profile
+		return null;
+	}
+	
+	public static void createInvitation(String sender_nickname, String recipient_nickname) {
+		
+	}
+	
+	public static void createGame(String creator_nickname, String other_nickname) {
+		
+	}
+	
+	public static void acceptInvitation(String invitationID) {
+		//accepts it, closes it, also creates the game
+	}
+	
+	public static void rejectInvitation(String invitationID) {
+		//delete invitation
+	}
+	
+	public static void updateGame(Game game) {
+		
+	}
+	
 }
