@@ -126,11 +126,19 @@ public class Dashboard {
 		JComboBox inviteBox = new JComboBox(Controller.getInvites(activeUser));
 		inviteBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_OPTION)==0){
+				int selectedBtn = JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_CANCEL_OPTION);
+				if(selectedBtn==0){
 					//create new game
+					Game daGame = Controller.getGame((Controller.acceptInvitation(Controller.parseInvitation((String)inviteBox.getSelectedItem()))));
+					GameBoard nwGame = new GameBoard(daGame);
+					nwGame.main(daGame);
+					
+				}else if(selectedBtn==1){
+					//delete invitation
+					Controller.rejectInvitation(Controller.parseInvitation((String)inviteBox.getSelectedItem()));
 					
 				}else{
-					//delete invitation
+					//do nothing
 				}
 			}
 		});
