@@ -206,8 +206,8 @@ public class Controller {
 		//accepts it, closes it, also creates the game
         String invitation = client.sendQuery("1;SELECT userSender FROM invitation WHERE id='" + invitationID);
         String[] invitationArray = invitation.split(",");
-        String sender = invitationArray[1];
-        String receiver = invitationArray[2];
+        String sender = invitationArray[0];
+        String receiver = invitationArray[1];
         client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
         return createGame(sender, receiver);
 	}
