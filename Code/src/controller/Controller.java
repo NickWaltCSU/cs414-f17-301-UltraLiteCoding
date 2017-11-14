@@ -168,7 +168,7 @@ public class Controller {
         String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
         Game game = new Game();
         game.getBoardWithColor();
-        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" other_nickname + "')");
+        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "')");
 	}
 	
 	public static void acceptInvitation(String invitationID) {
