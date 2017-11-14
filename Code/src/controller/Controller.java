@@ -17,7 +17,6 @@ public class Controller {
 		//System.out.println("hello");
 		boolean bool = c.checkEmailPW("spencerlofing@gmail.com", "password");
 		System.out.println(c.registerEmailPW("hello@gmail.com", "slofadope", "pass"));
-		//System.out.println("hello2");
 		Login runLogin = new Login();
 		runLogin.main(null);
 	}
@@ -73,8 +72,8 @@ public class Controller {
 	 * need to update user class to do this
 	 */
 	public static ArrayList<User> getRegisteredUsers(){
-		String result = client.sendQuery("SELECT * FROM user");
-		String[] resultArray = result.split("|");
+		String result = client.sendQuery("1;SELECT * FROM user");
+		String[] resultArray = result.split("\\|");
 		ArrayList<User> resultList = new ArrayList<User>();
 		for(String user : resultArray) {
 			String[] userArray = user.split(",");
@@ -88,7 +87,7 @@ public class Controller {
 	 * @return
 	 */
 	public static ArrayList<Game> getGames(String username){
-		String result = client.sendQuery("SELECT * FROM game WHERE playerCreator='" + username + "' OR playerOther='" + username + "'");
+		String result = client.sendQuery("1;SELECT * FROM game WHERE playerCreator='" + username + "' OR playerOther='" + username + "'");
         String[] gamesArray = result.split("\\|");
         ArrayList<Game> gamesList = new ArrayList<Game>();
         for(String game : gamesArray) {
@@ -109,9 +108,27 @@ public class Controller {
 	 * @param user
 	 * @return Profile object for some user, including history/etc.
 	 */
-	public static Profile getProfile(User user){
-		
-        return null;
+	public static Profile getProfile(String email){
+        String user = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "'");
+        String nickname = user.split(",")[0];
+        ArrayList<Log> history = new ArrayList<Log>();
+        String logs = client.sendQuery("1;SELECT * FROM log WHERE userCreator='" + nickname + "' OR userAcceptor='" + nickname + "'");    
+        String[] logsArray = logs.split("\\|");
+        for(String log : logsArray) {
+            String[] logArray = log.split("\\|");
+            String startTime = logArray[1];
+            String endTime = logArray[2];
+            String winner = logArray[3];
+            String loser = logArray[4]
+            String creator = logArray[5];
+            String acceptor = logArray[6];
+            Log l = new Log(creator, acceptor, startTime)
+            l.logEndTime(endTime);
+            l.logOutcome(winner, loser);
+            history.add(l);
+        }
+        Profile p = new Profile(nickname, history);
+        return p;
 	}
 	
 	/**
@@ -119,7 +136,7 @@ public class Controller {
 	 * @param user
 	 */
 	public static void deregister(User user) {
-		
+	    	
 	}
 	
 	/**
@@ -128,7 +145,11 @@ public class Controller {
 	 * @return
 	 */
 	public static Game getGame(String gameID) {
-		return null;
+		String result = client.sendQuery("1;SELECT * FROM game WHERE id='" + gameID + "'");
+        String[] gameArray = result.split(",");
+        String boardState = gameArray[3];
+        Game g = new Game(boardState);
+        return g;
 	}
 	
 	/**
@@ -136,7 +157,7 @@ public class Controller {
 	 * @param state
 	 */
 	public static void updateGameState(String gameID, String state) {
-		
+		client.sendQuery("2;UPDATE game SET state='" + state + "' WHERE id='" + gameID + "'");
 	}
 	
 	/**
@@ -145,7 +166,18 @@ public class Controller {
 	 * @return
 	 */
 	public static void addGame(Game game) {
-
+        //create players corresponding to users
+        Log l = game.getLog();
+        ArrayList<User> players = game.getPlayers();
+        User player1 = players.get(0);
+        User player2 = players.get(1);
+        client.sendQuery("2;INSERT INTO player (username, color) VALUES ('" + l.getCreator() + "', '" + "'R'");
+        client.sendQuery("2;INSERT INTO player (username, color) VALUES ('" + player2.getAcceptor() + "', '" + "'B'");
+        //initialize log
+        Log l = game.getLog();
+        client.sendQuery("2;INSERT INTO log (startTime, endTime, userWinner, userLoser, userCreator, userAcceptor) VALUES ('" + l.getStartTime() + "', '" + l.getEndTime() + "', '" + l.getWinner() + "', '" + l.getLoser() + "', '" + l.getCreator() + "', '" + l.getAcceptor() + "'");
+        //add game to database with values from object
+        client.sendQuery("2;INSERT INTO game (playerCreator, playerOther, state, logID) VALUES ('" + 
 	}
 	
 

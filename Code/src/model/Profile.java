@@ -16,7 +16,7 @@ public class Profile {
 		this.winLossRatio = winLossRatio;
 	}
 	
-	public Profile(String nickname, ArrayList<Log> history, User user) {
+	public Profile(String nickname, ArrayList<Log> history) {
 		this.nickname = nickname;
 		this.history = history;
 		computeWLR();
