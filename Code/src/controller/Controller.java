@@ -139,6 +139,10 @@ public class Controller {
 		
 		String result = client.sendQuery("1;SELECT * FROM log WHERE log.userWinner='" + nickname + "' OR log.userLoser='" + nickname + "';");
 		
+		if(result.equals("")) {
+			return nickname + " : No win/loss ratio.";
+		}
+		
 		String[] rows = result.split("\\|");
 		
 		for(int c=0;c<rows.length;c++) {
