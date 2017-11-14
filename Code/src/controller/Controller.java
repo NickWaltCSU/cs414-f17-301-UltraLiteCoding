@@ -117,7 +117,9 @@ public class Controller {
 	 * @return
 	 */
 	public static String parseInvitation(String invitation) {
-		return invitation.substring(0, invitation.indexOf("-")-2);
+		invitation = invitation.substring(0, invitation.indexOf('-')-1);
+		
+		return invitation;
 	}
 	
 	public static String[] getInvites(User user) {
@@ -204,11 +206,15 @@ public class Controller {
 	 */
 	public static String acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
-        String invitation = client.sendQuery("1;SELECT userSender FROM invitation WHERE id='" + invitationID);
+		String invitation = client.sendQuery("1;SELECT userSender, userReceiver FROM invitation WHERE id='" + invitationID + "';");
+                
+		//trim the hanging pipe ('|')
+		invitation = invitation.substring(0, invitation.length()-1);
+		
         String[] invitationArray = invitation.split(",");
         String sender = invitationArray[0];
         String receiver = invitationArray[1];
-        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
+        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "';");
         return createGame(sender, receiver);
 	}
 	
