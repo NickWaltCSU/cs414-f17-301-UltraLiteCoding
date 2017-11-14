@@ -6,6 +6,8 @@ public class Log {
 	
 	private String startTime, endTime;
 	
+	private String logID;
+	
 	private boolean ended = false;
 	
 	public Log() {
@@ -21,6 +23,14 @@ public class Log {
 	public void logEndTime(String endTime) {
 		this.endTime = endTime;
 		ended = true;
+	}
+	
+	public void setLogID(String logID) {
+		this.logID = logID;
+	}
+	
+	public String getLogID() {
+		return logID;
 	}
 	
 	public void logOutcome(String winner, String loser) {
