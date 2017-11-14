@@ -81,7 +81,11 @@ public class Game {
 	public User getWinningPlayer() {
 		return winningPlayer;
 	}
-	
+
+    public User getLosingPlayer() {
+        return losingPlayer;
+    }    
+
 	public Color getWinningColor() {
 		return winningColor;
 	}

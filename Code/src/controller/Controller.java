@@ -98,13 +98,18 @@ public class Controller {
 		
 	}
 	
-	public static void createGame(String creator_nickname, String other_nickname) {
+	private static void createGame(String creator_nickname, String other_nickname) {
 		
 	}
 	
 	public static void acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
-
+        String invitation = client.sendQuery("1;SELECT userSender FROM invitation WHERE id='" + invitationID);
+        String[] invitationArray = invitation.split(",");
+        String sender = invitationArray[1];
+        String receiver = invitationArray[2];
+        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
+        createGame(sender, receiver);
 	}
 	
 	public static void rejectInvitation(String invitationID) {
@@ -115,6 +120,11 @@ public class Controller {
 	public static void updateGame(Game game) {
 	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "'");
         client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColor() + "' WHERE id='" + game.getGameID() + "'");
+        if(game.isOver()) {
+            client.sendQuery("2;UPDATE log SET endTime=NOW()");
+            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer().getUsername());
+            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer().getUsername()); 
+        }
 	}
 	
 }
