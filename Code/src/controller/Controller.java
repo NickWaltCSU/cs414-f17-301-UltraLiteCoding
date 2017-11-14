@@ -15,11 +15,12 @@ public class Controller {
 	private static Client client = new Client();
 	
 	public static User login(String email, String password) {
-		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");
+		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");		
 		if(result.equals("")) {
 			return null;
 		}else {
 			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + password + "'");
+			username = username.substring(0,username.length()-1);
 			return new User(username, email, password);
 		}
 	}
@@ -144,9 +145,7 @@ public class Controller {
 			//use those logID's to get the logs associated with them
 		String logIDs_ = client.sendQuery("1;SELECT logID FROM game WHERE game.userCreator='" + nickname 
 											+ "' OR game.userOther='" + nickname + "';");
-						
-		System.out.println(nickname);
-		
+								
 		if(logIDs_.equals("")) {
 			return nickname + " : 0.0";
 		}
