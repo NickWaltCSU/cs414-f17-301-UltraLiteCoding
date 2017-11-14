@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import model.Color;
 import model.Game;
-import model.Log;
 import model.Status;
 import model.Token;
 import model.User;
@@ -19,7 +18,6 @@ public class TestGame {
 		Game game = new Game();
 		assertNotEquals(null, game);
 		assertEquals(Status.ACTIVE, game.getStatus());
-		assertNotEquals(null, game.getLog());
 		assertNotEquals(null, game.getBoard());
 	}
 	
@@ -153,11 +151,6 @@ public class TestGame {
 		game.setPlayers(user, user2);
 		assertTrue(game.getPlayers().contains(user));
 		assertTrue(game.getPlayers().contains(user2));
-		
-		assertNotEquals(null, game.getLog());
-		Log log = new Log();
-		game.setLog(log);
-		assertEquals(log, game.getLog());
 		
 		assertNotEquals(null, game.getBoard());
 		game.setBoard();
