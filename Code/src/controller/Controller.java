@@ -90,7 +90,7 @@ public class Controller {
 	}
 	
 	public static void updateGame(Game game) {
-	    client.sendQuery("2;UPDATE game SET state='" + game.getBoard().saveBoard() + "' WHERE id='" + game.getGameID() + "'");
+	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "'");
         client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColor() + "' WHERE id='" + game.getGameID() + "'");
 	}
 	
