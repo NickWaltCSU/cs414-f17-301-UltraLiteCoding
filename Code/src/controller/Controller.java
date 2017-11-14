@@ -220,14 +220,17 @@ public class Controller {
 	 * @param log
 	 */
 	public static void addLog(Log log) {
-		
+        client.sendQuery("2;INSERT INTO log (startTime, endTime, winner, loser) VALUES ('" + log.getStartTime() + "', '" + log.getEndTime() + "', '" + log.getWinner() + "', '" + log.getLoser() + "', '");
 	}
 	
 	/**
 	 * Updates some log in the DB.
 	 * @param log
 	 */
-	public static void updateLog(Log log) {
-		
+	public static void updateLog(Log log) {		
+		client.sendQuery("2;UPDATE log SET startTime='" + log.getStartTime() + "' WHERE logID='" + log.getLogID() + "'");
+		client.sendQuery("2;UPDATE log SET endTime='" + log.getEndTime() + "' WHERE logID='" + log.getLogID() + "'");
+		client.sendQuery("2;UPDATE log SET winner='" + log.getWinner() + "' WHERE logID='" + log.getLogID() + "'");
+		client.sendQuery("2;UPDATE log SET loser='" + log.getLoser() + "' WHERE logID='" + log.getLogID() + "'");
 	}
 }
