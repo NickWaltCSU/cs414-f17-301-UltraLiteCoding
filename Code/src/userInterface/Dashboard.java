@@ -103,6 +103,7 @@ public class Dashboard {
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//gameID = whatever was selected in combo box
+				String gameID = "";
 				Game game = Controller.getGame(gameID);
 				GameBoard activeGame = new GameBoard(game);
 				activeGame.main(game);

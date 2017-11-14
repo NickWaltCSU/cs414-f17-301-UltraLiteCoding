@@ -1,6 +1,10 @@
 package controller;
 
+import model.Game;
 import model.User;
+
+import javax.swing.ComboBoxModel;
+
 import client.Client;
 
 public class Controller {
@@ -38,5 +42,21 @@ public class Controller {
 		else {
 			return false;
 		}
+	}
+
+	public static void deregister(User user) {
+		
+	}
+
+	public static String[] getGames(User user) {
+		return null;
+	}
+	
+	public static Game getGame(String gameID) {
+		return null;
+	}
+
+	public static String[] getUsers() {
+		return null;
 	}
 }
