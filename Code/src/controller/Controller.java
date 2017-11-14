@@ -80,13 +80,18 @@ public class Controller {
 		
 	}
 	
-	public static void createGame(String creator_nickname, String other_nickname) {
+	private static void createGame(String creator_nickname, String other_nickname) {
 		
 	}
 	
 	public static void acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
-
+        String invitation = client.sendQuery("1;SELECT userSender FROM invitation WHERE id='" + invitationID);
+        String[] invitationArray = invitation.split(",");
+        String sender = invitationArray[1];
+        String receiver = invitationArray[2];
+        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
+        createGame(sender, receiver);
 	}
 	
 	public static void rejectInvitation(String invitationID) {
