@@ -13,7 +13,7 @@ public class Game {
 	private ArrayList<User> players;
 	private Board board;
     private String gameID;
-    private boolean isFirstMove = false;
+    private boolean isFirstMove;
 	
 	public Game() {
 		status = Status.ACTIVE;
@@ -105,6 +105,10 @@ public class Game {
 			System.out.println("currentPlayer is not one of this game's players");
 		}
 		
+		switchColor();
+	}
+	
+	public void switchColor() {
 		if(currentColor == Color.RED) {
 			currentColor = Color.BLACK;
 		}else if(currentColor == Color.BLACK) {
@@ -129,14 +133,17 @@ public class Game {
 				if(token2!=null) board.moveToGraveyard(token2);
 				board.getTile(endX, endY).setToken(token);
 				board.getTile(startX, startY).setToken(null);
+				switchPlayer();
 				return true;
 			}else return false;
 		}else if(!token.isFaceUp()){
 			if(isFirstMove) {
 				isFirstMove = false;
 				creatorColor = board.getToken(startX, startY).getColor();
+				currentColor = creatorColor;
 			}
 			flipToken(startX, startY);
+			switchPlayer();
 			return true;
 		}else{
 			return false;
@@ -278,8 +285,20 @@ public class Game {
 		}
 		else if(currentColor == Color.BLACK) {
 			output += ", B";
-		}
+		}else System.err.println("Problem getting currentColor!");
 		
 		return output;
+	}
+	
+	public void setBoardWithColor(String string) {
+		System.out.println(string);
+		System.out.println(string.substring(0, string.length()-3));
+		if(string.charAt(string.length()-1) == 'R') {
+			currentColor = Color.RED;
+			board.loadBoard(string.substring(0, string.length()-3));
+		}else if(string.charAt(string.length()-1) == 'B') {
+			currentColor = Color.BLACK;
+			board.loadBoard(string.substring(0, string.length()-3));
+		}
 	}
 }
