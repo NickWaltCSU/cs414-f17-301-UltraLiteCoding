@@ -76,7 +76,7 @@ public class Controller {
 	}
 	
 	public static void createGame(String creator_nickname, String other_nickname) {
-		
+		//create log
 	}
 	
 	public static void acceptInvitation(String invitationID) {
@@ -88,7 +88,9 @@ public class Controller {
 	}
 	
 	public static void updateGame(Game game) {
-		
+		//update log
 	}
+	
+	
 	
 }
