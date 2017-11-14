@@ -117,11 +117,17 @@ public class Controller {
 	}
 	
 	public static void createInvitation(String sender_nickname, String recipient_nickname) {
+
 		
 	}
 	
 	private static void createGame(String creator_nickname, String other_nickname) {
-		
+        String startTime = client.sendQuery("1;SELECT NOW()");
+        client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "')");
+        String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
+        Game game = new Game();
+        game.getBoardWithColor();
+        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" other_nickname + "')");
 	}
 	
 	public static void acceptInvitation(String invitationID) {
