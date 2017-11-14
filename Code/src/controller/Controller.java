@@ -183,8 +183,8 @@ public class Controller {
 		return output;
 	}
 	
-	public static void createInvitation(String sender_nickname, String recipient_nickname, String gameID) {
-        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, gameID) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "', '" + gameID + "')");	
+	public static void createInvitation(String sender_nickname, String recipient_nickname) {
+        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "');");	
 	}
 	
 	private static String createGame(String creator_nickname, String other_nickname) {
