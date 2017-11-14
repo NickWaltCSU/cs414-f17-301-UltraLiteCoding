@@ -5,12 +5,12 @@ public class Game {
 
 	private Status status;
 	private Color winningColor;
-	private User winningPlayer;
-	private User losingPlayer;
-	private User currentPlayer;
+	private String winningPlayer;
+	private String losingPlayer;
+	private String currentPlayer;
 	private Color currentColor;
 	private Color creatorColor;
-	private ArrayList<User> players;
+	private ArrayList<String> players;
 	private Board board;
     private String gameID;
     private boolean isFirstMove;
@@ -18,14 +18,14 @@ public class Game {
 	public Game() {
 		status = Status.ACTIVE;
 		board = new Board();
-		players = new ArrayList<User>();
+		players = new ArrayList<String>();
 		isFirstMove = true;
 	}
 	
 	public Game(String _board) {
 		status = Status.ACTIVE;
 		board = new Board(_board);
-		players = new ArrayList<User>();
+		players = new ArrayList<String>();
 	}
 	
 	public Color getCreatorColor() {
@@ -44,11 +44,11 @@ public class Game {
 		status = _status;
 	}
 	
-	public User getCurrentPlayer() {
+	public String getCurrentPlayer() {
 		return currentPlayer;
 	}
 	
-	public void setCurrentPlayer(User player) {
+	public void setCurrentPlayer(String player) {
 		currentPlayer = player;
 	}
 	
@@ -60,11 +60,11 @@ public class Game {
 		currentColor = color;
 	}
 	
-	public ArrayList<User> getPlayers(){
+	public ArrayList<String> getPlayers(){
 		return players;
 	}
 	
-	public void setPlayers(User player1, User player2) {
+	public void setPlayers(String player1, String player2) {
 		players.clear();
 		players.add(player1);
 		players.add(player2);
@@ -78,11 +78,11 @@ public class Game {
 		board.resetBoard();
 	}
 	
-	public User getWinningPlayer() {
+	public String getWinningPlayer() {
 		return winningPlayer;
 	}
 
-    public User getLosingPlayer() {
+    public String getLosingPlayer() {
         return losingPlayer;
     }    
 
