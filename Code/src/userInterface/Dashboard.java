@@ -58,8 +58,11 @@ public class Dashboard {
 		JButton btnDeregister = new JButton("Deregister");
 		btnDeregister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!", "Deregister", JOptionPane.YES_NO_OPTION);
-				Controller.deregister(activeUser);
+				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!", "Deregister", JOptionPane.YES_NO_OPTION)==0){
+
+					Controller.deregister(activeUser);
+					frame.dispose();
+				}
 			}
 		});
 		btnDeregister.setBounds(310, 215, 110, 25);
@@ -78,7 +81,7 @@ public class Dashboard {
 		
 		//String testGames[] = {"Game1","Game2","Game3"};
 		//Controller.getGames(activeUser)
-		JComboBox gamesBox = new JComboBox();
+		JComboBox gamesBox = new JComboBox(Controller.getGames(activeUser));
 		//gamesBox.setSelectedIndex(0);
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
@@ -94,7 +97,7 @@ public class Dashboard {
 		
 		
 		//Controller.getUsers()
-		JComboBox PlayersBox = new JComboBox();
+		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				//need to do more here
