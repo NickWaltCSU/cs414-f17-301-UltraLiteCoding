@@ -50,7 +50,7 @@ public class Dashboard {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame(activeUser.getUsername());
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -86,11 +86,12 @@ public class Dashboard {
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//gameID = whatever was selected in combo box
-				
-				String gameID = (String) gamesBox.getSelectedItem();
-				Game game = Controller.getGame(gameID);
-				GameBoard activeGame = new GameBoard(game);
-				activeGame.main(game);
+				if(!((String)gamesBox.getSelectedItem()).equals("No active games.")){
+					String gameID = (String) gamesBox.getSelectedItem();
+					Game game = Controller.getGame(gameID);
+					GameBoard activeGame = new GameBoard(game);
+					activeGame.main(game);
+				}
 			}
 		});
 		gamesBox.setBounds(12, 129, 176, 22);
@@ -101,8 +102,9 @@ public class Dashboard {
 		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				
+				System.out.println((String)PlayersBox.getSelectedItem());
 				ViewProfile otherPlayer = new ViewProfile(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
+				otherPlayer.main(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
 			}
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
@@ -132,6 +134,15 @@ public class Dashboard {
 		JLabel lblInvitations = new JLabel("Invitations");
 		lblInvitations.setBounds(12, 193, 76, 16);
 		frame.getContentPane().add(lblInvitations);
+		
+		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//initialize();
+			}
+		});
+		btnRefresh.setBounds(239, 51, 97, 25);
+		frame.getContentPane().add(btnRefresh);
 	}
 	
 	public User getUser(){

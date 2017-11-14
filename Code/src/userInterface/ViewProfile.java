@@ -50,7 +50,7 @@ public class ViewProfile {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame(user2);
 		frame.setBounds(100, 100, 644, 457);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -64,18 +64,20 @@ public class ViewProfile {
 		frame.getContentPane().add(profileText);
 		
 		
-		if(!user1.equals(user2)){
+		//if(!user1.equals(user2)){
 			JButton btnInviteToGame = new JButton("Invite to game.");
 			btnInviteToGame.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane optionPane = new JOptionPane(
-					    "Do you want to invite this person to a game?",
-					    JOptionPane.QUESTION_MESSAGE,
-					    JOptionPane.YES_NO_OPTION);
+					if(JOptionPane.showConfirmDialog(null, "Do you want to invite this person to a game?","Accept", JOptionPane.YES_NO_OPTION)==0){
+						Controller.createInvitation(user1, user2);
+					}
 				}
 			});
 			btnInviteToGame.setBounds(470, 13, 144, 25);
 			frame.getContentPane().add(btnInviteToGame);
-		}
+			if(user1.equals(user2)){
+				btnInviteToGame.setVisible(false);
+			}
+		//}
 	}
 }
