@@ -137,9 +137,8 @@ public class Controller {
 		return null;
 	}
 	
-	public static void createInvitation(String sender_nickname, String recipient_nickname) {
-
-		
+	public static void createInvitation(String sender_nickname, String recipient_nickname, String gameID) {
+        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, gameID) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "', '" + gameID + "')");	
 	}
 	
 	private static void createGame(String creator_nickname, String other_nickname) {
