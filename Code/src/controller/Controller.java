@@ -4,6 +4,8 @@ import model.Color;
 import model.Game;
 import model.User;
 
+import java.util.Arrays;
+
 import javax.swing.ComboBoxModel;
 
 import client.Client;
@@ -13,11 +15,12 @@ public class Controller {
 	private static Client client = new Client();
 	
 	public static User login(String email, String password) {
-		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");
+		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");		
 		if(result.equals("")) {
 			return null;
 		}else {
 			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + password + "'");
+			username = username.substring(0,username.length()-1);
 			return new User(username, email, password);
 		}
 	}
@@ -137,19 +140,28 @@ public class Controller {
 		double winLossRatio = 0.0, wins = 0.0, losses = 0.0;
 		String logs = "";
 		
-		String result = client.sendQuery("1;SELECT * FROM log WHERE log.userWinner='" + nickname + "' OR log.userLoser='" + nickname + "';");
+		//need all logs for some user:
+			//look through all games with userCreator or userOther of nickname, getting the logID's of those games
+			//use those logID's to get the logs associated with them
+		String logIDs_ = client.sendQuery("1;SELECT logID FROM game WHERE game.userCreator='" + nickname 
+											+ "' OR game.userOther='" + nickname + "';");
+								
+		if(logIDs_.equals("")) {
+			return nickname + " : 0.0";
+		}
 		
-		String[] rows = result.split("\\|");
+		String[] logIDs = logIDs_.split("\\|");
 		
-		for(int c=0;c<rows.length;c++) {
-			logs += "\n";
-			String[] row = rows[c].split(",");
-			if(row[3].equals(nickname)) {//index out of bounds
+		for(String log : logIDs) {
+			String result = client.sendQuery("1;SELECT * FROM log WHERE log.id='" + log + "';");
+			String[] values = result.split(",");
+			
+			if(values[3].equals(nickname)) {//index out of bounds
 				wins++;
 			}else {
 				losses++;
 			}
-			logs += "LogID: " + row[0] + ", Start Time: " + rows[1] + ", End Time: " + rows[2] + ", Winner: " + rows[3] + ", Loser: " + rows[4];
+			logs += "LogID: " + values[0] + ", Start Time: " + values[1] + ", End Time: " + values[2] + ", Winner: " + values[3] + ", Loser: " + values[4];
 		}
 		
 		winLossRatio = wins/losses;
