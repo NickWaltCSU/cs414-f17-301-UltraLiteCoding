@@ -62,7 +62,7 @@ public class GameBoard {
 	}
 	
 	private String gameName(){
-		return game.getPlayers().get(0).getProfile().getNickname()+" vs. "+game.getPlayers().get(1).getProfile().getNickname();
+		return "";//game.getPlayers().get(0).getProfile().getNickname()+" vs. "+game.getPlayers().get(1).getProfile().getNickname();
 	}
 
 }

@@ -11,6 +11,7 @@ import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import controller.Controller;
 import model.User;
 
 import javax.swing.JButton;
@@ -110,11 +111,11 @@ public class CreateAccount {
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(email1.equals(txtEmail.getText())&&password1.equals(txtPassword.getText())){
-					//make new user
-					User newUser = new User();
+
+					boolean success = Controller.registerEmailPW(txtEmail.getText(), txtNickname.getText(), txtPassword.getText());
+					
 					//System.out.println(txtEmail.getText()+" "+txtNickname.getText()+" "+txtPassword.getText());
-					if(newUser.register(txtEmail.getText(), txtNickname.getText(), txtPassword.getText())){
-						
+					if(success){
 						JOptionPane.showMessageDialog(null, txtNickname.getText()+" Has created a new account!");
 						frame.dispose();
 					}else{

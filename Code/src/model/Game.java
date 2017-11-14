@@ -5,27 +5,35 @@ public class Game {
 
 	private Status status;
 	private Color winningColor;
-	private User winningPlayer;
-	private User currentPlayer;
+	private String winningPlayer;
+	private String losingPlayer;
+	private String currentPlayer;
 	private Color currentColor;
-	private ArrayList<User> players;
-	private Log log;
+	private Color creatorColor;
+	private ArrayList<String> players;
 	private Board board;
-  private String gameID;
+    private String gameID;
+    private boolean isFirstMove;
 	
 	public Game() {
 		status = Status.ACTIVE;
-		log = new Log();
 		board = new Board();
-
-		players = new ArrayList<User>();
+		players = new ArrayList<String>();
+		isFirstMove = true;
 	}
 	
 	public Game(String _board) {
 		status = Status.ACTIVE;
-		log = new Log();
 		board = new Board(_board);
-		players = new ArrayList<User>();
+		players = new ArrayList<String>();
+	}
+	
+	public Color getCreatorColor() {
+		return creatorColor;
+	}
+	
+	public void setCreatorColor(Color color) {
+		creatorColor = color;
 	}
 	
 	public Status getStatus() {
@@ -36,11 +44,11 @@ public class Game {
 		status = _status;
 	}
 	
-	public User getCurrentPlayer() {
+	public String getCurrentPlayer() {
 		return currentPlayer;
 	}
 	
-	public void setCurrentPlayer(User player) {
+	public void setCurrentPlayer(String player) {
 		currentPlayer = player;
 	}
 	
@@ -52,22 +60,14 @@ public class Game {
 		currentColor = color;
 	}
 	
-	public ArrayList<User> getPlayers(){
+	public ArrayList<String> getPlayers(){
 		return players;
 	}
 	
-	public void setPlayers(User player1, User player2) {
+	public void setPlayers(String player1, String player2) {
 		players.clear();
 		players.add(player1);
 		players.add(player2);
-	}
-	
-	public Log getLog() {
-		return log;
-	}
-	
-	public void setLog(Log _log) {
-		log = _log;
 	}
 	
 	public Board getBoard() {
@@ -78,10 +78,14 @@ public class Game {
 		board.resetBoard();
 	}
 	
-	public User getWinningPlayer() {
+	public String getWinningPlayer() {
 		return winningPlayer;
 	}
-	
+
+    public String getLosingPlayer() {
+        return losingPlayer;
+    }    
+
 	public Color getWinningColor() {
 		return winningColor;
 	}
@@ -89,6 +93,8 @@ public class Game {
     public String getGameID() {
         return gameID;
     }    
+    
+    
 	//Game actions and logic starts here
 	public void switchPlayer() {
 		if(currentPlayer == players.get(0)) {
@@ -99,6 +105,10 @@ public class Game {
 			System.out.println("currentPlayer is not one of this game's players");
 		}
 		
+		switchColor();
+	}
+	
+	public void switchColor() {
 		if(currentColor == Color.RED) {
 			currentColor = Color.BLACK;
 		}else if(currentColor == Color.BLACK) {
@@ -123,10 +133,17 @@ public class Game {
 				if(token2!=null) board.moveToGraveyard(token2);
 				board.getTile(endX, endY).setToken(token);
 				board.getTile(startX, startY).setToken(null);
+				switchPlayer();
 				return true;
 			}else return false;
 		}else if(!token.isFaceUp()){
+			if(isFirstMove) {
+				isFirstMove = false;
+				creatorColor = board.getToken(startX, startY).getColor();
+				currentColor = creatorColor;
+			}
 			flipToken(startX, startY);
+			switchPlayer();
 			return true;
 		}else{
 			return false;
@@ -234,7 +251,10 @@ public class Game {
 			if(currentColor == Color.BLACK) {
 				winningColor = Color.BLACK;
 				winningPlayer = currentPlayer;
+				//TODO switchPlayer();
+				//TODO losingPlayer = currentPlayer
 			}else{
+				//TODO losingPlayer = currentPlayer
 				//TODO switchPlayer();
 				winningColor = Color.BLACK;
 				winningPlayer = currentPlayer;
@@ -245,7 +265,10 @@ public class Game {
 			if(currentColor == Color.RED) {
 				winningColor = Color.RED;
 				winningPlayer = currentPlayer;
+				//TODO switchPlayer();
+				//TODO losingPlayer = currentPlayer
 			}else{
+				//TODO losingPlayer = currentPlayer
 				//TODO switchPlayer();
 				winningColor = Color.RED;
 				winningPlayer = currentPlayer;
@@ -253,5 +276,29 @@ public class Game {
 			return true;
 		}
 		else return false;
+	}
+	
+	public String getBoardWithColor() {
+		String output = board.saveBoard();
+		if(currentColor == Color.RED) {
+			output += ", R";
+		}
+		else if(currentColor == Color.BLACK) {
+			output += ", B";
+		}else System.err.println("Problem getting currentColor!");
+		
+		return output;
+	}
+	
+	public void setBoardWithColor(String string) {
+		System.out.println(string);
+		System.out.println(string.substring(0, string.length()-3));
+		if(string.charAt(string.length()-1) == 'R') {
+			currentColor = Color.RED;
+			board.loadBoard(string.substring(0, string.length()-3));
+		}else if(string.charAt(string.length()-1) == 'B') {
+			currentColor = Color.BLACK;
+			board.loadBoard(string.substring(0, string.length()-3));
+		}
 	}
 }

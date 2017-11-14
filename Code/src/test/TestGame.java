@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import model.Color;
 import model.Game;
-import model.Log;
 import model.Status;
 import model.Token;
 import model.User;
@@ -19,7 +18,6 @@ public class TestGame {
 		Game game = new Game();
 		assertNotEquals(null, game);
 		assertEquals(Status.ACTIVE, game.getStatus());
-		assertNotEquals(null, game.getLog());
 		assertNotEquals(null, game.getBoard());
 	}
 	
@@ -47,16 +45,14 @@ public class TestGame {
 		assertNotEquals(null, game.getBoard().getToken(2, 4));
 		assertNotEquals(null, game.getBoard().getToken(3, 2));
 		
-
-		User user = new User();
-		User user2 = new User();
-		game.setPlayers(user, user2);
+		
+		game.setPlayers("user", "user2");
 		game.setCurrentPlayer(game.getPlayers().get(0));
 		game.setCurrentColor(Color.RED);
 		
-		assertEquals(user, game.getCurrentPlayer());
+		assertEquals("user", game.getCurrentPlayer());
 		game.switchPlayer();
-		assertEquals(user2, game.getCurrentPlayer());
+		assertEquals("user2", game.getCurrentPlayer());
 		assertEquals(Color.BLACK, game.getCurrentColor());
 		
 		//We then take some token on the board and flip it, and then
@@ -139,9 +135,8 @@ public class TestGame {
 		assertEquals(Status.INACTIVE, game.getStatus());
 		
 		assertEquals(null, game.getCurrentPlayer());
-		User user = new User();
-		game.setCurrentPlayer(user);
-		assertEquals(user, game.getCurrentPlayer());
+		game.setCurrentPlayer("user");
+		assertEquals("user", game.getCurrentPlayer());
 		
 		assertEquals(null, game.getCurrentColor());
 		game.setCurrentColor(Color.BLACK);
@@ -149,15 +144,9 @@ public class TestGame {
 		assertNotEquals(Color.RED, game.getCurrentColor());
 		
 		assertNotEquals(null, game.getPlayers());
-		User user2 = new User();
-		game.setPlayers(user, user2);
-		assertTrue(game.getPlayers().contains(user));
-		assertTrue(game.getPlayers().contains(user2));
-		
-		assertNotEquals(null, game.getLog());
-		Log log = new Log();
-		game.setLog(log);
-		assertEquals(log, game.getLog());
+		game.setPlayers("user", "user2");
+		assertTrue(game.getPlayers().contains("user"));
+		assertTrue(game.getPlayers().contains("user2"));
 		
 		assertNotEquals(null, game.getBoard());
 		game.setBoard();

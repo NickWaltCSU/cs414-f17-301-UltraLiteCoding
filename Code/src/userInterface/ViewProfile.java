@@ -61,7 +61,7 @@ public class ViewProfile {
 		frame.getContentPane().add(profileText);
 		
 		
-		if(!user1.equals(user2)){
+		//if(!user1.equals(user2)){
 			JButton btnInviteToGame = new JButton("Invite to game.");
 			btnInviteToGame.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -73,6 +73,6 @@ public class ViewProfile {
 			});
 			btnInviteToGame.setBounds(470, 13, 144, 25);
 			frame.getContentPane().add(btnInviteToGame);
-		}
+		//}
 	}
 }

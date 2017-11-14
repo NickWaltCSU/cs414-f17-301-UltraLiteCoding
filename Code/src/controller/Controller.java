@@ -1,37 +1,25 @@
 package controller;
 
-import java.util.ArrayList;
-
+import model.Color;
 import model.Game;
-import model.Invitation;
-import model.Log;
-import model.Profile;
 import model.User;
-import userInterface.Login;
+
+import javax.swing.ComboBoxModel;
+
 import client.Client;
 
 public class Controller {
-
-	public static void main(String[] args){
-		Controller c = new Controller();
-		//System.out.println("hello");
-		boolean bool = c.checkEmailPW("spencerlofing@gmail.com", "password");
-		System.out.println(c.registerEmailPW("hello@gmail.com", "slofadope", "pass"));
-		Login runLogin = new Login();
-		runLogin.main(null);
-	}
-	private static Client client;
-	public Controller(){
-		client = new Client();
-	}
-	/**
-	 * For some user trying to log in, checkEmailPW verifies that the email & password correlate to a user in the database.
-	 * @return whether or not the email-password is a valid combination.
-	 */
-	public static boolean checkEmailPW(String email, String password) {
+	
+	private static Client client = new Client();
+	
+	public static User login(String email, String password) {
 		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");
-		//String[] resultsplit = result.split("\\|");
-		return !(result.equals(""));
+		if(result.equals("")) {
+			return null;
+		}else {
+			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + password + "'");
+			return new User(username, email, password);
+		}
 	}
 	
 	/**
@@ -56,189 +44,156 @@ public class Controller {
 			return false;
 		}
 	}
-	
-	/**
-	 * Returns a profile object (making sure profile.nickname is set) based off of the email provided.
-	 * @param email
-	 * @return
-	 */
-	public static Profile getProfile(String email) {
-		//Profile p = new Profile(
-        return null;
-	}
-	
-	/**
-	 * @return all registered users in the system.
-	 * need to update user class to do this
-	 */
-	public static ArrayList<User> getRegisteredUsers(){
-		String result = client.sendQuery("1;SELECT * FROM user");
-		String[] resultArray = result.split("\\|");
-		ArrayList<User> resultList = new ArrayList<User>();
-		for(String user : resultArray) {
-			String[] userArray = user.split(",");
-		}
-		return null;
-	}
-	
-	/** Returns all games in which the user given is a participant.
-	 * Every game needs to have the appropriate fields filled.
-	 * @param user
-	 * @return
-	 */
-	public static ArrayList<Game> getGames(String username){
-		String result = client.sendQuery("1;SELECT * FROM game WHERE playerCreator='" + username + "' OR playerOther='" + username + "'");
-        String[] gamesArray = result.split("\\|");
-        ArrayList<Game> gamesList = new ArrayList<Game>();
-        for(String game : gamesArray) {
-            String[] gameArray = game.split(",");
-            String id = gameArray[0];
-            String playerCreator = gameArray[1];
-            String playerAcceptor = gameArray[2];
-            String state = gameArray[3];
-            String logID = gameArray[4];
-            Game g = new Game();
-            gamesList.add(g);
-        }
-		return gamesList;
-	}
-	
-	/**
-	 * Taking in some user, returns the full fleshed-out profile for that user.
-	 * @param user
-	 * @return Profile object for some user, including history/etc.
-	 */
-	public static Profile getProfile(String email){
-        String user = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "'");
-        String nickname = user.split(",")[0];
-        ArrayList<Log> history = new ArrayList<Log>();
-        String logs = client.sendQuery("1;SELECT * FROM log WHERE userCreator='" + nickname + "' OR userAcceptor='" + nickname + "'");    
-        String[] logsArray = logs.split("\\|");
-        for(String log : logsArray) {
-            String[] logArray = log.split("\\|");
-            String startTime = logArray[1];
-            String endTime = logArray[2];
-            String winner = logArray[3];
-            String loser = logArray[4]
-            String creator = logArray[5];
-            String acceptor = logArray[6];
-            Log l = new Log(creator, acceptor, startTime)
-            l.logEndTime(endTime);
-            l.logOutcome(winner, loser);
-            history.add(l);
-        }
-        Profile p = new Profile(nickname, history);
-        return p;
-	}
-	
-	/**
-	 * Deregisters the user, forfeiting all of their active games (and filling out the logs/etc for them appropriately).
-	 * @param user
-	 */
+
 	public static void deregister(User user) {
-	    	
+		client.sendQuery("2;DELETE FROM user WHERE user.email='" + user.getEmail() + "';");
+	}
+
+	public static String[] getGames(User user) {
+		//array of "GameID - opponent Nickname"
+		String result = client.sendQuery("1;SELECT id FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
+		
+		if(result.equals("")) {
+			return new String[] {"No active games."};
+		}
+		
+		//rows broken up by |, columns broken up by 
+		String[] rows = result.split("\\|");
+		
+		String[] output = new String[rows.length];
+		
+		int counter = 0;
+		for(String row : rows) {
+			String otherUser = client.sendQuery("1;SELECT userCreator FROM game WHERE game.userCreator<>'" + user.getUsername() + "';");
+			if(otherUser.equals("")) {
+				otherUser = client.sendQuery("1;SELECT userOther FROM game WHERE game.userOther<>'" + user.getUsername() + "';");
+			}
+			row += " - " + otherUser;
+			output[counter] = row;
+			counter++;
+		}
+		
+		return output;
 	}
 	
-	/**
-	 * Returns the game correlating to the given gameID.
-	 * @param gameID
-	 * @return
-	 */
 	public static Game getGame(String gameID) {
-		String result = client.sendQuery("1;SELECT * FROM game WHERE id='" + gameID + "'");
-        String[] gameArray = result.split(",");
-        String boardState = gameArray[3];
-        Game g = new Game(boardState);
-        return g;
+		Game game = new Game();
+		
+		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
+		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
+		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
+		String creatorColor_ = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
+		
+		String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
+		
+		game.setBoardWithColor(state);
+		Color creatorColor = Color.RED;
+		if(creatorColor_.equals("B")) {
+			creatorColor = Color.BLACK;
+		}
+		game.setCreatorColor(creatorColor);
+		
+		if(game.getCurrentColor() == creatorColor) {
+			game.setCurrentPlayer(userCreator);
+		}else {
+			game.setCurrentPlayer(userOther);
+		}
+		
+		return game;
 	}
-	
-	/**
-	 * For some game indexed by gameID, update its state with the one given.
-	 * @param state
-	 */
-	public static void updateGameState(String gameID, String state) {
-		client.sendQuery("2;UPDATE game SET state='" + state + "' WHERE id='" + gameID + "'");
-	}
-	
-	/**
-	 * For some game, add it to the database.
-	 * @param creator
-	 * @return
-	 */
-	public static void addGame(Game game) {
-        //create players corresponding to users
-        Log l = game.getLog();
-        ArrayList<User> players = game.getPlayers();
-        User player1 = players.get(0);
-        User player2 = players.get(1);
-        client.sendQuery("2;INSERT INTO player (username, color) VALUES ('" + l.getCreator() + "', '" + "'R'");
-        String playerCreator = client.sendQuery("1;SELECT LAST_INSERT_ID()").split("\\|")[0];
-        client.sendQuery("2;INSERT INTO player (username, color) VALUES ('" + player2.getAcceptor() + "', '" + "'B'");
-        String playerOther = client.sendQuery("1;SELECT LAST_INSERT_ID()").split("\\|")[0];
-        //initialize log
-        Log l = game.getLog();
-        client.sendQuery("2;INSERT INTO log (startTime, endTime, userWinner, userLoser, userCreator, userAcceptor) VALUES ('" + l.getStartTime() + "', '" + l.getEndTime() + "', '" + l.getWinner() + "', '" + l.getLoser() + "', '" + l.getCreator() + "', '" + l.getAcceptor() + "'");
-        //add game to database with values from object
-        String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()").split("\\|")[0];
-        client.sendQuery("2;INSERT INTO game (id, playerCreator, playerOther, state, logID) VALUES ('" game.getID() +"', '" + playerCreator + "', '" + playerOther + "', '" + game.getBoard() + "', '" + logID + "')");
 
+	public static String[] getUsers() {
+		String result = client.sendQuery("1;SELECT username FROM user;");
+		String[] output = result.split("\\|");
+		return output;
 	}
 	
-
-	/**
-	 * For some game in the database, update the fields in the DB to match what is given in "game".
-	 * @param game
-	 */
-	public static void updateGameEntry(Game game) {
-		client.sendQuery("2;DELETE FROM game WHERE id='" + game.getID() + "'");
-        addGame(game);
+	public static String[] getInvites(User user) {
+		//array of "InvitationID - sender Nickname"
+		String result = client.sendQuery("1;SELECT id FROM invitation WHERE invitation.userReciever='" + user.getUsername() + "';");
+		
+		if(result.equals("")) {
+			return new String[] {"No invitations."};
+		}
+		
+		//rows broken up by |, columns broken up by 
+		String[] rows = result.split("\\|");
+		
+		String[] output = new String[rows.length];
+		
+		int counter = 0;
+		for(String row : rows) {
+			String otherUser = client.sendQuery("1;SELECT userSender FROM invitation WHERE invitation.userReciever='" + user.getUsername() + "';");
+			row += " - " + otherUser;
+			output[counter] = row;
+			counter++;
+		}
+		
+		return output;
 	}
 	
-	/**
-	 * Add invitation to the database.
-	 * @param invitation
-	 */
-	public static void addInvitation(Invitation invitation){
-	    client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, gameID) VALUES ('" + invitation.getSender() + "', '" + invitation.getReceiver() + "', '" + invitation.getGameID());
-        String inviteID = client.sendQuery("1;SELECT LAST_INSERT_ID()")
-        invitation.setID(inviteID);    
+	public static String getProfile(String nickname) {
+		//nickname : win loss ratio, \nlog1: \nlog2: \n...
+		double winLossRatio = 0.0, wins = 0.0, losses = 0.0;
+		String logs = "";
+		
+		String result = client.sendQuery("1;SELECT * FROM log WHERE log.userWinner='" + nickname + "' OR log.userLoser='" + nickname + "';");
+		
+		String[] rows = result.split("\\|");
+		
+		for(int c=0;c<rows.length;c++) {
+			logs += "\n";
+			String[] row = rows[c].split(",");
+			if(row[3].equals(nickname)) {
+				wins++;
+			}else {
+				losses++;
+			}
+			logs += "LogID: " + row[0] + ", Start Time: " + rows[1] + ", End Time: " + rows[2] + ", Winner: " + rows[3] + ", Loser: " + rows[4];
+		}
+		
+		winLossRatio = wins/losses;
+		String output = nickname + " : " + winLossRatio;
+		output += logs;
+		return output;
 	}
 	
-	/**
-	 * Update some invitation in the system with the information provided by the new invitation.
-	 * This is also where one would close an invitation.
-	 * @param invitation
-	 */
-	public static void updateInvitation(Invitation invitation) {
-		client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitation.getID() + "'");
-        addInvitation(invitation);
+	public static void createInvitation(String sender_nickname, String recipient_nickname, String gameID) {
+        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, gameID) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "', '" + gameID + "')");	
 	}
 	
-	/**
-	 * Returns all invitations for some user.
-	 * @param user
-	 * @return
-	 */
-	public static ArrayList<Invitation> getInvitations(User user) {
-		return null;
+	private static void createGame(String creator_nickname, String other_nickname) {
+        String startTime = client.sendQuery("1;SELECT NOW()");
+        client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "')");
+        String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
+        Game game = new Game();
+        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "')");
 	}
 	
-	/**
-	 * Adds some log to the DB.
-	 * @param log
-	 */
-	public static void addLog(Log log) {
-        client.sendQuery("2;INSERT INTO log (startTime, endTime, winner, loser) VALUES ('" + log.getStartTime() + "', '" + log.getEndTime() + "', '" + log.getWinner() + "', '" + log.getLoser() + "', '");
+	public static void acceptInvitation(String invitationID) {
+		//accepts it, closes it, also creates the game
+        String invitation = client.sendQuery("1;SELECT userSender FROM invitation WHERE id='" + invitationID);
+        String[] invitationArray = invitation.split(",");
+        String sender = invitationArray[1];
+        String receiver = invitationArray[2];
+        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
+        createGame(sender, receiver);
 	}
 	
-	/**
-	 * Updates some log in the DB.
-	 * @param log
-	 */
-	public static void updateLog(Log log) {		
-		client.sendQuery("2;UPDATE log SET startTime='" + log.getStartTime() + "' WHERE logID='" + log.getLogID() + "'");
-		client.sendQuery("2;UPDATE log SET endTime='" + log.getEndTime() + "' WHERE logID='" + log.getLogID() + "'");
-		client.sendQuery("2;UPDATE log SET winner='" + log.getWinner() + "' WHERE logID='" + log.getLogID() + "'");
-		client.sendQuery("2;UPDATE log SET loser='" + log.getLoser() + "' WHERE logID='" + log.getLogID() + "'");
+	public static void rejectInvitation(String invitationID) {
+		//delete invitation
+        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
 	}
+	
+	public static void updateGame(Game game) {
+	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "'");
+        client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColor() + "' WHERE id='" + game.getGameID() + "'");
+        if(game.isOver()) {
+            String endTime = client.sendQuery("1;SELECT NOW()");
+            client.sendQuery("2;UPDATE log SET endTime=" + endTime);
+            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer());
+            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer()); 
+        }
+	}
+	
 }
