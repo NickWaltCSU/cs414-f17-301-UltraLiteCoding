@@ -106,6 +106,11 @@ public class Controller {
 	public static void updateGame(Game game) {
 	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "'");
         client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColor() + "' WHERE id='" + game.getGameID() + "'");
+        if(game.isOver()) {
+            client.sendQuery("2;UPDATE log SET endTime=NOW()");
+            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer().getUsername());
+            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer().getUsername()); 
+        }
 	}
 	
 }
