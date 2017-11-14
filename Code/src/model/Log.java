@@ -2,7 +2,7 @@ package model;
 
 public class Log {
 
-	private User creator, acceptor, winner, loser;
+	private String creator, acceptor, winner, loser;
 	
 	private String startTime, endTime;
 	
@@ -12,7 +12,7 @@ public class Log {
 		//for testing purposes
 	}
 	
-	public Log(User creator, User acceptor, String startTime) {
+	public Log(String creator, String acceptor, String startTime) {
 		this.creator = creator;
 		this.acceptor = acceptor;
 		this.startTime = startTime;
@@ -23,13 +23,13 @@ public class Log {
 		ended = true;
 	}
 	
-	public void logOutcome(User winner, User loser) {
+	public void logOutcome(String winner, String loser) {
 		this.winner = winner;
 		this.loser = loser;
 		ended = true;
 	}
 	
-	public User getWinner(User user) {
+	public String getWinner(String user) {
 		return winner;
 	}
 
@@ -37,7 +37,30 @@ public class Log {
 		return ended;
 	}
 	
+    public String getCreator() {
+        return creator;
+    }
+
+    public String getAcceptor() {
+        return acceptor;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public String getLoser() {
+        return loser;
+    }
 	
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
 	public String toString(){
 		String outcome;
 		if(equals(winner)){
