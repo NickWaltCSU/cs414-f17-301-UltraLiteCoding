@@ -58,7 +58,7 @@ public class Controller {
 		}
 		
 		//rows broken up by |, columns broken up by 
-		String[] rows = result.split("//|");
+		String[] rows = result.split("\\|");
 		
 		String[] output = new String[rows.length];
 		
@@ -103,12 +103,33 @@ public class Controller {
 	}
 
 	public static String[] getUsers() {
-		return null;
+		String result = client.sendQuery("1;SELECT username FROM user;");
+		String[] output = result.split("\\|");
+		return output;
 	}
 	
 	public static String[] getInvites(User user) {
 		//array of "InvitationID - sender Nickname"
-		return null;
+		String result = client.sendQuery("1;SELECT id FROM invitation WHERE invitation.userReciever='" + user.getUsername() + "';");
+		
+		if(result.equals("")) {
+			return new String[] {"No invitations."};
+		}
+		
+		//rows broken up by |, columns broken up by 
+		String[] rows = result.split("\\|");
+		
+		String[] output = new String[rows.length];
+		
+		int counter = 0;
+		for(String row : rows) {
+			String otherUser = client.sendQuery("1;SELECT userSender FROM invitation WHERE invitation.userReciever='" + user.getUsername() + "';");
+			row += " - " + otherUser;
+			output[counter] = row;
+			counter++;
+		}
+		
+		return output;
 	}
 	
 	public static String getProfile(String nickname) {
