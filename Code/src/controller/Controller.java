@@ -113,7 +113,7 @@ public class Controller {
 	
 	public static String[] getInvites(User user) {
 		//array of "InvitationID - sender Nickname"
-		String result = client.sendQuery("1;SELECT id FROM invitation WHERE invitation.userReciever='" + user.getUsername() + "';");
+		String result = client.sendQuery("1;SELECT id FROM invitation WHERE invitation.userReceiver='" + user.getUsername() + "';");
 		
 		if(result.equals("")) {
 			return new String[] {"No invitations."};
@@ -126,7 +126,7 @@ public class Controller {
 		
 		int counter = 0;
 		for(String row : rows) {
-			String otherUser = client.sendQuery("1;SELECT userSender FROM invitation WHERE invitation.userReciever='" + user.getUsername() + "';");
+			String otherUser = client.sendQuery("1;SELECT userSender FROM invitation WHERE invitation.userReceiver='" + user.getUsername() + "';");
 			row += " - " + otherUser;
 			output[counter] = row;
 			counter++;
