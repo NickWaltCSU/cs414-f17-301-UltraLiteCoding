@@ -138,7 +138,7 @@ public class Controller {
 			String otherUser = client.sendQuery("1;SELECT userSender FROM invitation WHERE invitation.id='" + row + "';");
 			
 			//trimming the hanging | off of the name
-			otherUser = otherUser.substring(0, otherUser.length()-1);
+			otherUser  = otherUser.substring(0, otherUser.length()-1);
 			
 			row += " - " + otherUser;
 			output[counter] = row;
