@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import controller.Controller;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -57,6 +59,10 @@ public class Dashboard {
 		btnDeregister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!");
+				
+				//need to do more here
+				Controller.deregister(activeUser);
+				
 			}
 		});
 		btnDeregister.setBounds(310, 215, 110, 25);
@@ -76,12 +82,14 @@ public class Dashboard {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-
-				GameBoard.main(null);
-				
-				//GameBoard game = new GameBoard();
-				//game.main(null);
-				
+		
+						GameBoard.main(null);
+						
+						//GameBoard game = new GameBoard();
+						//game.main(null);
+						
+						//use getUsers
+						
 				
 			}
 		});
@@ -90,21 +98,23 @@ public class Dashboard {
 		
 		
 		//String testGames[] = {"Game1","Game2","Game3"};
-		JComboBox gamesBox = new JComboBox(gameNames());
+		JComboBox gamesBox = new JComboBox(Controller.getGames(activeUser));
 		//gamesBox.setSelectedIndex(0);
 		gamesBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				GameBoard activeGame = new GameBoard(playerGames.get(gamesBox.getSelectedIndex()));
-				activeGame.main(playerGames.get(gamesBox.getSelectedIndex()));
+			public void actionPerformed(ActionEvent arg0) {				
+				//gameID = whatever was selected in combo box
+				Game game = Controller.getGame(gameID);
+				GameBoard activeGame = new GameBoard(game);
+				activeGame.main(game);
 			}
 		});
 		gamesBox.setBounds(12, 129, 176, 22);
 		frame.getContentPane().add(gamesBox);
 		
-		JComboBox PlayersBox = new JComboBox();
+		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				//
+				//need to do more here
 			}
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
