@@ -45,7 +45,11 @@ public class Controller {
 	}
 
 	public static void deregister(User user) {
+<<<<<<< HEAD
+	   	
+=======
 		client.sendQuery("2;DELETE FROM user WHERE user.email='" + user.getEmail() + "';");
+>>>>>>> 565e58b3dddc848c6df64cb6d2faf512f01bd974
 	}
 
 	public static String[] getGames(User user) {
@@ -77,22 +81,22 @@ public class Controller {
 	}
 	
 	public static void createGame(String creator_nickname, String other_nickname) {
-		//create log
+		
 	}
 	
 	public static void acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
+
 	}
 	
 	public static void rejectInvitation(String invitationID) {
 		//delete invitation
+        client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
 	}
 	
 	public static void updateGame(Game game) {
-		//update log
-		//make sure to set creatorColor
+	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "'");
+        client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColor() + "' WHERE id='" + game.getGameID() + "'");
 	}
-	
-	
 	
 }
