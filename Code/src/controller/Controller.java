@@ -133,8 +133,29 @@ public class Controller {
 	}
 	
 	public static String getProfile(String nickname) {
-		//returns everything that we need for viewing a profile
-		return null;
+		//nickname : win loss ratio, \nlog1: \nlog2: \n...
+		double winLossRatio = 0.0, wins = 0.0, losses = 0.0;
+		String logs = "";
+		
+		String result = client.sendQuery("1;SELECT * FROM log WHERE log.userWinner='" + nickname + "' OR log.userLoser='" + nickname + "';");
+		
+		String[] rows = result.split("\\|");
+		
+		for(int c=0;c<rows.length;c++) {
+			logs += "\n";
+			String[] row = rows[c].split(",");
+			if(row[3].equals(nickname)) {
+				wins++;
+			}else {
+				losses++;
+			}
+			logs += "LogID: " + row[0] + ", Start Time: " + rows[1] + ", End Time: " + rows[2] + ", Winner: " + rows[3] + ", Loser: " + rows[4];
+		}
+		
+		winLossRatio = wins/losses;
+		String output = nickname + " : " + winLossRatio;
+		output += logs;
+		return output;
 	}
 	
 	public static void createInvitation(String sender_nickname, String recipient_nickname, String gameID) {
