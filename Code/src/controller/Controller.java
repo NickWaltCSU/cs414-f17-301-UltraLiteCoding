@@ -172,12 +172,16 @@ public class Controller {
         User player1 = players.get(0);
         User player2 = players.get(1);
         client.sendQuery("2;INSERT INTO player (username, color) VALUES ('" + l.getCreator() + "', '" + "'R'");
+        String playerCreator = client.sendQuery("1;SELECT LAST_INSERT_ID()").split("\\|")[0];
         client.sendQuery("2;INSERT INTO player (username, color) VALUES ('" + player2.getAcceptor() + "', '" + "'B'");
+        String playerOther = client.sendQuery("1;SELECT LAST_INSERT_ID()").split("\\|")[0];
         //initialize log
         Log l = game.getLog();
         client.sendQuery("2;INSERT INTO log (startTime, endTime, userWinner, userLoser, userCreator, userAcceptor) VALUES ('" + l.getStartTime() + "', '" + l.getEndTime() + "', '" + l.getWinner() + "', '" + l.getLoser() + "', '" + l.getCreator() + "', '" + l.getAcceptor() + "'");
         //add game to database with values from object
-        client.sendQuery("2;INSERT INTO game (playerCreator, playerOther, state, logID) VALUES ('" + 
+        String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()").split("\\|")[0];
+        client.sendQuery("2;INSERT INTO game (id, playerCreator, playerOther, state, logID) VALUES ('" game.getID() +"', '" + playerCreator + "', '" + playerOther + "', '" + game.getBoard() + "', '" + logID + "')");
+
 	}
 	
 
@@ -186,7 +190,8 @@ public class Controller {
 	 * @param game
 	 */
 	public static void updateGameEntry(Game game) {
-		
+		client.sendQuery("2;DELETE FROM game WHERE id='" + game.getID() + "'");
+        addGame(game);
 	}
 	
 	/**
@@ -194,7 +199,9 @@ public class Controller {
 	 * @param invitation
 	 */
 	public static void addInvitation(Invitation invitation){
-		
+	    client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, gameID) VALUES ('" + invitation.getSender() + "', '" + invitation.getReceiver() + "', '" + invitation.getGameID());
+        String inviteID = client.sendQuery("1;SELECT LAST_INSERT_ID()")
+        invitation.setID(inviteID);    
 	}
 	
 	/**
@@ -203,7 +210,8 @@ public class Controller {
 	 * @param invitation
 	 */
 	public static void updateInvitation(Invitation invitation) {
-		
+		client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitation.getID() + "'");
+        addInvitation(invitation);
 	}
 	
 	/**
