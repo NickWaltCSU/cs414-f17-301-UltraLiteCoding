@@ -45,11 +45,12 @@ public class Controller {
 	}
 
 	public static void deregister(User user) {
-		
+		client.sendQuery("2;DELETE FROM user WHERE user.email='" + user.getEmail() + "';");
 	}
 
 	public static String[] getGames(User user) {
 		//array of "GameID - opponent Nickname"
+		client.sendQuery("2;SELECT * FROM game WHERE game.userCreator='" + user.getUsername() + "';");
 		return null;
 	}
 	
@@ -89,6 +90,7 @@ public class Controller {
 	
 	public static void updateGame(Game game) {
 		//update log
+		//make sure to set creatorColor
 	}
 	
 	
