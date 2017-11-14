@@ -89,6 +89,8 @@ public class Game {
     public String getGameID() {
         return gameID;
     }    
+    
+    
 	//Game actions and logic starts here
 	public void switchPlayer() {
 		if(currentPlayer == players.get(0)) {
@@ -263,5 +265,17 @@ public class Game {
 			return true;
 		}
 		else return false;
+	}
+	
+	public String getBoardWithColor() {
+		String output = board.saveBoard();
+		if(currentColor == Color.RED) {
+			output += ", R";
+		}
+		else if(currentColor == Color.BLACK) {
+			output += ", B";
+		}
+		
+		return output;
 	}
 }
