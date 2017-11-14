@@ -91,7 +91,7 @@ public class Deregister {
 		JButton btnConfirm = new JButton("Confirm");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO This should deregister user
+				//TODO Controller.Deregister(txtEmail.getText(), txtPassword.getText());
 			}
 		});
 		btnConfirm.setBounds(81, 158, 97, 25);
