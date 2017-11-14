@@ -19,7 +19,6 @@ public class Dashboard {
 
 	private JFrame frame;
 	private User activeUser;
-	private ArrayList<Game> playerGames;
 
 	/**
 	 * Launch the application.
@@ -42,7 +41,6 @@ public class Dashboard {
 	 */
 	public Dashboard(User aUser) {
 		this.activeUser=aUser;
-		this.playerGames=activeUser.getGames();
 		initialize();
 	}
 
@@ -121,30 +119,8 @@ public class Dashboard {
 		frame.getContentPane().add(lblViewPlayerProfiles);
 	}
 	
-	private void refresh(){
-		this.playerGames=activeUser.getGames();
-	}
-	
 	public User getUser(){
 		return activeUser;
-	}
-	
-	private String[] gameNames(){
-		String[] gameNames;
-		
-		if(playerGames!=null){
-			gameNames = new String[playerGames.size()];
-			
-			for(int i=0;i<playerGames.size();i++){
-				gameNames[i]=playerGames.get(i).getPlayers().get(0).getProfile().getNickname();
-				gameNames[i]+=" vs. ";
-				gameNames[i]+=playerGames.get(i).getPlayers().get(1).getProfile().getNickname();
-			}
-			return gameNames;
-		}
-		String[] empty={"No active games."};
-		
-		return empty;
 	}
 	
 }
