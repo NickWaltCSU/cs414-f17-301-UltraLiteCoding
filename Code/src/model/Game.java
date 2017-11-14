@@ -9,20 +9,31 @@ public class Game {
 	private User losingPlayer;
 	private User currentPlayer;
 	private Color currentColor;
+	private Color creatorColor;
 	private ArrayList<User> players;
 	private Board board;
     private String gameID;
+    private boolean isFirstMove = false;
 	
 	public Game() {
 		status = Status.ACTIVE;
 		board = new Board();
 		players = new ArrayList<User>();
+		isFirstMove = true;
 	}
 	
 	public Game(String _board) {
 		status = Status.ACTIVE;
 		board = new Board(_board);
 		players = new ArrayList<User>();
+	}
+	
+	public Color getCreatorColor() {
+		return creatorColor;
+	}
+	
+	public void setCreatorColor(Color color) {
+		creatorColor = color;
 	}
 	
 	public Status getStatus() {
@@ -115,6 +126,10 @@ public class Game {
 				return true;
 			}else return false;
 		}else if(!token.isFaceUp()){
+			if(isFirstMove) {
+				isFirstMove = false;
+				creatorColor = board.getToken(startX, startY).getColor();
+			}
 			flipToken(startX, startY);
 			return true;
 		}else{
