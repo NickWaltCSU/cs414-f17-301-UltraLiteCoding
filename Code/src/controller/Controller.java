@@ -45,11 +45,7 @@ public class Controller {
 	}
 
 	public static void deregister(User user) {
-<<<<<<< HEAD
-	   	
-=======
 		client.sendQuery("2;DELETE FROM user WHERE user.email='" + user.getEmail() + "';");
->>>>>>> 565e58b3dddc848c6df64cb6d2faf512f01bd974
 	}
 
 	public static String[] getGames(User user) {
