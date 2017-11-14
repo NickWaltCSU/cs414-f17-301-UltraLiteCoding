@@ -76,6 +76,7 @@ public class Controller {
 	}
 	
 	public static Game getGame(String gameID) {
+		Game game = new Game();
 		return null;
 	}
 
