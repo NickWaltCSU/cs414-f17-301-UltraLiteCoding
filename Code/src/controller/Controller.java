@@ -4,6 +4,8 @@ import model.Color;
 import model.Game;
 import model.User;
 
+import java.util.Arrays;
+
 import javax.swing.ComboBoxModel;
 
 import client.Client;
@@ -140,8 +142,17 @@ public class Controller {
 		//need all logs for some user:
 			//look through all games with userCreator or userOther of nickname, getting the logID's of those games
 			//use those logID's to get the logs associated with them
-		String[] logIDs = client.sendQuery("1;SELECT logID FROM game WHERE game.userCreator='" + nickname 
-											+ "' OR game.userOther='" + nickname + "';").split("\\|");
+		String logIDs_ = client.sendQuery("1;SELECT logID FROM game WHERE game.userCreator='" + nickname 
+											+ "' OR game.userOther='" + nickname + "';");
+						
+		System.out.println(nickname);
+		
+		if(logIDs_.equals("")) {
+			return nickname + " : 0.0";
+		}
+		
+		String[] logIDs = logIDs_.split("\\|");
+		
 		for(String log : logIDs) {
 			String result = client.sendQuery("1;SELECT * FROM log WHERE log.id='" + log + "';");
 			String[] values = result.split(",");
