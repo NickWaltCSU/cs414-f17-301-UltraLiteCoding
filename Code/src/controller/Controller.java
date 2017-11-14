@@ -1,5 +1,6 @@
 package controller;
 
+import model.Color;
 import model.Game;
 import model.User;
 
@@ -77,7 +78,28 @@ public class Controller {
 	
 	public static Game getGame(String gameID) {
 		Game game = new Game();
-		return null;
+		
+		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
+		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
+		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
+		String creatorColor_ = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
+		
+		String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
+		
+		game.setBoardWithColor(state);
+		Color creatorColor = Color.RED;
+		if(creatorColor_.equals("B")) {
+			creatorColor = Color.BLACK;
+		}
+		game.setCreatorColor(creatorColor);
+		
+		if(game.getCurrentColor() == creatorColor) {
+			game.setCurrentPlayer(userCreator);
+		}else {
+			game.setCurrentPlayer(userOther);
+		}
+		
+		return game;
 	}
 
 	public static String[] getUsers() {
