@@ -9,21 +9,17 @@ public class Game {
 	private User currentPlayer;
 	private Color currentColor;
 	private ArrayList<User> players;
-	private Log log;
 	private Board board;
-  private String gameID;
+    private String gameID;
 	
 	public Game() {
 		status = Status.ACTIVE;
-		log = new Log();
 		board = new Board();
-
 		players = new ArrayList<User>();
 	}
 	
 	public Game(String _board) {
 		status = Status.ACTIVE;
-		log = new Log();
 		board = new Board(_board);
 		players = new ArrayList<User>();
 	}
@@ -60,14 +56,6 @@ public class Game {
 		players.clear();
 		players.add(player1);
 		players.add(player2);
-	}
-	
-	public Log getLog() {
-		return log;
-	}
-	
-	public void setLog(Log _log) {
-		log = _log;
 	}
 	
 	public Board getBoard() {

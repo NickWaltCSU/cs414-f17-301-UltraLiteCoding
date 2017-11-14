@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import controller.Controller;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -19,7 +21,6 @@ public class Dashboard {
 
 	private JFrame frame;
 	private User activeUser;
-	private ArrayList<Game> playerGames;
 
 	/**
 	 * Launch the application.
@@ -42,7 +43,6 @@ public class Dashboard {
 	 */
 	public Dashboard(User aUser) {
 		this.activeUser=aUser;
-		this.playerGames=activeUser.getGames();
 		initialize();
 	}
 
@@ -59,6 +59,10 @@ public class Dashboard {
 		btnDeregister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!");
+				
+				//need to do more here
+				Controller.deregister(activeUser);
+				
 			}
 		});
 		btnDeregister.setBounds(310, 215, 110, 25);
@@ -78,12 +82,14 @@ public class Dashboard {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-
-				GameBoard.main(null);
-				
-				//GameBoard game = new GameBoard();
-				//game.main(null);
-				
+		
+						GameBoard.main(null);
+						
+						//GameBoard game = new GameBoard();
+						//game.main(null);
+						
+						//use getUsers
+						
 				
 			}
 		});
@@ -92,21 +98,24 @@ public class Dashboard {
 		
 		
 		//String testGames[] = {"Game1","Game2","Game3"};
-		JComboBox gamesBox = new JComboBox(gameNames());
+		JComboBox gamesBox = new JComboBox(Controller.getGames(activeUser));
 		//gamesBox.setSelectedIndex(0);
 		gamesBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				GameBoard activeGame = new GameBoard(playerGames.get(gamesBox.getSelectedIndex()));
-				activeGame.main(playerGames.get(gamesBox.getSelectedIndex()));
+			public void actionPerformed(ActionEvent arg0) {				
+				//gameID = whatever was selected in combo box
+				String gameID = "";
+				Game game = Controller.getGame(gameID);
+				GameBoard activeGame = new GameBoard(game);
+				activeGame.main(game);
 			}
 		});
 		gamesBox.setBounds(12, 129, 176, 22);
 		frame.getContentPane().add(gamesBox);
 		
-		JComboBox PlayersBox = new JComboBox();
+		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				//
+				//need to do more here
 			}
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
@@ -121,30 +130,8 @@ public class Dashboard {
 		frame.getContentPane().add(lblViewPlayerProfiles);
 	}
 	
-	private void refresh(){
-		this.playerGames=activeUser.getGames();
-	}
-	
 	public User getUser(){
 		return activeUser;
-	}
-	
-	private String[] gameNames(){
-		String[] gameNames;
-		
-		if(playerGames!=null){
-			gameNames = new String[playerGames.size()];
-			
-			for(int i=0;i<playerGames.size();i++){
-				gameNames[i]=playerGames.get(i).getPlayers().get(0).getProfile().getNickname();
-				gameNames[i]+=" vs. ";
-				gameNames[i]+=playerGames.get(i).getPlayers().get(1).getProfile().getNickname();
-			}
-			return gameNames;
-		}
-		String[] empty={"No active games."};
-		
-		return empty;
 	}
 	
 }
