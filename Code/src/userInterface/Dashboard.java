@@ -129,7 +129,10 @@ public class Dashboard {
 				int selectedBtn = JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_CANCEL_OPTION);
 				if(selectedBtn==0){
 					//create new game
-					Game daGame = Controller.getGame((Controller.acceptInvitation(Controller.parseInvitation((String)inviteBox.getSelectedItem()))));
+					String sItem = (String)inviteBox.getSelectedItem();
+					String ivtID =Controller.parseInvitation(sItem);
+					String gameID = Controller.acceptInvitation(ivtID);
+					Game daGame = Controller.getGame(gameID);
 					GameBoard nwGame = new GameBoard(daGame);
 					nwGame.main(daGame);
 					
