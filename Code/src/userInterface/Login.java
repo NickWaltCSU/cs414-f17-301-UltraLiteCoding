@@ -14,6 +14,7 @@ import java.awt.Window;
 
 import javax.swing.SwingConstants;
 
+import controller.Controller;
 import model.User;
 
 import java.awt.Color;
@@ -84,13 +85,15 @@ public class Login {
 			public void actionPerformed(ActionEvent e) {
 				String loginMessage="Logging in as: "+txtEmail.getText();
 				JOptionPane.showMessageDialog(null, loginMessage);
-				User regUser = new User();
-				if(regUser.login(txtEmail.getText(), txtPassword.getText())){
+								
+				User regUser = Controller.login(txtEmail.getText(), txtPassword.getText());
+		
+				if(regUser == null) {
+					JOptionPane.showMessageDialog(null, "Login failed check info.");
+				}else {
 					Dashboard dashboard=new Dashboard(regUser);
 					dashboard.main(regUser);
 					frame.setVisible(false);
-				}else{
-					JOptionPane.showMessageDialog(null, "Login failed check info.");
 				}
 			}
 		});
