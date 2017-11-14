@@ -123,6 +123,7 @@ public class Dashboard {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_OPTION)==0){
 					//create new game
+					
 				}else{
 					//delete invitation
 				}
@@ -139,10 +140,15 @@ public class Dashboard {
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//initialize();
+				inviteBox.removeAllItems();
+				inviteBox.addItem(Controller.getInvites(activeUser));
 			}
 		});
 		btnRefresh.setBounds(239, 51, 97, 25);
 		frame.getContentPane().add(btnRefresh);
+	}
+	
+	private void referesh(){
 	}
 	
 	public User getUser(){
