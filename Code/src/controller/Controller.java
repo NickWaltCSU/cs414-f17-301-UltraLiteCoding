@@ -50,7 +50,15 @@ public class Controller {
 
 	public static String[] getGames(User user) {
 		//array of "GameID - opponent Nickname"
-		client.sendQuery("2;SELECT * FROM game WHERE game.userCreator='" + user.getUsername() + "';");
+		String result = client.sendQuery("1;SELECT * FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
+		
+		//rows broken up by |, columns broken up by 
+		String[] rows = result.split("|");
+		
+		for(String row : rows) {
+			
+		}
+		
 		return null;
 	}
 	
