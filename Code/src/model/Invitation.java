@@ -5,6 +5,7 @@ public class Invitation {
 	private User sender, reciever;
 	private Status status;
 	private Game game;
+	private String invitationID;
 	
 	public Invitation(User sender, User reciever, Game game) {
 		this.sender = sender;
@@ -15,6 +16,14 @@ public class Invitation {
 	
 	public void accepted() {
 		status = Status.INACTIVE;
+	}
+	
+	public void setID(String id) {
+		this.invitationID = id;
+	}
+	
+	public String getID() {
+		return invitationID;
 	}
 	
 }

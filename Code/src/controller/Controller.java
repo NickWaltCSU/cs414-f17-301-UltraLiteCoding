@@ -212,7 +212,13 @@ public class Controller {
 	 * @return
 	 */
 	public static ArrayList<Invitation> getInvitations(User user) {
-		return null;
+		String result = client.sendQuery("1;SELECT * FROM invitation WHERE userSender='" + user.getNickname() + "'");
+        String[] invitationArray = result.split("|");
+        ArrayList<Invitation> invitations = new ArrayList<Invitation>();
+        for(int c=0;c<invitationArray.length;c++) {
+        	invitations.add(new Invitation(invitationArray[0], invitationArray[1], invitationArray[2], invitationArray[3]));
+        }        
+        return invitations;
 	}
 	
 	/**
