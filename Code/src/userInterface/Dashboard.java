@@ -68,37 +68,20 @@ public class Dashboard {
 		btnDeregister.setBounds(310, 215, 110, 25);
 		frame.getContentPane().add(btnDeregister);
 		
-		JButton btnViewProfile = new JButton("View Profile");
+		JButton btnViewProfile = new JButton("View My Profile");
 		btnViewProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ViewProfile profWindow = new ViewProfile(activeUser,activeUser);
 				profWindow.main(activeUser,activeUser);
 			}
 		});
-		btnViewProfile.setBounds(12, 51, 110, 25);
+		btnViewProfile.setBounds(12, 51, 137, 25);
 		frame.getContentPane().add(btnViewProfile);
-		
-		JButton btnNewButton = new JButton("Create Game");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-		
-						GameBoard.main(null);
-						
-						//GameBoard game = new GameBoard();
-						//game.main(null);
-						
-						//use getUsers
-						
-				
-			}
-		});
-		btnNewButton.setBounds(289, 51, 110, 25);
-		frame.getContentPane().add(btnNewButton);
 		
 		
 		//String testGames[] = {"Game1","Game2","Game3"};
-		JComboBox gamesBox = new JComboBox(Controller.getGames(activeUser));
+		//Controller.getGames(activeUser)
+		JComboBox gamesBox = new JComboBox();
 		//gamesBox.setSelectedIndex(0);
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
@@ -112,7 +95,9 @@ public class Dashboard {
 		gamesBox.setBounds(12, 129, 176, 22);
 		frame.getContentPane().add(gamesBox);
 		
-		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
+		
+		//Controller.getUsers()
+		JComboBox PlayersBox = new JComboBox();
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				//need to do more here
@@ -121,17 +106,24 @@ public class Dashboard {
 		PlayersBox.setBounds(239, 129, 160, 22);
 		frame.getContentPane().add(PlayersBox);
 		
-		JLabel lblActiveGamesinvites = new JLabel("Active Games/Invites");
+		JLabel lblActiveGamesinvites = new JLabel("Active Games");
 		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
 		frame.getContentPane().add(lblActiveGamesinvites);
 		
 		JLabel lblViewPlayerProfiles = new JLabel("View player Profiles");
 		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
+		
+		JComboBox inviteBox = new JComboBox();
+		inviteBox.setBounds(12, 216, 176, 22);
+		frame.getContentPane().add(inviteBox);
+		
+		JLabel lblInvitations = new JLabel("Invitations");
+		lblInvitations.setBounds(12, 193, 76, 16);
+		frame.getContentPane().add(lblInvitations);
 	}
 	
 	public User getUser(){
 		return activeUser;
 	}
-	
 }
