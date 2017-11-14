@@ -1,6 +1,7 @@
 package userInterface;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
@@ -45,6 +46,9 @@ public class GameBoard {
 		frame.setBounds(100, 100, 850, 939);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		//code from: https://stackoverflow.com/questions/17815033/how-to-change-java-icon-in-a-jframe
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 		
 		BoardComponent board = new BoardComponent(game);
 		board.setBounds(0, 0, board.getBoardWidth()+2, board.getBoardHeight()*2+22);

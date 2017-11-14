@@ -4,7 +4,10 @@ package userInterface;
 import model.Game;
 import model.User;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -12,7 +15,6 @@ import javax.swing.JOptionPane;
 import controller.Controller;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -54,6 +56,9 @@ public class Dashboard {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+				
+		//code from: https://stackoverflow.com/questions/17815033/how-to-change-java-icon-in-a-jframe
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 		
 		JButton btnDeregister = new JButton("Deregister");
 		btnDeregister.addActionListener(new ActionListener() {

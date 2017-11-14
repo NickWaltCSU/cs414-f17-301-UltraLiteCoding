@@ -1,6 +1,7 @@
 package userInterface;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -54,6 +55,9 @@ public class ViewProfile {
 		frame.setBounds(100, 100, 644, 457);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		//code from: https://stackoverflow.com/questions/17815033/how-to-change-java-icon-in-a-jframe
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 		
 		JTextArea profileText = new JTextArea();
 		profileText.setEditable(false);
