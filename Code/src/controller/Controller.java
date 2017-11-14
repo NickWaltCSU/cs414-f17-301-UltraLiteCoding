@@ -111,6 +111,15 @@ public class Controller {
 		return output;
 	}
 	
+	/**
+	 * Parses some invitation, in the format of "INVITATIONID - INVITATION_SENDER", returning the INVITATIONID
+	 * @param invitation
+	 * @return
+	 */
+	public static String parseInvitation(String invitation) {
+		return invitation.substring(0, invitation.indexOf("-")-2);
+	}
+	
 	public static String[] getInvites(User user) {
 		//array of "InvitationID - sender Nickname"
 		String result = client.sendQuery("1;SELECT id FROM invitation WHERE invitation.userReceiver='" + user.getUsername() + "';");
@@ -178,22 +187,29 @@ public class Controller {
         client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, gameID) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "', '" + gameID + "')");	
 	}
 	
-	private static void createGame(String creator_nickname, String other_nickname) {
+	private static String createGame(String creator_nickname, String other_nickname) {
         String startTime = client.sendQuery("1;SELECT NOW()");
         client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "')");
         String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
         Game game = new Game();
         client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "')");
+        
+        return client.sendQuery("1;SELECT gameID FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
 	}
 	
-	public static void acceptInvitation(String invitationID) {
+	/**
+	 * 
+	 * @param invitationID
+	 * @return gameID
+	 */
+	public static String acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
         String invitation = client.sendQuery("1;SELECT userSender FROM invitation WHERE id='" + invitationID);
         String[] invitationArray = invitation.split(",");
         String sender = invitationArray[1];
         String receiver = invitationArray[2];
         client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "'");
-        createGame(sender, receiver);
+        return createGame(sender, receiver);
 	}
 	
 	public static void rejectInvitation(String invitationID) {
