@@ -71,8 +71,8 @@ public class Dashboard {
 		JButton btnViewProfile = new JButton("View My Profile");
 		btnViewProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ViewProfile profWindow = new ViewProfile(activeUser,activeUser);
-				profWindow.main(activeUser,activeUser);
+				ViewProfile profWindow = new ViewProfile((String)activeUser.getUsername(),(String)activeUser.getUsername());
+				profWindow.main((String)activeUser.getUsername(),(String)activeUser.getUsername());
 			}
 		});
 		btnViewProfile.setBounds(12, 51, 137, 25);
@@ -86,7 +86,8 @@ public class Dashboard {
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//gameID = whatever was selected in combo box
-				String gameID = "";
+				
+				String gameID = (String) gamesBox.getSelectedItem();
 				Game game = Controller.getGame(gameID);
 				GameBoard activeGame = new GameBoard(game);
 				activeGame.main(game);
@@ -100,7 +101,8 @@ public class Dashboard {
 		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				//need to do more here
+				
+				ViewProfile otherPlayer = new ViewProfile(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
 			}
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
@@ -114,7 +116,16 @@ public class Dashboard {
 		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 		
-		JComboBox inviteBox = new JComboBox();
+		JComboBox inviteBox = new JComboBox(Controller.getInvites(activeUser));
+		inviteBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_OPTION)==0){
+					//create new game
+				}else{
+					//delete invitation
+				}
+			}
+		});
 		inviteBox.setBounds(12, 216, 176, 22);
 		frame.getContentPane().add(inviteBox);
 		

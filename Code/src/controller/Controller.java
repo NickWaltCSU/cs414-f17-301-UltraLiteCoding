@@ -144,7 +144,7 @@ public class Controller {
 		for(int c=0;c<rows.length;c++) {
 			logs += "\n";
 			String[] row = rows[c].split(",");
-			if(row[3].equals(nickname)) {
+			if(row[3].equals(nickname)) {//index out of bounds
 				wins++;
 			}else {
 				losses++;

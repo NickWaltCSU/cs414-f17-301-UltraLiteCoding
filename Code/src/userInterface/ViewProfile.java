@@ -7,6 +7,9 @@ import javax.swing.JOptionPane;
 
 import model.User;
 import javax.swing.JTextPane;
+
+import controller.Controller;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -15,13 +18,13 @@ import javax.swing.JTextArea;
 public class ViewProfile {
 
 	private JFrame frame;
-	private User user1;
-	private User user2;
+	private String user1;
+	private String user2;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(User mUser1, User mUser2) {
+	public static void main(String mUser1, String mUser2) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -37,7 +40,7 @@ public class ViewProfile {
 	/**
 	 * Create the application.
 	 */
-	public ViewProfile(User aUser1, User aUser2) {
+	public ViewProfile(String aUser1, String aUser2) {
 		this.user1=aUser1;
 		this.user2=aUser2;
 		initialize();
@@ -55,13 +58,13 @@ public class ViewProfile {
 		JTextArea profileText = new JTextArea();
 		profileText.setEditable(false);
 		profileText.setLineWrap(true);
-		//profileText.setText(user2.getProfile().toString());
+		profileText.setText(Controller.getProfile(user2));
 		
 		profileText.setBounds(12, 13, 444, 384);
 		frame.getContentPane().add(profileText);
 		
 		
-		//if(!user1.equals(user2)){
+		if(!user1.equals(user2)){
 			JButton btnInviteToGame = new JButton("Invite to game.");
 			btnInviteToGame.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -73,6 +76,6 @@ public class ViewProfile {
 			});
 			btnInviteToGame.setBounds(470, 13, 144, 25);
 			frame.getContentPane().add(btnInviteToGame);
-		//}
+		}
 	}
 }
