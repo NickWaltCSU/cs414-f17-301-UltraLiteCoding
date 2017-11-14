@@ -85,7 +85,10 @@ public class Game {
 	public Color getWinningColor() {
 		return winningColor;
 	}
-	
+    
+    public String getGameID() {
+        return gameID;
+    }    
 	//Game actions and logic starts here
 	public void switchPlayer() {
 		if(currentPlayer == players.get(0)) {
