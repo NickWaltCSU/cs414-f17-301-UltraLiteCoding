@@ -6,22 +6,34 @@ public class Game {
 	private Status status;
 	private Color winningColor;
 	private User winningPlayer;
+	private User losingPlayer;
 	private User currentPlayer;
 	private Color currentColor;
+	private Color creatorColor;
 	private ArrayList<User> players;
 	private Board board;
     private String gameID;
+    private boolean isFirstMove = false;
 	
 	public Game() {
 		status = Status.ACTIVE;
 		board = new Board();
 		players = new ArrayList<User>();
+		isFirstMove = true;
 	}
 	
 	public Game(String _board) {
 		status = Status.ACTIVE;
 		board = new Board(_board);
 		players = new ArrayList<User>();
+	}
+	
+	public Color getCreatorColor() {
+		return creatorColor;
+	}
+	
+	public void setCreatorColor(Color color) {
+		creatorColor = color;
 	}
 	
 	public Status getStatus() {
@@ -77,6 +89,8 @@ public class Game {
     public String getGameID() {
         return gameID;
     }    
+    
+    
 	//Game actions and logic starts here
 	public void switchPlayer() {
 		if(currentPlayer == players.get(0)) {
@@ -114,6 +128,10 @@ public class Game {
 				return true;
 			}else return false;
 		}else if(!token.isFaceUp()){
+			if(isFirstMove) {
+				isFirstMove = false;
+				creatorColor = board.getToken(startX, startY).getColor();
+			}
 			flipToken(startX, startY);
 			return true;
 		}else{
@@ -222,7 +240,10 @@ public class Game {
 			if(currentColor == Color.BLACK) {
 				winningColor = Color.BLACK;
 				winningPlayer = currentPlayer;
+				//TODO switchPlayer();
+				//TODO losingPlayer = currentPlayer
 			}else{
+				//TODO losingPlayer = currentPlayer
 				//TODO switchPlayer();
 				winningColor = Color.BLACK;
 				winningPlayer = currentPlayer;
@@ -233,7 +254,10 @@ public class Game {
 			if(currentColor == Color.RED) {
 				winningColor = Color.RED;
 				winningPlayer = currentPlayer;
+				//TODO switchPlayer();
+				//TODO losingPlayer = currentPlayer
 			}else{
+				//TODO losingPlayer = currentPlayer
 				//TODO switchPlayer();
 				winningColor = Color.RED;
 				winningPlayer = currentPlayer;
@@ -241,5 +265,17 @@ public class Game {
 			return true;
 		}
 		else return false;
+	}
+	
+	public String getBoardWithColor() {
+		String output = board.saveBoard();
+		if(currentColor == Color.RED) {
+			output += ", R";
+		}
+		else if(currentColor == Color.BLACK) {
+			output += ", B";
+		}
+		
+		return output;
 	}
 }

@@ -58,9 +58,8 @@ public class Dashboard {
 		JButton btnDeregister = new JButton("Deregister");
 		btnDeregister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!")==0){
-					Controller.deregister(activeUser);
-				}
+				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!", "Deregister", JOptionPane.YES_NO_OPTION);
+				Controller.deregister(activeUser);
 			}
 		});
 		btnDeregister.setBounds(310, 215, 110, 25);
@@ -99,7 +98,6 @@ public class Dashboard {
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				//need to do more here
-				
 			}
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
@@ -114,15 +112,6 @@ public class Dashboard {
 		frame.getContentPane().add(lblViewPlayerProfiles);
 		
 		JComboBox inviteBox = new JComboBox();
-		inviteBox.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0){
-				int index =inviteBox.getSelectedIndex();
-				if(JOptionPane.showConfirmDialog(null, "Accept invite?", null, JOptionPane.YES_NO_OPTION)==0){
-					// create game.
-				}
-				
-			}
-		});
 		inviteBox.setBounds(12, 216, 176, 22);
 		frame.getContentPane().add(inviteBox);
 		
