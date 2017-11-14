@@ -59,10 +59,7 @@ public class Dashboard {
 		btnDeregister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!", "Deregister", JOptionPane.YES_NO_OPTION);
-				
-				//need to do more here
 				Controller.deregister(activeUser);
-				
 			}
 		});
 		btnDeregister.setBounds(310, 215, 110, 25);

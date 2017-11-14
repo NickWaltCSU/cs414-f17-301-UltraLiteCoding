@@ -6,6 +6,7 @@ public class Game {
 	private Status status;
 	private Color winningColor;
 	private User winningPlayer;
+	private User losingPlayer;
 	private User currentPlayer;
 	private Color currentColor;
 	private ArrayList<User> players;
@@ -222,7 +223,10 @@ public class Game {
 			if(currentColor == Color.BLACK) {
 				winningColor = Color.BLACK;
 				winningPlayer = currentPlayer;
+				//TODO switchPlayer();
+				//TODO losingPlayer = currentPlayer
 			}else{
+				//TODO losingPlayer = currentPlayer
 				//TODO switchPlayer();
 				winningColor = Color.BLACK;
 				winningPlayer = currentPlayer;
@@ -233,7 +237,10 @@ public class Game {
 			if(currentColor == Color.RED) {
 				winningColor = Color.RED;
 				winningPlayer = currentPlayer;
+				//TODO switchPlayer();
+				//TODO losingPlayer = currentPlayer
 			}else{
+				//TODO losingPlayer = currentPlayer
 				//TODO switchPlayer();
 				winningColor = Color.RED;
 				winningPlayer = currentPlayer;
