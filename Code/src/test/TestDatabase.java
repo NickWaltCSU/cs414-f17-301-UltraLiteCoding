@@ -4,6 +4,8 @@ import server.Database;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
+
 public class TestDatabase {
     
     private Database db;
