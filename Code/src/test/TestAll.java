@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 	TestBoard.class,
 	TestGame.class,
 	TestTile.class,
-	TestToken.class
+	TestToken.class,
+    TestDatabase.class
 })
 
 public class TestAll {
