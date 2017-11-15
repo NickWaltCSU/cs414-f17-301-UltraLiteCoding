@@ -13,15 +13,16 @@ public class GameBoard {
 
 	private JFrame frame;
 	private Game game;
+	private String user;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(Game mGame) {
+	public static void main(Game mGame,String mUser) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GameBoard window = new GameBoard(mGame);
+					GameBoard window = new GameBoard(mGame, mUser);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,7 +34,8 @@ public class GameBoard {
 	/**
 	 * Create the application.
 	 */
-	public GameBoard(Game aGame) {
+	public GameBoard(Game aGame, String aUser) {
+		this.user=aUser;
 		this.game=aGame;
 		initialize();
 	}
@@ -50,7 +52,7 @@ public class GameBoard {
 		//code from: https://stackoverflow.com/questions/17815033/how-to-change-java-icon-in-a-jframe
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 		
-		BoardComponent board = new BoardComponent(game);
+		BoardComponent board = new BoardComponent(game, user);
 		board.setBounds(0, 0, board.getBoardWidth()+2, board.getBoardHeight()*2+22);
 		frame.getContentPane().add(board);
 		
