@@ -103,6 +103,9 @@ public class Login {
 		});
 		btnLogin.setBounds(70, 129, 115, 25);
 		frame.getContentPane().add(btnLogin);
+		
+		
+		
 		JButton btnCreateAccount = new JButton("Create account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
