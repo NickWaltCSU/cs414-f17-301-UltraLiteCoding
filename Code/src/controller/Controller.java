@@ -87,7 +87,7 @@ public class Controller {
 		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
 		
 		String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
-		
+				
 		game.setBoardWithColor(state);
 		
 		game.setCreatorColor(Color.RED);
@@ -187,14 +187,18 @@ public class Controller {
 	
 	private static String createGame(String creator_nickname, String other_nickname) {
         String startTime = client.sendQuery("1;SELECT NOW()");
-        client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "')");
+        client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "');");
+        
         String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
+        logID = logID.substring(0, logID.length()-1);
+        
         Game game = new Game();
         
         game.setCurrentColor(Color.RED);
         game.setCreatorColor(Color.RED);
-        
-        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', 'R"+ "')");
+                        
+        String query = "2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', 'R');";
+        client.sendQuery(query);
         
         return client.sendQuery("1;SELECT gameID FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
 	}
