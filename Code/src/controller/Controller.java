@@ -87,6 +87,8 @@ public class Controller {
 	public static Game getGame(String gameID) {
 		Game game = new Game();
 		
+		game.setGameID(gameID);
+		
 		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
 		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
 		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");

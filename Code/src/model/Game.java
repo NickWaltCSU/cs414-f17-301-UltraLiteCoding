@@ -94,6 +94,10 @@ public class Game {
         return gameID;
     }    
     
+    public void setGameID(String gameID) {
+    	this.gameID = gameID;
+    }
+    
     
 	//Game actions and logic starts here
 	public void switchPlayer() {
