@@ -19,7 +19,7 @@ public class TestDatabase {
         String result = db.executeQuery("SELECT * FROM user WHERE username='test' AND email='test@test.test' AND password='test'");
         assertEquals("", result);
         //check that insert works correctly
-        db.executeUpdate("INSERT INTO user (username, email, password) VALUES ('test', 'test@test.test', 'test')")
+        db.executeUpdate("INSERT INTO user (username, email, password) VALUES ('test', 'test@test.test', 'test')");
         result = db.executeQuery("SELECT * FROM user WHERE username='test' AND email='test@test.test' AND password='test'");
         assertEquals("test,test@test.test,test|", result);
         //check that delete works correctly/reset user table
