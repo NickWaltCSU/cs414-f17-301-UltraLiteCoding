@@ -132,9 +132,9 @@ public class Dashboard {
 					String sItem = (String)inviteBox.getSelectedItem();
 					String ivtID =Controller.parseInvitation(sItem);
 					String gameID = Controller.acceptInvitation(ivtID);
-					Game daGame = Controller.getGame(gameID);
-					GameBoard nwGame = new GameBoard(daGame);
-					nwGame.main(daGame);
+					//Game daGame = Controller.getGame(gameID);
+					//GameBoard nwGame = new GameBoard(daGame);
+					//nwGame.main(daGame);
 					
 				}else if(selectedBtn==1){
 					//delete invitation
@@ -157,7 +157,9 @@ public class Dashboard {
 			public void actionPerformed(ActionEvent arg0) {
 				//initialize();
 				inviteBox.removeAllItems();
+				
 				inviteBox.addItem(Controller.getInvites(activeUser));
+				//
 			}
 		});
 		btnRefresh.setBounds(239, 51, 97, 25);
