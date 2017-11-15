@@ -203,38 +203,35 @@ public class Board {
 			tiles.get(i).setToken(token);
 		}
 		
-		for(int i=0; i<graveyardString.length; i++) {
-			if(graveyardString[i].equals("XXX")) {
-				continue;
-			}
-			
-			if(graveyardString[i].charAt(0) == 'B') {
-				color = Color.BLACK;
-			}else color = Color.RED;
-			
-			int temp = graveyardString[i].charAt(1);
-			switch(temp) {
-				case '7': type = Type.GENERAL; break;
-				case '6': type = Type.ADVISOR; break;
-				case '5': type = Type.ELEPHANT; break;
-				case '4': type = Type.CHARIOT; break;
-				case '3': type = Type.HORSE; break;
-				case '2': type = Type.CANNON; break;
-				case '1': type = Type.SOLDIER; break;
-				default: type = null;
-			}
-			
-			if(graveyardString[i].charAt(2) == 'U') {
-				isFaceUp = true;
-			}else isFaceUp = false;
-			
-			token = new Token(type, color);
-			if(isFaceUp) {
-				token.flipToken();
-			}
-			
-			graveyard.add(token);
-		}
+//		for(int j=0; j<graveyardString.length; j++) {
+//			if(graveyardString[j].charAt(0) == 'B') {
+//				color = Color.BLACK;
+//			}else color = Color.RED;
+//			
+//			int temp = graveyardString[j].charAt(1);
+//			switch(temp) {
+//				case '7': type = Type.GENERAL; break;
+//				case '6': type = Type.ADVISOR; break;
+//				case '5': type = Type.ELEPHANT; break;
+//				case '4': type = Type.CHARIOT; break;
+//				case '3': type = Type.HORSE; break;
+//				case '2': type = Type.CANNON; break;
+//				case '1': type = Type.SOLDIER; break;
+//				default: type = null;
+//			}
+//			
+//			if(graveyardString[j].charAt(2) == 'U') {
+//				isFaceUp = true;
+//			}else isFaceUp = false;
+//			
+//			token = new Token(type, color);
+//			TODO THIS MAY BE WHERE THE ERROR HAPPENS!
+//			if(isFaceUp) {
+//				token.flipToken();
+//			}
+//			
+//			graveyard.add(token);
+//		}
 	}
 
 	public void printBoard() {
