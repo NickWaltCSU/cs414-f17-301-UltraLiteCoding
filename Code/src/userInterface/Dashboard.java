@@ -23,6 +23,7 @@ public class Dashboard {
 
 	private JFrame frame;
 	private User activeUser;
+	private boolean doBoxAction = true;
 
 	/**
 	 * Launch the application.
@@ -91,13 +92,15 @@ public class Dashboard {
 		gamesBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//gameID = whatever was selected in combo box
-				if(!((String)gamesBox.getSelectedItem()).equals("No active games.")){
-					String gameName = (String) gamesBox.getSelectedItem();
-					String gameID = Controller.parseInvitation(gameName);
-					Game game = Controller.getGame(gameID);
-					
-					GameBoard activeGame = new GameBoard(game);
-					activeGame.main(game);
+				if(doBoxAction){
+					if(!((String)gamesBox.getSelectedItem()).equals("No active games.")){
+						String gameName = (String) gamesBox.getSelectedItem();
+						String gameID = Controller.parseInvitation(gameName);
+						Game game = Controller.getGame(gameID);
+						
+						GameBoard activeGame = new GameBoard(game);
+						activeGame.main(game);
+					}
 				}
 			}
 		});
@@ -109,9 +112,11 @@ public class Dashboard {
 		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				System.out.println((String)PlayersBox.getSelectedItem());
-				ViewProfile otherPlayer = new ViewProfile(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
-				otherPlayer.main(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
+				if(doBoxAction){
+					System.out.println((String)PlayersBox.getSelectedItem());
+					ViewProfile otherPlayer = new ViewProfile(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
+					otherPlayer.main(activeUser.getUsername(), (String)PlayersBox.getSelectedItem());
+				}
 			}
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
@@ -128,22 +133,24 @@ public class Dashboard {
 		JComboBox inviteBox = new JComboBox(Controller.getInvites(activeUser));
 		inviteBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int selectedBtn = JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_CANCEL_OPTION);
-				if(selectedBtn==0){
-					//create new game
-					String sItem = (String)inviteBox.getSelectedItem();
-					String ivtID =Controller.parseInvitation(sItem);
-					String gameID = Controller.acceptInvitation(ivtID);
-					//Game daGame = Controller.getGame(gameID);
-					//GameBoard nwGame = new GameBoard(daGame);
-					//nwGame.main(daGame);
-					
-				}else if(selectedBtn==1){
-					//delete invitation
-					Controller.rejectInvitation(Controller.parseInvitation((String)inviteBox.getSelectedItem()));
-					
-				}else{
-					//do nothing
+				if(doBoxAction){
+					int selectedBtn = JOptionPane.showConfirmDialog(null, "Accept invitation?", "Invites", JOptionPane.YES_NO_CANCEL_OPTION);
+					if(selectedBtn==0){
+						//create new game
+						String sItem = (String)inviteBox.getSelectedItem();
+						String ivtID =Controller.parseInvitation(sItem);
+						String gameID = Controller.acceptInvitation(ivtID);
+						//Game daGame = Controller.getGame(gameID);
+						//GameBoard nwGame = new GameBoard(daGame);
+						//nwGame.main(daGame);
+						
+					}else if(selectedBtn==1){
+						//delete invitation
+						Controller.rejectInvitation(Controller.parseInvitation((String)inviteBox.getSelectedItem()));
+						
+					}else{
+						//do nothing
+					}
 				}
 			}
 		});
@@ -154,16 +161,36 @@ public class Dashboard {
 		lblInvitations.setBounds(12, 193, 76, 16);
 		frame.getContentPane().add(lblInvitations);
 		
+		
+		//refresh drop down boxes
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//initialize();
+				doBoxAction=false;//this prevents box actions from being performed with addItem...
+				
+				//invites box update
 				inviteBox.removeAllItems();
 				String[] invitesArray = Controller.getInvites(activeUser);
 				for(int i=0;i<invitesArray.length;i++){
 					inviteBox.addItem(invitesArray[i]);
 				}
-				//
+				
+				//games box update
+				gamesBox.removeAllItems();
+				String[] gamesArray = Controller.getGames(activeUser);
+				for(int i=0;i<gamesArray.length;i++){
+					gamesBox.addItem(gamesArray[i]);
+				}
+				
+				//users box update
+				PlayersBox.removeAllItems();
+				String[] userArray = Controller.getUsers();
+				for(int i=0;i<userArray.length;i++){
+					PlayersBox.addItem(userArray[i]);
+				}
+				
+				
+				doBoxAction=true;
 			}
 		});
 		btnRefresh.setBounds(239, 51, 97, 25);
@@ -171,6 +198,7 @@ public class Dashboard {
 	}
 	
 	private void referesh(){
+		
 	}
 	
 	public User getUser(){

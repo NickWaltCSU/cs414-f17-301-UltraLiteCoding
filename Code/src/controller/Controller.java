@@ -73,7 +73,7 @@ public class Controller {
 			}
 			
 			//trimming the pipe ("|")
-			otherUser = otherUser.substring(0, otherUser.length());
+			otherUser = otherUser.substring(0, otherUser.length()-1);
 			
 			row += " - " + otherUser;
 			output[counter] = row;
