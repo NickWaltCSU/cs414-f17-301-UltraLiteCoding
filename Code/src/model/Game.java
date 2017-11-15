@@ -264,40 +264,89 @@ public class Game {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Returns True if the game is won, making sure to set winningPlayer, losingPlayer, & winningColor all appropriately.
+	 * @return
+	 */
 	public boolean isOver() {
 		String state = board.saveBoard();
-		String[] graveyardSplit = state.split("\\.");
-		if(!graveyardSplit[0].contains("R")) {
-			if(currentColor == Color.BLACK) {
-				winningColor = Color.BLACK;
-				winningPlayer = currentPlayer;
-				switchPlayer();
-				losingPlayer = currentPlayer;
-			}else{
-				losingPlayer = currentPlayer;
-				switchPlayer();
-				winningColor = Color.BLACK;
-				winningPlayer = currentPlayer;
-			}
-			return true;
+		boolean output = false;
+		Color winningColor = null;
+		
+		String[] split = state.split("\\.");
+		
+		String board = split[0];
+		String graveyard = split[1];
+		//is this the new color that was set after move was made?
+		String currentColor = split[2];
+		
+		if(!board.contains("R")) {
+			//no red pieces, black wins
+			winningColor = Color.RED;
+			output = true;
+		}else if(!board.contains("B")) {
+			//no black pieces, red wins
+			winningColor = Color.BLACK;
+			output = true;
+		}else {
+			//there are both black and red pieces, game is not over
+			return false;
 		}
-		else if(!graveyardSplit[0].contains("B")){
-			if(currentColor == Color.RED) {
-				winningColor = Color.RED;
-				winningPlayer = currentPlayer;
-				switchPlayer();
-				losingPlayer = currentPlayer;
-			}else{
-				losingPlayer = currentPlayer;
-				switchPlayer();
-				winningColor = Color.RED;
-				winningPlayer = currentPlayer;
+		
+		String otherPlayer = "";
+		
+		for(String player : players) {
+			if(!currentPlayer.equals(player)) {
+				otherPlayer = player;
 			}
-			return true;
 		}
-		else return false;
+		
+		//currentPlayer is winner if currentColor = winningColor
+		if(this.currentColor == winningColor) {
+			this.winningPlayer = currentPlayer;
+			this.losingPlayer = otherPlayer;
+		}else {
+			this.winningPlayer = otherPlayer;
+			this.losingPlayer = currentPlayer;
+		}
+		
+		return output;
 	}
+	
+//	public boolean isOver() {
+//		String state = board.saveBoard();
+//		String[] graveyardSplit = state.split("\\.");
+//		if(!graveyardSplit[0].contains("R")) {
+//			if(currentColor == Color.BLACK) {
+//				winningColor = Color.BLACK;
+//				winningPlayer = currentPlayer;
+//				switchPlayer();
+//				losingPlayer = currentPlayer;
+//			}else{
+//				losingPlayer = currentPlayer;
+//				switchPlayer();
+//				winningColor = Color.BLACK;
+//				winningPlayer = currentPlayer;
+//			}
+//			return true;
+//		}
+//		else if(!graveyardSplit[0].contains("B")){
+//			if(currentColor == Color.RED) {
+//				winningColor = Color.RED;
+//				winningPlayer = currentPlayer;
+//				switchPlayer();
+//				losingPlayer = currentPlayer;
+//			}else{
+//				losingPlayer = currentPlayer;
+//				switchPlayer();
+//				winningColor = Color.RED;
+//				winningPlayer = currentPlayer;
+//			}
+//			return true;
+//		}
+//		else return false;
+//	}
 	
 	public String getBoardWithColor() {
 		String output = board.saveBoard();
