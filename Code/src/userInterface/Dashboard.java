@@ -98,8 +98,8 @@ public class Dashboard {
 						String gameID = Controller.parseInvitation(gameName);
 						Game game = Controller.getGame(gameID);
 						
-						GameBoard activeGame = new GameBoard(game);
-						activeGame.main(game);
+						GameBoard activeGame = new GameBoard(game, activeUser.getUsername());
+						activeGame.main(game, activeUser.getUsername());
 					}
 				}
 			}
