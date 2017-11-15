@@ -126,6 +126,7 @@ public class Game {
 	
 
 	public boolean moveToken(String username, int startX, int startY, int endX, int endY) {
+		System.out.println("currentPlayer=<"+currentPlayer+">  username=<"+username+">");
 		if(!username.equals(currentPlayer)) {
 			return false;
 		}
@@ -304,5 +305,9 @@ public class Game {
 			currentColor = Color.BLACK;
 			board.loadBoard(string.substring(0, string.length()-3));
 		}
+	}
+	
+	public String toString(){
+		return players.get(0)+" vs. "+players.get(1);
 	}
 }
