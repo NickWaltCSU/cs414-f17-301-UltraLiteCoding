@@ -248,13 +248,13 @@ public class Controller {
 	}
 	
 	public static void updateGame(Game game) {
-	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "'");
-        client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColorAsString() + "' WHERE id='" + game.getGameID() + "'");
+	    client.sendQuery("2;UPDATE game SET state='" + game.getBoardWithColor() + "' WHERE id='" + game.getGameID() + "';");
+        client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColorAsString() + "' WHERE id='" + game.getGameID() + "';");
         if(game.isOver()) {
             String endTime = client.sendQuery("1;SELECT NOW()");
-            client.sendQuery("2;UPDATE log SET endTime=" + endTime);
-            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer());
-            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer()); 
+            client.sendQuery("2;UPDATE log SET endTime=" + endTime + "';");
+            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer() + "';");
+            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer() + "';"); 
         }
 	}
 	
