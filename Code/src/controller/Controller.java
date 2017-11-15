@@ -90,9 +90,10 @@ public class Controller {
 		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
 		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
 		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
+
+		userCreator = userCreator.substring(0, userCreator.length()-1);
+		userOther = userOther.substring(0, userOther.length()-1);
 		
-		String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
-				
 		game.setBoardWithColor(state);
 		
 		game.setCreatorColor(Color.RED);
