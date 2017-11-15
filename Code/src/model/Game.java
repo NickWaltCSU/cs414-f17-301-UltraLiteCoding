@@ -154,11 +154,11 @@ public class Game {
 				return true;
 			}else return false;
 		}else if(!token.isFaceUp()){
-			if(isFirstMove) {
-				isFirstMove = false;
-				creatorColor = board.getToken(startX, startY).getColor();
-				currentColor = creatorColor;
-			}
+//			if(isFirstMove) {
+//				isFirstMove = false;
+//				creatorColor = board.getToken(startX, startY).getColor();
+//				currentColor = creatorColor;
+//			}
 			flipToken(startX, startY);
 			switchPlayer();
 			return true;
@@ -311,11 +311,15 @@ public class Game {
 		System.out.println(string);
 		System.out.println(string.substring(0, string.length()-3));
 		if(string.charAt(string.length()-1) == 'R') {
+			System.out.println("SETTING CURRENT PLAYER AS RED");
 			currentColor = Color.RED;
 			board.loadBoard(string.substring(0, string.length()-3));
 		}else if(string.charAt(string.length()-1) == 'B') {
+			System.out.println("SETTING CURRENT PLAYER AS BLACK");
 			currentColor = Color.BLACK;
 			board.loadBoard(string.substring(0, string.length()-3));
+		}else {
+			System.out.println("SHOULDN'T EVER BE HERE");
 		}
 	}
 	
