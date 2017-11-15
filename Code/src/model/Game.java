@@ -146,6 +146,10 @@ public class Game {
 		Token token = board.getToken(startX, startY);
 		Token token2 = board.getToken(endX, endY);
 		if(token.isFaceUp()&&(token2==null||token2.isFaceUp())) {
+			if(token.getColor() != currentColor) {
+				return false;
+			}
+			
 			if(isValidMove(startX, startY, endX, endY)) {
 				if(token2!=null) board.moveToGraveyard(token2);
 				board.getTile(endX, endY).setToken(token);
