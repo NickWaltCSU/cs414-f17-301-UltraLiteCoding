@@ -171,6 +171,9 @@ public class Controller {
 		
 		for(String log : logIDs) {
 			String result = client.sendQuery("1;SELECT * FROM log WHERE log.id='" + log + "';");
+			
+			result = result.substring(0, result.length()-1);
+			
 			String[] values = result.split(",");
 			
 			if(values[3].equals(nickname)) {//index out of bounds
@@ -178,12 +181,12 @@ public class Controller {
 			}else {
 				losses++;
 			}
-			logs += "LogID: " + values[0] + ", Start Time: " + values[1] + ", End Time: " + values[2] + ", Winner: " + values[3] + ", Loser: " + values[4];
+			logs += "\n\nLogID: " + values[0] + "\n\tStart Time: " + values[1] + "\n\tEnd Time: " + values[2] + "\n\tWinner: " + values[3] + "\n\tLoser: " + values[4];
 		}
 		
 		winLossRatio = wins/losses;
 		String output = nickname + " : " + winLossRatio;
-		output += logs;
+		output += logs;		
 		return output;
 	}
 	

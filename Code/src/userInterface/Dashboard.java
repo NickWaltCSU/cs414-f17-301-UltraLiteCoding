@@ -121,7 +121,7 @@ public class Dashboard {
 		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
 		frame.getContentPane().add(lblActiveGamesinvites);
 		
-		JLabel lblViewPlayerProfiles = new JLabel("View player Profiles");
+		JLabel lblViewPlayerProfiles = new JLabel("View Player Profiles");
 		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 		

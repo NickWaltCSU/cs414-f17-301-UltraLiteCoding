@@ -125,7 +125,11 @@ public class Game {
 	}
 	
 
-	public boolean moveToken(int startX, int startY, int endX, int endY) {
+	public boolean moveToken(String username, int startX, int startY, int endX, int endY) {
+		if(!username.equals(currentPlayer)) {
+			return false;
+		}
+		
 		Token token = board.getToken(startX, startY);
 		Token token2 = board.getToken(endX, endY);
 		if(token.isFaceUp()&&(token2==null||token2.isFaceUp())) {
