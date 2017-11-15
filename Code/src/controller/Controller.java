@@ -191,8 +191,12 @@ public class Controller {
 			logs += "\n\nLogID: " + values[0] + "\n\tStart Time: " + values[1] + "\n\tEnd Time: " + values[2] + "\n\tWinner: " + values[3] + "\n\tLoser: " + values[4];
 		}
 		
-		winLossRatio = wins/losses;
-		String output = nickname + " : " + winLossRatio;
+		if(losses == 0) {
+			winLossRatio = wins;
+		}else {
+			winLossRatio = wins/losses;
+		}
+		String output = nickname + " : WLR=" + winLossRatio;
 		output += logs;		
 		return output;
 	}
