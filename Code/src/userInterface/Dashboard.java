@@ -92,7 +92,8 @@ public class Dashboard {
 			public void actionPerformed(ActionEvent arg0) {				
 				//gameID = whatever was selected in combo box
 				if(!((String)gamesBox.getSelectedItem()).equals("No active games.")){
-					String gameID = (String) gamesBox.getSelectedItem();
+					String gameName = (String) gamesBox.getSelectedItem();
+					String gameID = Controller.parseInvitation(gameName);
 					Game game = Controller.getGame(gameID);
 					GameBoard activeGame = new GameBoard(game);
 					activeGame.main(game);
