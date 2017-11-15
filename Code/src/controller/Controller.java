@@ -55,7 +55,7 @@ public class Controller {
 	public static String[] getGames(User user) {
 		//array of "GameID - opponent Nickname"
 		String result = client.sendQuery("1;SELECT id FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
-		
+				
 		if(result.equals("")) {
 			return new String[] {"No active games."};
 		}
@@ -66,12 +66,13 @@ public class Controller {
 		String[] output = new String[rows.length];
 		
 		int counter = 0;
-		for(String row : rows) {
-			String otherUser = client.sendQuery("1;SELECT userCreator FROM game WHERE game.userCreator<>'" + user.getUsername() + "';");
+		for(String row : rows) {			
+			String gameID = row;
+			String otherUser = client.sendQuery("1;SELECT userCreator FROM game WHERE game.userCreator<>'" + user.getUsername() + "' AND game.id='" + gameID + "';");
 			if(otherUser.equals("")) {
-				otherUser = client.sendQuery("1;SELECT userOther FROM game WHERE game.userOther<>'" + user.getUsername() + "';");
+				otherUser = client.sendQuery("1;SELECT userOther FROM game WHERE game.userOther<>'" + user.getUsername() + "' AND game.id='" + gameID + "';");
 			}
-			
+						
 			//trimming the pipe ("|")
 			otherUser = otherUser.substring(0, otherUser.length()-1);
 			
