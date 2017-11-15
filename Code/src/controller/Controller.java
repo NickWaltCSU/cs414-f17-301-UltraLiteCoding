@@ -85,18 +85,14 @@ public class Controller {
 		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
 		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
 		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
-		String creatorColor_ = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
 		
 		String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
 		
 		game.setBoardWithColor(state);
-		Color creatorColor = Color.RED;
-		if(creatorColor_.equals("B")) {
-			creatorColor = Color.BLACK;
-		}
-		game.setCreatorColor(creatorColor);
 		
-		if(game.getCurrentColor() == creatorColor) {
+		game.setCreatorColor(Color.RED);
+		
+		if(game.getCurrentColor() == Color.RED) {
 			game.setCurrentPlayer(userCreator);
 		}else {
 			game.setCurrentPlayer(userOther);
@@ -194,7 +190,11 @@ public class Controller {
         client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "')");
         String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
         Game game = new Game();
-        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "')");
+        
+        game.setCurrentColor(Color.RED);
+        game.setCreatorColor(Color.RED);
+        
+        client.sendQuery("2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', 'R"+ "')");
         
         return client.sendQuery("1;SELECT gameID FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
 	}
