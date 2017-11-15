@@ -94,6 +94,7 @@ public class Dashboard {
 				if(!((String)gamesBox.getSelectedItem()).equals("No active games.")){
 					String gameID = (String) gamesBox.getSelectedItem();
 					Game game = Controller.getGame(gameID);
+					
 					GameBoard activeGame = new GameBoard(game);
 					activeGame.main(game);
 				}
@@ -157,8 +158,10 @@ public class Dashboard {
 			public void actionPerformed(ActionEvent arg0) {
 				//initialize();
 				inviteBox.removeAllItems();
-				
-				inviteBox.addItem(Controller.getInvites(activeUser));
+				String[] invitesArray = Controller.getInvites(activeUser);
+				for(int i=0;i<invitesArray.length;i++){
+					inviteBox.addItem(invitesArray[i]);
+				}
 				//
 			}
 		});
