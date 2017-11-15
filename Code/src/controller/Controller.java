@@ -252,7 +252,7 @@ public class Controller {
         client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColorAsString() + "' WHERE id='" + game.getGameID() + "';");
         if(game.isOver()) {
             String endTime = client.sendQuery("1;SELECT NOW()");
-            client.sendQuery("2;UPDATE log SET endTime=" + endTime + "';");
+            client.sendQuery("2;UPDATE log SET endTime='" + endTime + "';");
             client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer() + "';");
             client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer() + "';"); 
         }
