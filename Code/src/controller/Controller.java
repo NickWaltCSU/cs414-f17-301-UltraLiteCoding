@@ -96,6 +96,8 @@ public class Controller {
 		
 		game.setCreatorColor(Color.RED);
 		
+		game.setPlayers(userCreator, userOther);
+		
 		if(game.getCurrentColor() == Color.RED) {
 			game.setCurrentPlayer(userCreator);
 		}else {
