@@ -157,7 +157,7 @@ public class Board {
 	}
 	
 	public void loadBoard(String string) {
-		String[] graveyardSplit = string.split(".");
+		String[] graveyardSplit = string.split("\\.");
 		String[] split = graveyardSplit[0].split(" ");
 		Color color;
 		Type type;
