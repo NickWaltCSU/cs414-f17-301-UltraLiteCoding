@@ -108,8 +108,9 @@ public class BoardComponent extends JComponent {
                         
                         if(game.getBoard().getToken(tileX+1, tileY+1)!=null){
                         
-                        	game.moveToken(user, tileX+1, tileY+1, tileX2+1, tileY2+1);
-                        	Controller.updateGame(game);
+                        	if(game.moveToken(user, tileX+1, tileY+1, tileX2+1, tileY2+1)) {
+                        		Controller.updateGame(game);
+                        	}
                         
                         }
                         
