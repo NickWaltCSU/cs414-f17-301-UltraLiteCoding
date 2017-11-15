@@ -28,6 +28,14 @@ public class Game {
 		players = new ArrayList<String>();
 	}
 	
+	public String getCreatorColorAsString() {
+		if(getCreatorColor() == Color.RED) {
+			return "R";
+		}else {
+			return "B";
+		}
+	}
+	
 	public Color getCreatorColor() {
 		return creatorColor;
 	}
