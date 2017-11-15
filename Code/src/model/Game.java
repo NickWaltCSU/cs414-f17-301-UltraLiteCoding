@@ -1,5 +1,6 @@
 package model;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Game {
 
@@ -276,10 +277,10 @@ public class Game {
 		
 		String[] split = state.split("\\.");
 		
+		System.out.println("split:" + Arrays.toString(split));
+		
 		String board = split[0];
 		String graveyard = split[1];
-		//is this the new color that was set after move was made?
-		String currentColor = split[2];
 		
 		if(!board.contains("R")) {
 			//no red pieces, black wins
@@ -302,8 +303,13 @@ public class Game {
 			}
 		}
 		
+		Color colorOfWinningMove = Color.BLACK;
+		if(currentColor == Color.BLACK) {
+			colorOfWinningMove = Color.RED;
+		}
+		
 		//currentPlayer is winner if currentColor = winningColor
-		if(this.currentColor == winningColor) {
+		if(colorOfWinningMove == winningColor) {
 			this.winningPlayer = currentPlayer;
 			this.losingPlayer = otherPlayer;
 		}else {
