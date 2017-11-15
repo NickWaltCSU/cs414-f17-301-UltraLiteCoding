@@ -267,7 +267,7 @@ public class Game {
 	
 	public boolean isOver() {
 		String state = board.saveBoard();
-		String[] graveyardSplit = state.split(",");
+		String[] graveyardSplit = state.split("\\.");
 		if(!graveyardSplit[0].contains("R")) {
 			if(currentColor == Color.BLACK) {
 				winningColor = Color.BLACK;
@@ -302,10 +302,10 @@ public class Game {
 	public String getBoardWithColor() {
 		String output = board.saveBoard();
 		if(currentColor == Color.RED) {
-			output += ", R";
+			output += ". R";
 		}
 		else if(currentColor == Color.BLACK) {
-			output += ", B";
+			output += ". B";
 		}else System.err.println("Problem getting currentColor!");
 		
 		return output;
