@@ -31,6 +31,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import controller.Controller;
+
 public class BoardComponent extends JComponent {
 	
 	/**
@@ -52,6 +54,7 @@ public class BoardComponent extends JComponent {
 	private boolean dragging = false;
 	
 	Game game;
+	String user;
 	
 	
 
@@ -63,8 +66,9 @@ public class BoardComponent extends JComponent {
 	
 	int tileX,tileY,tileX2,tileY2;
 	
-	public BoardComponent(Game game){
+	public BoardComponent(Game game, String aUser){
 		
+		this.user=aUser;
 		this.game=game;
 		
 		//Listens for mouse button events
@@ -104,7 +108,9 @@ public class BoardComponent extends JComponent {
                         
                         if(game.getBoard().getToken(tileX+1, tileY+1)!=null){
                         
-                        	game.moveToken(tileX+1, tileY+1, tileX2+1, tileY2+1);
+                        	if(game.moveToken(user, tileX+1, tileY+1, tileX2+1, tileY2+1)) {
+                        		Controller.updateGame(game);
+                        	}
                         
                         }
                         

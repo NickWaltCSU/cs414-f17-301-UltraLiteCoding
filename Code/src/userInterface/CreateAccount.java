@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 import java.awt.Font;
+import java.awt.Toolkit;
+
 import javax.swing.SwingConstants;
 
 import controller.Controller;
@@ -66,6 +68,9 @@ public class CreateAccount {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		//code from: https://stackoverflow.com/questions/17815033/how-to-change-java-icon-in-a-jframe
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 		
 		txtEmail = new JTextField();
 		txtEmail.setBounds(120, 58, 200, 22);

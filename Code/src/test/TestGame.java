@@ -45,16 +45,14 @@ public class TestGame {
 		assertNotEquals(null, game.getBoard().getToken(2, 4));
 		assertNotEquals(null, game.getBoard().getToken(3, 2));
 		
-
-		User user = new User();
-		User user2 = new User();
-		game.setPlayers(user, user2);
+		
+		game.setPlayers("user", "user2");
 		game.setCurrentPlayer(game.getPlayers().get(0));
 		game.setCurrentColor(Color.RED);
 		
-		assertEquals(user, game.getCurrentPlayer());
+		assertEquals("user", game.getCurrentPlayer());
 		game.switchPlayer();
-		assertEquals(user2, game.getCurrentPlayer());
+		assertEquals("user2", game.getCurrentPlayer());
 		assertEquals(Color.BLACK, game.getCurrentColor());
 		
 		//We then take some token on the board and flip it, and then
@@ -77,7 +75,7 @@ public class TestGame {
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		Token token = game.getBoard().getToken(2, 2);
 		
-		game.moveToken(2, 2, 3, 2);
+		game.moveToken("user2", 2, 2, 3, 2);
 		assertEquals(token, game.getBoard().getToken(3, 2));
 		assertEquals(null, game.getBoard().getToken(2, 2));		
 	//B1U B2U XXX XXX XXX XXX XXX XXX
@@ -86,7 +84,7 @@ public class TestGame {
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		assertEquals(null, game.getBoard().getToken(2, 3));
 		token = game.getBoard().getToken(1, 3);
-		game.moveToken(1, 3, 2, 3);
+		game.moveToken("user", 1, 3, 2, 3);
 		assertEquals(token, game.getBoard().getToken(2, 3));
 		assertEquals(null, game.getBoard().getToken(1, 3));
 	//B1U B2U XXX XXX XXX XXX XXX XXX
@@ -94,7 +92,7 @@ public class TestGame {
 	//B1U XXX B7U XXX XXX XXX XXX XXX
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		token = game.getBoard().getToken(1, 4);
-		game.moveToken(1, 4, 1, 3);
+		game.moveToken("user2", 1, 4, 1, 3);
 		assertEquals(token, game.getBoard().getToken(1, 3));
 		assertEquals(null, game.getBoard().getToken(1, 4));
 	//XXX B2U XXX XXX XXX XXX XXX XXX
@@ -103,7 +101,7 @@ public class TestGame {
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		token = game.getBoard().getToken(1, 3);
 		
-		game.moveToken(1, 3, 2, 3);
+		game.moveToken("user", 1, 3, 2, 3);
 		assertEquals(token, game.getBoard().getToken(2, 3));
 		assertEquals(null, game.getBoard().getToken(1, 3));
 	//XXX B2U XXX XXX XXX XXX XXX XXX
@@ -111,7 +109,7 @@ public class TestGame {
 	//B1U XXX B7U XXX XXX XXX XXX XXX
 	//R1U XXX XXX XXX XXX XXX XXX XXX
 		token = game.getBoard().getToken(1, 1);
-		game.moveToken(1, 1, 1, 2);
+		game.moveToken("user2", 1, 1, 1, 2);
 		assertEquals(token, game.getBoard().getToken(1, 2));
 		assertEquals(null, game.getBoard().getToken(1, 1));
 	//XXX B2U XXX XXX XXX XXX XXX XXX
@@ -137,9 +135,8 @@ public class TestGame {
 		assertEquals(Status.INACTIVE, game.getStatus());
 		
 		assertEquals(null, game.getCurrentPlayer());
-		User user = new User();
-		game.setCurrentPlayer(user);
-		assertEquals(user, game.getCurrentPlayer());
+		game.setCurrentPlayer("user");
+		assertEquals("user", game.getCurrentPlayer());
 		
 		assertEquals(null, game.getCurrentColor());
 		game.setCurrentColor(Color.BLACK);
@@ -147,10 +144,9 @@ public class TestGame {
 		assertNotEquals(Color.RED, game.getCurrentColor());
 		
 		assertNotEquals(null, game.getPlayers());
-		User user2 = new User();
-		game.setPlayers(user, user2);
-		assertTrue(game.getPlayers().contains(user));
-		assertTrue(game.getPlayers().contains(user2));
+		game.setPlayers("user", "user2");
+		assertTrue(game.getPlayers().contains("user"));
+		assertTrue(game.getPlayers().contains("user2"));
 		
 		assertNotEquals(null, game.getBoard());
 		game.setBoard();

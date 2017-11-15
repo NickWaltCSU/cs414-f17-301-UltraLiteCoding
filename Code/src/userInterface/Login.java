@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.Window;
 
 import javax.swing.SwingConstants;
@@ -59,6 +60,9 @@ public class Login {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		//code from: https://stackoverflow.com/questions/17815033/how-to-change-java-icon-in-a-jframe
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
+		
 		JLabel lblEmail = new JLabel("e-mail");
 		lblEmail.setBounds(70, 62, 74, 16);
 		frame.getContentPane().add(lblEmail);
@@ -99,6 +103,9 @@ public class Login {
 		});
 		btnLogin.setBounds(70, 129, 115, 25);
 		frame.getContentPane().add(btnLogin);
+		
+		
+		
 		JButton btnCreateAccount = new JButton("Create account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
