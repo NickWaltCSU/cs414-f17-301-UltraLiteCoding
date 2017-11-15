@@ -71,6 +71,10 @@ public class Controller {
 			if(otherUser.equals("")) {
 				otherUser = client.sendQuery("1;SELECT userOther FROM game WHERE game.userOther<>'" + user.getUsername() + "';");
 			}
+			
+			//trimming the pipe ("|")
+			otherUser = otherUser.substring(0, otherUser.length());
+			
 			row += " - " + otherUser;
 			output[counter] = row;
 			counter++;
