@@ -219,7 +219,7 @@ public class Controller {
         String query = "2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', 'R');";
         client.sendQuery(query);
         
-        return client.sendQuery("1;SELECT gameID FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
+        return client.sendQuery("1;SELECT game.id FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
 	}
 	
 	/**
