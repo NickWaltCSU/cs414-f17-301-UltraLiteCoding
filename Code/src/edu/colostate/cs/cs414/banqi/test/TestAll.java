@@ -9,7 +9,14 @@ import org.junit.runners.Suite;
 	TestGame.class,
 	TestTile.class,
 	TestToken.class,
-    TestDatabase.class
+    TestDatabase.class,
+    TestUser.class,
+    TestBoardComponent.class,
+    TestCreateAccount.class,
+    TestDashboard.class,
+    TestGameBoard.class,
+    TestTokenComponent.class,
+    TestViewProfile.class
 })
 
 public class TestAll {
