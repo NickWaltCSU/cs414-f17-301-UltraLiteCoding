@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Database {
     
     public static void main(String[] args) {
-	Database db = new Database("root", "password", "129.82.44.147", "5123");
-	System.out.println(db.executeQuery("SELECT * FROM user"));
+	    Database db = new Database("root", "password", "129.82.44.147", "5123");
+	    System.out.println(db.executeQuery("SELECT * FROM user"));
         db.executeUpdate("INSERT INTO user (username, email, password) VALUES ('random', 'random', 'random')");
     }
 
@@ -28,7 +28,6 @@ public class Database {
         String myDriver = "com.mysql.jdbc.Driver";
         try {
             Class.forName(myDriver).newInstance();
-            //System.out.println("here");
 	    conn = DriverManager.getConnection(url, user, pass);
         }
         catch (Exception e) {
@@ -66,12 +65,12 @@ public class Database {
     }
 
     public void executeUpdate(String statement) {
-	try {
-		PreparedStatement st = conn.prepareStatement(statement);
-		st.executeUpdate();
-	}
-	catch(SQLException sqle) {
-		System.out.println(sqle.getMessage());
-	}
+	    try {
+		    PreparedStatement st = conn.prepareStatement(statement);
+		    st.executeUpdate();
+	    }
+	    catch(SQLException sqle) {
+		    System.out.println(sqle.getMessage());
+	    }
     }
 }
