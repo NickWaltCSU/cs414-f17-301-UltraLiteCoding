@@ -44,17 +44,9 @@ public class ClientThread implements Runnable {
 
             // start communicating
             while(!socket.isClosed()){
-		//System.out.println("waiting");
                 if(in.hasNextLine()){
                     String input = in.nextLine();
-		    System.out.println(input);
-                    // NOTE: if you want to check server can read input, uncomment next line and check server file console.
-                    //TODO Input is what is being sent from the Client, so this is where (instead of sending chat messages)
-                    //TODO 		we will be writing Database queries to the thread and sending those. Read those thread lines here
-                    //String result = executeQuery(input);
-                    //System.out.println(result);
                     String result = parseMessage(input);
-                    //PrintWriter thatClientOut = thatClient.getWriter();
                     if(this.clientOut != null){
                         this.clientOut.write(result + "\r\n");
                         this.clientOut.flush();
@@ -72,7 +64,5 @@ public class ClientThread implements Runnable {
     
     public void updateQuery(String query){
     	db.executeUpdate(query);
-    }
-    
-   
+    } 
 }
