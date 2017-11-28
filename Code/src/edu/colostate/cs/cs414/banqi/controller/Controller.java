@@ -82,6 +82,20 @@ public class Controller {
         client.sendQuery("2;UPDATE user SET active='0' WHERE email='" + user.getEmail() + "';");
 	}
 
+    public static void forfeitGame(String username, String gameID) {
+        game = client.sendQuery("1;SELECT * FROM game WHERE id='" + gameID + "'");
+        String[] columns = game.split(",");
+        String logID = columns[2];
+        String userCreator = columns[3];
+        String userOther = columns[4];
+        String opponent = userCreator;
+        if(username.equals(userCreator){
+            opponent = userOther;
+        }
+        String endTime = client.sendQuery("1;SELECT NOW()");
+        client.sendQuery("2;UPDATE log SET endTime='" + endTime + "', userWinner='" + opponent + "', userLoser='" + username + "' WHERE id='" + logID + "'");
+    }
+
 	public static String[] getGames(User user) {
 		//array of "GameID - opponent Nickname"
 		String result = client.sendQuery("1;SELECT id FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
