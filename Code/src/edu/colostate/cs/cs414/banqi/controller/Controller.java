@@ -12,9 +12,10 @@ import edu.colostate.cs.cs414.banqi.model.User;
 public class Controller {
 	
 	private static Client client = new Client();
-	
+    private static final String salt = "pepper";
+
 	public static User login(String email, String password) {
-		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + password + "'");		
+		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + hashedPassword(password) + "'");		
 		if(result.equals("")) {
 			return null;
 		}else {
@@ -23,6 +24,14 @@ public class Controller {
 			return new User(username, email, password);
 		}
 	}
+
+    private String hashedPassword(String password) {
+        String saltedpassword = salt + password;
+        MessageDigest digest = MessageDigest.getInstance("SHA1");
+        byte[] hash = digest.digest(saltedpassword.getBytes());
+        BigInteger hashInt = new BigInteger(1, hash);
+        return hashInt.toString(16);
+    }
 	
 	/**
 	 * For some user trying to register, it adds them as a user if their information is unique, otherwise it returns false.
@@ -33,13 +42,11 @@ public class Controller {
 	 */
 	public static boolean registerEmailPW(String email, String nickname, String password) {
 		String emailResult = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "'");
-        //System.out.println("email result " + emailResult);
 		boolean uniqueEmail = (emailResult.equals(""));
 		String nicknameResult = client.sendQuery("1;SELECT * FROM user WHERE username='" + nickname + "'");
-        //System.out.println("nickname result " + nicknameResult);
 		boolean uniqueNickname = (nicknameResult.equals(""));
 		if (uniqueEmail && uniqueNickname) {
-			client.sendQuery("2;INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + password + "')");
+			client.sendQuery("2;INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + hashedPassword(password) + "')");
 			return true;
 		} 
 		else {
