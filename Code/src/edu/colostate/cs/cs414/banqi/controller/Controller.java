@@ -15,7 +15,7 @@ public class Controller {
     private static final String salt = "pepper";
 
 	public static User login(String email, String password) {
-		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + hashedPassword(password) + "'");		
+		String result = client.sendQuery("1;SELECT * FROM user WHERE email='" + email + "' and password='" + hashedPassword(password) + "' and active=1");		
 		if(result.equals("")) {
 			return null;
 		}else {
@@ -46,7 +46,7 @@ public class Controller {
 		String nicknameResult = client.sendQuery("1;SELECT * FROM user WHERE username='" + nickname + "'");
 		boolean uniqueNickname = (nicknameResult.equals(""));
 		if (uniqueEmail && uniqueNickname) {
-			client.sendQuery("2;INSERT INTO user (username, email, password) VALUES ('" + nickname + "', '" + email + "', '" + hashedPassword(password) + "')");
+			client.sendQuery("2;INSERT INTO user (username, email, password, active) VALUES ('" + nickname + "', '" + email + "', '" + hashedPassword(password) +  + "', '1')");
 			return true;
 		} 
 		else {
@@ -55,7 +55,31 @@ public class Controller {
 	}
 
 	public static void deregister(User user) {
-		client.sendQuery("2;DELETE FROM user WHERE user.email='" + user.getEmail() + "';");
+		//delete associated invitations
+        String queryResult = client.sendQuery("1;SELECT * FROM invitation WHERE userSender='" + user.getUsername() + "' OR userReceiver='" + user.getUsername() + "'");
+        String[] invitations = queryResult.split("\\|");
+        for(String invitation : invitations) {
+            String[] columns = invitation.split(",");
+            String id = columns[0];
+            client.sendQuery("2;DELETE FROM invitation WHERE id='" + id + "'");
+        }
+        //update logs
+        queryResult = client.sendQuery("1;SELECT * FROM game WHERE userCreator='" + user.getUsername() + "' OR userOther='" + user.getUsername() + "'");
+        String[] games = queryResult.split("\\|");
+        for(String game : games) {
+            String[] columns = game.split(",");
+            String logID = columns[2];
+            String userCreator = columns[3];
+            String userOther = columns[4];
+            String opponent = userCreator;
+            if(user.getUsername().equals(userCreator)){
+                opponent = userOther;
+            }
+            String endTime = client.sendQuery("1;SELECT NOW()");
+            client.sendQuery("2;UPDATE log SET endTime='" + endTime + "', userWinner='" + opponent + "', userLoser='" + user.getUsername() + "' WHERE id='" + logID + "'"); 
+        }
+        //de-activate user
+        client.sendQuery("2;UPDATE user SET active='0' WHERE email='" + user.getEmail() + "';");
 	}
 
 	public static String[] getGames(User user) {
