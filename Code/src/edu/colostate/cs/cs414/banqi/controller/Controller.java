@@ -1,6 +1,9 @@
 package edu.colostate.cs.cs414.banqi.controller;
 
 import java.util.Arrays;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.ComboBoxModel;
 
@@ -25,12 +28,18 @@ public class Controller {
 		}
 	}
 
-    private String hashedPassword(String password) {
-        String saltedpassword = salt + password;
-        MessageDigest digest = MessageDigest.getInstance("SHA1");
-        byte[] hash = digest.digest(saltedpassword.getBytes());
-        BigInteger hashInt = new BigInteger(1, hash);
-        return hashInt.toString(16);
+    private static String hashedPassword(String password) {
+        try {
+            String saltedpassword = salt + password;
+            MessageDigest digest = MessageDigest.getInstance("SHA1");
+            byte[] hash = digest.digest(saltedpassword.getBytes());
+            BigInteger hashInt = new BigInteger(1, hash);
+            return hashInt.toString(16);
+        }
+        catch(NoSuchAlgorithmException nsae) {
+            System.err.println(nsae.getMessage());
+            return null;
+        }
     }
 	
 	/**
@@ -46,7 +55,7 @@ public class Controller {
 		String nicknameResult = client.sendQuery("1;SELECT * FROM user WHERE username='" + nickname + "'");
 		boolean uniqueNickname = (nicknameResult.equals(""));
 		if (uniqueEmail && uniqueNickname) {
-			client.sendQuery("2;INSERT INTO user (username, email, password, active) VALUES ('" + nickname + "', '" + email + "', '" + hashedPassword(password) +  + "', '1')");
+			client.sendQuery("2;INSERT INTO user (username, email, password, active) VALUES ('" + nickname + "', '" + email + "', '" + hashedPassword(password)  + "', '1')");
 			return true;
 		} 
 		else {
@@ -83,13 +92,13 @@ public class Controller {
 	}
 
     public static void forfeitGame(String username, String gameID) {
-        game = client.sendQuery("1;SELECT * FROM game WHERE id='" + gameID + "'");
+        String game = client.sendQuery("1;SELECT * FROM game WHERE id='" + gameID + "'");
         String[] columns = game.split(",");
         String logID = columns[2];
         String userCreator = columns[3];
         String userOther = columns[4];
         String opponent = userCreator;
-        if(username.equals(userCreator){
+        if(username.equals(userCreator)){
             opponent = userOther;
         }
         String endTime = client.sendQuery("1;SELECT NOW()");
