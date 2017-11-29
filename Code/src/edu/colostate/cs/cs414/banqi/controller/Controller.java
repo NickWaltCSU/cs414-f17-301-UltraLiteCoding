@@ -1,6 +1,8 @@
 package edu.colostate.cs.cs414.banqi.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -104,13 +106,29 @@ public class Controller {
         String endTime = client.sendQuery("1;SELECT NOW()");
         client.sendQuery("2;UPDATE log SET endTime='" + endTime + "', userWinner='" + opponent + "', userLoser='" + username + "' WHERE id='" + logID + "'");
     }
-
+    
 	public static String[] getGames(User user) {
 		//array of "GameID - opponent Nickname"
+		String badLogsResult = client.sendQuery("1;SELECT id FROM log WHERE userWinner IS NOT NULL OR userLoser IS NOT NULL;");
 		String result = client.sendQuery("1;SELECT id FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
-				
+		String allLogsResult = client.sendQuery("1;SELECT logID FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
+
 		if(result.equals("")) {
 			return new String[] {"No active games."};
+		}
+		
+		//now we have all of the logIDs for all finished games, and we have all games for some user.
+		//now we check to see (to delete) any game that has a logID the same as a logID in logIDs
+		String[] logs = badLogsResult.split("\\|");
+		String[] allLogs = allLogsResult.split("\\|");
+		//allLogs - logs = allGoodLogs
+		List<String> logs_ = new ArrayList<String>(Arrays.asList(logs));
+		List<String> allLogs_ = new ArrayList<String>(Arrays.asList(allLogs));
+		ArrayList<String> allGoodLogs = new ArrayList<String>();
+		for(String log : logs_) {
+			if(!allLogs_.contains(log)) {
+				allGoodLogs.add(log);
+			}
 		}
 		
 		//rows broken up by |, columns broken up by 
@@ -134,7 +152,68 @@ public class Controller {
 			counter++;
 		}
 		
-		return output;
+		
+		//we now have a list of games with GameID - otherUser. take each of these gameIDs, and see if the corresponding logID is in allGoodLogs. If it is not, remove it.
+		List<String> games = new ArrayList<String>(Arrays.asList(output));
+		for(String game : games) {
+			String gameID = game.substring(0, game.indexOf("-")-1);
+			gameID = gameID.trim();
+			String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
+			logID = logID.substring(0, logID.length()-1);
+			if(!allGoodLogs.contains(logID)) {
+				games.remove(game);
+			}
+		}
+		
+		//games now represents all good games. still need to add - your turn or not
+		for(String game : games) {
+			boolean yourTurn = false;
+			
+			//for this user - it is yourTurn if the currentColor (at the end of state) is the same as the creatorColor if you are the creator (or different if you are not)
+			String thisUser = user.getUsername();
+			
+			String gameID = game.substring(0, game.indexOf("-")-1);
+
+			String creatorUser = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
+			creatorUser = creatorUser.substring(0, creatorUser.length()-1);
+						
+			String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
+			state = state.substring(0, state.length()-1);
+
+			String creatorColor = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
+			creatorColor = creatorColor.substring(0, creatorColor.length()-1);
+			
+			String currentColor = state.split(".")[2].trim();
+			
+			if((currentColor.equals(creatorColor)) && (thisUser.equals(creatorUser))) {
+				yourTurn = true;
+			}else if(!(currentColor.equals(creatorColor)) && !(thisUser.equals(creatorUser))) {
+				yourTurn = true;
+			}else {
+				yourTurn = false;
+			}
+			
+			if(yourTurn) {
+				game += " - Your Turn";
+			}else {
+				game += " - Not Your Turn";
+			}
+		}
+		
+		//order outputGames by YourTurn then NotYourTurn.
+		for(String game : games) {
+			if(game.contains(" - Not Your Turn")) {
+				String game_ = games.remove(games.indexOf(game));
+				games.add(games.size(), game_);
+			}
+		}
+		
+		String[] finalOutput = new String[games.size()];
+		for(int c=0;c<finalOutput.length;c++) {
+			finalOutput[c] = games.get(c);
+		}
+		
+		return finalOutput;
 	}
 	
 	public static Game getGame(String gameID) {
