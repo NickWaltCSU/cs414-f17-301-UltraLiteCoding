@@ -93,7 +93,7 @@ public class Dashboard {
 			public void actionPerformed(ActionEvent arg0) {				
 				//gameID = whatever was selected in combo box
 				if(doBoxAction){
-					if(!((String)gamesBox.getSelectedItem()).equals("No active games.")){
+					if(!((String)gamesBox.getSelectedItem()).equals("No games.")){
 						String gameName = (String) gamesBox.getSelectedItem();
 						String gameID = Controller.parseInvitation(gameName);
 						Game game = Controller.getGame(gameID);
@@ -122,7 +122,7 @@ public class Dashboard {
 		PlayersBox.setBounds(239, 129, 160, 22);
 		frame.getContentPane().add(PlayersBox);
 		
-		JLabel lblActiveGamesinvites = new JLabel("Active Games");
+		JLabel lblActiveGamesinvites = new JLabel("Games");
 		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
 		frame.getContentPane().add(lblActiveGamesinvites);
 		
