@@ -24,7 +24,7 @@ public class Controller {
 		if(result.equals("")) {
 			return null;
 		}else {
-			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + password + "'");
+			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + hashedPassword(password) + "'");
 			username = username.substring(0,username.length()-1);
 			return new User(username, email, password);
 		}
@@ -125,8 +125,8 @@ public class Controller {
 		List<String> logs_ = new ArrayList<String>(Arrays.asList(logs));
 		List<String> allLogs_ = new ArrayList<String>(Arrays.asList(allLogs));
 		ArrayList<String> allGoodLogs = new ArrayList<String>();
-		for(String log : logs_) {
-			if(!allLogs_.contains(log)) {
+		for(String log : allLogs_) {
+			if(!logs_.contains(log)) {
 				allGoodLogs.add(log);
 			}
 		}
@@ -155,15 +155,19 @@ public class Controller {
 		
 		//we now have a list of games with GameID - otherUser. take each of these gameIDs, and see if the corresponding logID is in allGoodLogs. If it is not, remove it.
 		List<String> games = new ArrayList<String>(Arrays.asList(output));
+		ArrayList<String> goodGames = new ArrayList<String>();
 		for(String game : games) {
 			String gameID = game.substring(0, game.indexOf("-")-1);
 			gameID = gameID.trim();
 			String logID = client.sendQuery("1;SELECT logID FROM game WHERE game.id='" + gameID + "';");
 			logID = logID.substring(0, logID.length()-1);
-			if(!allGoodLogs.contains(logID)) {
-				games.remove(game);
+			if(allGoodLogs.contains(logID)) {
+				goodGames.add(game);
 			}
 		}
+		
+		games = goodGames;
+		ArrayList<String> outputGames = new ArrayList<String>();
 		
 		//games now represents all good games. still need to add - your turn or not
 		for(String game : games) {
@@ -183,14 +187,16 @@ public class Controller {
 			String creatorColor = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
 			creatorColor = creatorColor.substring(0, creatorColor.length()-1);
 			
-			String currentColor = state.split(".")[2].trim();
+			String currentColor = state.substring(state.length()-1, state.length());
 			
-			if((currentColor.equals(creatorColor)) && (thisUser.equals(creatorUser))) {
-				yourTurn = true;
-			}else if(!(currentColor.equals(creatorColor)) && !(thisUser.equals(creatorUser))) {
-				yourTurn = true;
+			if(currentColor.equals(creatorColor)) {
+				if(thisUser.equals(creatorUser)) {
+					yourTurn = true;
+				}
 			}else {
-				yourTurn = false;
+				if(!(thisUser.equals(creatorUser))) {
+					yourTurn = true;
+				}
 			}
 			
 			if(yourTurn) {
@@ -198,7 +204,10 @@ public class Controller {
 			}else {
 				game += " - Not Your Turn";
 			}
+			outputGames.add(game);
 		}
+		
+		games = outputGames;
 		
 		//order outputGames by YourTurn then NotYourTurn.
 		for(String game : games) {
