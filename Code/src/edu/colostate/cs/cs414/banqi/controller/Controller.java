@@ -210,12 +210,16 @@ public class Controller {
 		games = outputGames;
 		
 		//order outputGames by YourTurn then NotYourTurn.
+		outputGames = new ArrayList<String>();
 		for(String game : games) {
-			if(game.contains(" - Not Your Turn")) {
-				String game_ = games.remove(games.indexOf(game));
-				games.add(games.size(), game_);
+			if(!(game.contains(" - Not Your Turn"))) {
+				outputGames.add(outputGames.size(), game);
+			}else {
+				outputGames.add(0, game);
 			}
 		}
+		
+		games = outputGames;
 		
 		String[] finalOutput = new String[games.size()];
 		for(int c=0;c<finalOutput.length;c++) {
