@@ -114,7 +114,7 @@ public class Controller {
 		String allLogsResult = client.sendQuery("1;SELECT logID FROM game WHERE game.userCreator='" + user.getUsername() + "' OR game.userOther='" + user.getUsername() + "';");
 
 		if(result.equals("")) {
-			return new String[] {"No active games."};
+			return new String[] {"No games."};
 		}
 		
 		//now we have all of the logIDs for all finished games, and we have all games for some user.
