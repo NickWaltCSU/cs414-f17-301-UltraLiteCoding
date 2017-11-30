@@ -226,6 +226,10 @@ public class Controller {
 			finalOutput[c] = games.get(c);
 		}
 		
+		if(finalOutput.length == 0) {
+			return new String[]{"No games."};
+		}
+		
 		return finalOutput;
 	}
 	
