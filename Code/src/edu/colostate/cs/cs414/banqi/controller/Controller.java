@@ -213,9 +213,9 @@ public class Controller {
 		outputGames = new ArrayList<String>();
 		for(String game : games) {
 			if(!(game.contains(" - Not Your Turn"))) {
-				outputGames.add(outputGames.size(), game);
-			}else {
 				outputGames.add(0, game);
+			}else {
+				outputGames.add(outputGames.size(), game);
 			}
 		}
 		
