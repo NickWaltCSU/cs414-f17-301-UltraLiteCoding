@@ -14,6 +14,13 @@ public class Token {
 		isFaceUp = false;
 	}
 	
+	public Token(Type _type, Color _color, boolean _isFaceUp) {
+		type = _type;
+		color = _color;
+		status = Status.ACTIVE;
+		isFaceUp = _isFaceUp;
+	}
+	
 	public Type getType() {
 		return type;
 	}

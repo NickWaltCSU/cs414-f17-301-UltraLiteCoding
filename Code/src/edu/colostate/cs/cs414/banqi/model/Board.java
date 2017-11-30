@@ -158,7 +158,13 @@ public class Board {
 	
 	public void loadBoard(String string) {
 		String[] graveyardSplit = string.split("\\.");
-		String[] graveyardString = graveyardSplit[1].split(" ");
+		
+		graveyardSplit[1] = graveyardSplit[1].substring(1, graveyardSplit[1].length());
+		
+		String[] graveyardString = new String[] {""};
+		if(graveyardSplit.length == 2 && !graveyardSplit[1].equals(" ")) {
+			graveyardString = graveyardSplit[1].split(" ");
+		}
 		String[] split = graveyardSplit[0].split(" ");
 		Color color;
 		Type type;
@@ -203,35 +209,36 @@ public class Board {
 			tiles.get(i).setToken(token);
 		}
 		
-//		for(int j=0; j<graveyardString.length; j++) {
-//			if(graveyardString[j].charAt(0) == 'B') {
-//				color = Color.BLACK;
-//			}else color = Color.RED;
-//			
-//			int temp = graveyardString[j].charAt(1);
-//			switch(temp) {
-//				case '7': type = Type.GENERAL; break;
-//				case '6': type = Type.ADVISOR; break;
-//				case '5': type = Type.ELEPHANT; break;
-//				case '4': type = Type.CHARIOT; break;
-//				case '3': type = Type.HORSE; break;
-//				case '2': type = Type.CANNON; break;
-//				case '1': type = Type.SOLDIER; break;
-//				default: type = null;
-//			}
-//			
-//			if(graveyardString[j].charAt(2) == 'U') {
-//				isFaceUp = true;
-//			}else isFaceUp = false;
-//			
-//			token = new Token(type, color);
-//			TODO THIS MAY BE WHERE THE ERROR HAPPENS!
-//			if(isFaceUp) {
-//				token.flipToken();
-//			}
-//			
-//			graveyard.add(token);
-//		}
+		if(graveyardString[0].equals("")) {
+			return;
+		}
+		
+		for(int j=0; j<graveyardString.length; j++) {
+			
+			if(graveyardString[j].charAt(0) == 'B') {
+				color = Color.BLACK;
+			}else color = Color.RED;
+			
+			int temp = graveyardString[j].charAt(1);
+			switch(temp) {
+				case '7': type = Type.GENERAL; break;
+				case '6': type = Type.ADVISOR; break;
+				case '5': type = Type.ELEPHANT; break;
+				case '4': type = Type.CHARIOT; break;
+				case '3': type = Type.HORSE; break;
+				case '2': type = Type.CANNON; break;
+				case '1': type = Type.SOLDIER; break;
+				default: type = null;
+			}
+			
+			if(graveyardString[j].charAt(2) == 'U') {
+				isFaceUp = true;
+			}else isFaceUp = false;
+			
+			token = new Token(type, color, true);
+			
+			graveyard.add(token);
+		}
 	}
 
 	public void printBoard() {
