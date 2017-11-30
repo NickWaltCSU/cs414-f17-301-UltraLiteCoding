@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -62,6 +63,10 @@ public class GameBoard {
 	/**
 	 * Create the application.
 	 */
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GameBoard(Game aGame, String aUser) {
 		this.user=aUser;
 		this.game=aGame;
@@ -109,26 +114,35 @@ public class GameBoard {
 		frame.getContentPane().add(btnCancel);
 		
 		
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setToolTipText("Refresh the game screen.");
+		
+		
+		JButton btnRefresh;
+		if(game.getGameID().equals("AI")){
+			btnRefresh = new JButton("Make AI Move");
+			btnRefresh.setToolTipText("Click for the AI to make its move.");
+		}else{
+			btnRefresh = new JButton("Refresh");
+			btnRefresh.setToolTipText("Refresh the game screen.");
+		}
 		btnRefresh.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
+				Random random = new Random();
 				if(game.getGameID().equals("AI")){
 					//AI makes move here
-					
-					String gameState = game.getBoard().saveBoard();
-					
-					
-					int[] moveArray;
-					do{
-						moveArray = aiPlayer.makeFirstMove_temp("no state");
-					}while(!game.moveToken("AI", moveArray[0], moveArray[1], moveArray[2], moveArray[3]));
-					
-					//board gets refreshed
-					GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-					freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-					frame.dispose();
-					
+					if(game.getCurrentPlayer().equals("AI")){
+						String gameState = game.getBoard().saveBoard();
+						int[][] moveArray;
+						int randMove;
+						moveArray = aiPlayer.validMoves(gameState);
+						int moveNum = moveArray.length;
+						randMove = random.nextInt(moveNum);
+						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
+						
+						//board gets refreshed
+						GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+						freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+						frame.dispose();
+					}
 				}else{
 					String tempID=game.getGameID();
 					game = Controller.getGame(tempID);
@@ -138,7 +152,7 @@ public class GameBoard {
 				}
 			}
 		});
-		btnRefresh.setBounds(350, 835, 97, 25);
+		btnRefresh.setBounds(350, 835, 125, 25);
 		frame.getContentPane().add(btnRefresh);
 		
 		
