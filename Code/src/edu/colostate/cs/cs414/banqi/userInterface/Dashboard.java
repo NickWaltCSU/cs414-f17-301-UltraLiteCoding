@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
+import edu.colostate.cs.cs414.banqi.model.Color;
 import edu.colostate.cs.cs414.banqi.model.Game;
 import edu.colostate.cs.cs414.banqi.model.User;
 
@@ -108,7 +109,7 @@ public class Dashboard {
 		frame.getContentPane().add(gamesBox);
 		
 		
-		//Controller.getUsers()
+		//Player profile box
 		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
@@ -121,6 +122,8 @@ public class Dashboard {
 		});
 		PlayersBox.setBounds(239, 129, 160, 22);
 		frame.getContentPane().add(PlayersBox);
+		//end player box
+		
 		
 		JLabel lblActiveGamesinvites = new JLabel("Games");
 		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
@@ -130,6 +133,12 @@ public class Dashboard {
 		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 		
+		
+		//Invitations Label
+		JLabel lblInvitations = new JLabel("Invitations");
+		lblInvitations.setBounds(12, 193, 76, 16);
+		frame.getContentPane().add(lblInvitations);
+		//Invitations BOX
 		JComboBox inviteBox = new JComboBox(Controller.getInvites(activeUser));
 		inviteBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -156,13 +165,12 @@ public class Dashboard {
 		});
 		inviteBox.setBounds(12, 216, 176, 22);
 		frame.getContentPane().add(inviteBox);
-		
-		JLabel lblInvitations = new JLabel("Invitations");
-		lblInvitations.setBounds(12, 193, 76, 16);
-		frame.getContentPane().add(lblInvitations);
+		//end invitations box
 		
 		
-		//refresh drop down boxes
+		
+		
+		//refresh drop down boxes button
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -193,13 +201,39 @@ public class Dashboard {
 				doBoxAction=true;
 			}
 		});
-		btnRefresh.setBounds(239, 51, 97, 25);
+		btnRefresh.setBounds(323, 13, 97, 25);
 		frame.getContentPane().add(btnRefresh);
-	}
-	
-	private void referesh(){
+		//end Refresh buton
+		
+		//AI button
+		JButton btnPracticeWithAi = new JButton("Practice with AI");
+		btnPracticeWithAi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Game aiGame = new Game();
+				aiGame.setPlayers(activeUser.getUsername(), "AI");
+				aiGame.setCreatorColor(Color.RED);
+				aiGame.setCurrentColor(Color.RED);
+				aiGame.setCurrentPlayer(activeUser.getUsername());
+				aiGame.setGameID("AI");
+				
+				GameBoard aiWindow = new GameBoard(aiGame, activeUser.getUsername());
+				aiWindow.main(aiGame, activeUser.getUsername());
+				
+				
+				
+				
+				
+				
+			}
+		});
+		btnPracticeWithAi.setBounds(239, 51, 160, 25);
+		frame.getContentPane().add(btnPracticeWithAi);
+		//end AI button
+		
 		
 	}
+	
+	
 	
 	public User getUser(){
 		return activeUser;
