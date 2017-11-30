@@ -6,7 +6,7 @@ public class AI {
 		
 	}
 	
-	public int[] makeMove(String state) {
-		return new int[]{1, 1};
+	public int[] makeFirstMove_temp(String state) {
+		return new int[]{1, 1, 1, 1};
 	}
 }
