@@ -22,7 +22,7 @@ public class Controller {
 		if(result.equals("")) {
 			return null;
 		}else {
-			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + password + "'");
+			String username = client.sendQuery("1;SELECT username FROM user WHERE email='" + email + "' and password='" + hashedPassword(password) + "'");
 			username = username.substring(0,username.length()-1);
 			return new User(username, email, password);
 		}

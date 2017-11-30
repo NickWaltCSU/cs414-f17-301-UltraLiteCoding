@@ -64,10 +64,10 @@ public class BoardComponent extends JComponent {
 	
 	int tileX,tileY,tileX2,tileY2;
 	
-	public BoardComponent(Game game, String aUser){
+	public BoardComponent(Game aGame, String aUser){
 		
 		this.user=aUser;
-		this.game=game;
+		this.game=aGame;
 		
 		//Listens for mouse button events
 		addMouseListener(new MouseAdapter()
@@ -153,7 +153,7 @@ public class BoardComponent extends JComponent {
 	      
 	      
 	      
-	      Board board = game.getBoard();//
+	      Board board = game.getBoard();
 	      
 	      //Place active tokens on the board
 	      for(int y=0;y<4;y++){
