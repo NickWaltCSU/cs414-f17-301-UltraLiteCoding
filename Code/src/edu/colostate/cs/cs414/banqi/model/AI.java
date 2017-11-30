@@ -385,11 +385,26 @@ public class AI {
 		return null;
 	}
 	
+	public void printBoard(String state) {
+		String[] splitState = state.split(" . ");
+		String field_raw = splitState[0];
+		String[] field = field_raw.split(" ");
+		
+		int i = 0;
+		for(int y=0; y<4; y++) {
+			for(int x=0; x<8; x++) {
+				System.out.print(field[i] + " ");
+				i++;
+			}
+			System.out.println();
+		}
+	}
+	
 	public static void main(String[] args) {
 		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX B1D R4D R1D . B6U";
 		AI ai = new AI(Color.RED);
 		for(int[] move : ai.validMoves(state)) {
-			System.out.println(Arrays.toString(move));
+			//System.out.println(Arrays.toString(move));
 		}
 	}
 }
