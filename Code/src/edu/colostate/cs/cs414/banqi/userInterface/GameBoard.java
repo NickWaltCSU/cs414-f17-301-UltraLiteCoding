@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
 import edu.colostate.cs.cs414.banqi.model.AI;
+import edu.colostate.cs.cs414.banqi.model.Color;
 import edu.colostate.cs.cs414.banqi.model.Game;
 
 import javax.swing.JButton;
@@ -83,7 +84,7 @@ public class GameBoard {
 	 */
 	private void initialize() {
 		if(game.getGameID().equals("AI")){
-			aiPlayer = new AI();
+			aiPlayer = new AI(Color.BLACK);
 		}
 		frame = new JFrame(game.toString()+"---You are "+game.getPlayerColor(user)+isMyTurn());
 		frame.setBounds(posX, posY, 850, 939);
