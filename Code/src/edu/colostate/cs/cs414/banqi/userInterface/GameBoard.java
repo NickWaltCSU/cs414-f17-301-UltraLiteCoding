@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
+import edu.colostate.cs.cs414.banqi.model.AI;
 import edu.colostate.cs.cs414.banqi.model.Game;
 
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ public class GameBoard {
 	private JFrame frame;
 	private Game game;
 	private String user;
+	private AI aiPlayer;
 	
 	private int posX;
 	private int posY;
@@ -80,6 +82,9 @@ public class GameBoard {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		if(game.getGameID().equals("AI")){
+			aiPlayer = new AI();
+		}
 		frame = new JFrame(game.toString()+"---You are "+game.getPlayerColor(user)+isMyTurn());
 		frame.setBounds(posX, posY, 850, 939);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -107,15 +112,29 @@ public class GameBoard {
 		btnRefresh.setToolTipText("Refresh the game screen.");
 		btnRefresh.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				
-				String tempID=game.getGameID();
-				game = Controller.getGame(tempID);
-				
-				GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-								
-				freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-				
-				frame.dispose();
+				if(game.getGameID().equals("AI")){
+					//AI makes move here
+					
+					String gameState = game.getBoard().saveBoard();
+					
+					
+					int[] moveArray;
+					do{
+						moveArray = aiPlayer.makeFirstMove_temp("no state");
+					}while(!game.moveToken("AI", moveArray[0], moveArray[1], moveArray[2], moveArray[3]));
+					
+					//board gets refreshed
+					GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+					freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+					frame.dispose();
+					
+				}else{
+					String tempID=game.getGameID();
+					game = Controller.getGame(tempID);
+					GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+					freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+					frame.dispose();
+				}
 			}
 		});
 		btnRefresh.setBounds(350, 835, 97, 25);

@@ -1,13 +1,36 @@
 package edu.colostate.cs.cs414.banqi.model;
 
+import java.util.Random;
+
 public class AI {
 	
 	public AI() {
 		
 	}
 	
+	
+	
 	public int[] makeFirstMove_temp(String state) {
-		return new int[]{1, 1, 1, 1};
+		Random random = new Random();
+		
+		int randomX2;
+		int randomY2;
+		int randomX1;
+		int randomY1;
+		do{
+		randomX1 = random.nextInt(8 + 1 - 1) + 1;
+		int deltaX = random.nextInt(1 + 1 - -1) + -1;
+		randomY1 = random.nextInt(4 + 1 - 1) + 1;
+		int deltaY = random.nextInt(1 + 1 - -1) + -1;
+		randomX2 = randomX1 + deltaX;
+		randomY2 = randomY1 + deltaY;
+		
+		}while((randomX2>=1&&randomX2<=8)&&(randomY2>=1&&randomY2<=4));
+		
+		
+		
+		
+		return new int[]{randomX1, randomY1, randomX2, randomY2};
 	}
 	
 	/**
@@ -29,4 +52,6 @@ public class AI {
 	public String makeMove(int[] move, String state) {
 		return null;
 	}
+	
+	
 }
