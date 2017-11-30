@@ -20,6 +20,32 @@ public class AI {
 	}
 	
 	/**
+	 * This is the opposite method to getXY. It takes some XY and converts it to the indices needed for field.
+	 * @param x
+	 * @param y
+	 * @return the index
+	 */
+	public int getIndex(int x, int y) {
+		int index = -1;
+		//the indices in the board:
+			//0:1,4 1:2,4 2:3,4 ... 7:8,4
+			//8:1,3 ... 15:8,3
+			//16:1,2 2,2 3,2 4,2 ... 23:8,2 
+			//24:1,1 2,1 3,1 ... 31:8,1
+		if(y == 1) {
+			index = 24;
+		}else if(y == 2) {
+			index = 16;
+		}else if(y == 3) {
+			index = 8;
+		}else if(y == 4) {
+			index = 0;
+		}
+		
+		return index+(x-1);
+	}
+	
+	/**
 	 * The tokens on the field, as in validMoves, are indexed by values 0-31. However, the moves need their x/y coordinates.
 	 * This converts some index to some token on the field into X,Y coordinates (i.e.; a move).
 	 * @elaborating A field is a string array of all tokens on the field in the order from top-left to bottom-right, reading up-left bottom-down.
@@ -99,6 +125,17 @@ public class AI {
 	 * @return null if the move was not valid, the new state created otherwise.
 	 */
 	public String makeMove(int[] move, String state) {
+		//first check that the piece at (move[0], move[1]) exists & is face up
+		//then check that the piece at (move[2], move[3]) exists and & is face up & is a different color than the piece at (move[0], move[1])
+		//check the first piece - if it is a cannon:
+			//cannon can only hop if there is one token (not one tile) between the pieces
+		//otherwise, make sure that the tokens are within 1 space of each other
+			//then check that the first token is of a higher rank than the second token
+				//if it is not, and it is a soldier, and the other token is a general, it can take it
+			//if the first token is a general and the second token is a soldier than it cannot take it
+		//if we still haven't returned null (meaning the move is a valid one), replae the token at (move[2], move[3]) with the token that was at (move[0], move[1])...
+		//...and then replace the token at (move[0], move[1]) with XXX
+		
 		return null;
 	}
 	
