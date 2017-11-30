@@ -55,7 +55,7 @@ public class Dashboard {
 	 */
 	private void initialize() {
 		frame = new JFrame(activeUser.getUsername());
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 350);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 				
@@ -72,7 +72,7 @@ public class Dashboard {
 				}
 			}
 		});
-		btnDeregister.setBounds(310, 215, 110, 25);
+		btnDeregister.setBounds(310, 265, 110, 25);
 		frame.getContentPane().add(btnDeregister);
 		
 		JButton btnViewProfile = new JButton("View My Profile");
@@ -82,7 +82,7 @@ public class Dashboard {
 				profWindow.main((String)activeUser.getUsername(),(String)activeUser.getUsername());
 			}
 		});
-		btnViewProfile.setBounds(12, 51, 137, 25);
+		btnViewProfile.setBounds(12, 101, 137, 25);
 		frame.getContentPane().add(btnViewProfile);
 		
 		
@@ -105,7 +105,7 @@ public class Dashboard {
 				}
 			}
 		});
-		gamesBox.setBounds(12, 129, 176, 22);
+		gamesBox.setBounds(12, 179, 176, 22);
 		frame.getContentPane().add(gamesBox);
 		
 		
@@ -120,23 +120,23 @@ public class Dashboard {
 				}
 			}
 		});
-		PlayersBox.setBounds(239, 129, 160, 22);
+		PlayersBox.setBounds(239, 179, 160, 22);
 		frame.getContentPane().add(PlayersBox);
 		//end player box
 		
 		
 		JLabel lblActiveGamesinvites = new JLabel("Games");
-		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
+		lblActiveGamesinvites.setBounds(12, 154, 160, 16);
 		frame.getContentPane().add(lblActiveGamesinvites);
 		
 		JLabel lblViewPlayerProfiles = new JLabel("View Player Profiles");
-		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
+		lblViewPlayerProfiles.setBounds(239, 154, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 		
 		
 		//Invitations Label
 		JLabel lblInvitations = new JLabel("Invitations");
-		lblInvitations.setBounds(12, 193, 76, 16);
+		lblInvitations.setBounds(12, 243, 76, 16);
 		frame.getContentPane().add(lblInvitations);
 		//Invitations BOX
 		JComboBox inviteBox = new JComboBox(Controller.getInvites(activeUser));
@@ -163,7 +163,7 @@ public class Dashboard {
 				}
 			}
 		});
-		inviteBox.setBounds(12, 216, 176, 22);
+		inviteBox.setBounds(12, 266, 176, 22);
 		frame.getContentPane().add(inviteBox);
 		//end invitations box
 		
@@ -201,7 +201,7 @@ public class Dashboard {
 				doBoxAction=true;
 			}
 		});
-		btnRefresh.setBounds(323, 13, 97, 25);
+		btnRefresh.setBounds(323, 63, 97, 25);
 		frame.getContentPane().add(btnRefresh);
 		//end Refresh buton
 		
@@ -226,7 +226,7 @@ public class Dashboard {
 				
 			}
 		});
-		btnPracticeWithAi.setBounds(239, 51, 160, 25);
+		btnPracticeWithAi.setBounds(239, 101, 160, 25);
 		frame.getContentPane().add(btnPracticeWithAi);
 		//end AI button
 		
