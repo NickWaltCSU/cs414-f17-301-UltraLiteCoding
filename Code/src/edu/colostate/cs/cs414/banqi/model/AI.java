@@ -102,6 +102,37 @@ public class AI {
 		return new int[] {x+1, y};
 	}
 	
+	private boolean isOnBoard(int x, int y) {
+		if(x<1 || x>8) {
+			return false;
+		}else if(y<1 || y>4) {
+			return false;
+		}else return true;
+	}
+	
+	private boolean correctColor(char thisLetter, char otherLetter) {
+		Color thisColor = null;
+		Color otherColor = null;
+		
+		if(thisLetter == 'R') {
+			thisColor = Color.RED;
+		}else if(thisLetter == 'B') {
+			thisColor = Color.BLACK;
+		}else System.err.println("Error checking color!");
+		
+		if(otherLetter == 'R') {
+			otherColor = Color.RED;
+		}else if(otherLetter == 'B') {
+			otherColor = Color.BLACK;
+		}else System.err.println("Error checking color!");
+		
+		if(thisColor == color) {
+			if(otherColor == thisColor) {
+				return false;
+			}else return true;
+		}else return false;
+	}
+	
 	/**
 	 * For some given string state, returns a list of all moves possible. A move is an integer array of 4 numbers: {x1, y1, x2, y2}.
 	 * @param state = "FIELD . GRAVEYARD"
@@ -116,11 +147,76 @@ public class AI {
 		String[] field = field_raw.split(" ");
 		
 		//then, add the moves of flipping all tokens
+		System.out.println("Valid Flips:");
 		for(int c=0;c<field.length;c++) {
 			String token = field[c];
 			if(token.charAt(2) == ('D')) {
 				int[] xy = getXY(c);
 				moves.add(new int[] {xy[0], xy[1], xy[0], xy[1]});
+				System.out.println("[" + xy[0] + "," + xy[1] + " | " + xy[0] + "," + xy[1] + "]");
+			}
+		}
+		
+		System.out.println("Valid Moves:");
+		for(int i=0; i<field.length; i++) {
+			String token = field[i];
+			
+			if(token.charAt(2) == ('U')) {
+				int[] xy = getXY(i);
+				int x = xy[0];
+				int y = xy[1];
+				
+				//Cannon
+				//TODO
+				
+				//Up
+				if(isOnBoard(x,y+1)) {
+					if(field[getIndex(x,y+1)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, x, y+1});
+						System.out.println("[" + x + "," + y + " | " + x + "," + (y+1) + "]");
+					}else if(correctColor(token.charAt(0), field[getIndex(x,y+1)].charAt(0))) {
+						if(field[getIndex(x,y+1)].charAt(1) <= token.charAt(1)) {
+							moves.add(new int[] {x, y, x, y+1});
+							System.out.println("[" + x + "," + y + " | " + x + "," + (y+1) + "]");
+						}	
+					}
+				}
+				//Down
+				if(isOnBoard(x,y-1)) {
+					if(field[getIndex(x,y-1)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, x, y-1});
+						System.out.println("[" + x + "," + y + " | " + x + "," + (y-1) + "]");
+					}else if(correctColor(token.charAt(0), field[getIndex(x,y-1)].charAt(0))) {
+						if(field[getIndex(x,y-1)].charAt(1) <= token.charAt(1)) {
+							moves.add(new int[] {x, y, x, y-1});
+							System.out.println("[" + x + "," + y + " | " + x + "," + (y-1) + "]");
+						}	
+					}
+				}
+				//Left
+				if(isOnBoard(x-1,y)) {
+					if(field[getIndex(x-1, y)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, x-1, y});
+						System.out.println("[" + x + "," + y + " | " + (x-1) + "," + y + "]");
+					}else if(correctColor(token.charAt(0), field[getIndex(x-1,y)].charAt(0))) {
+						if(field[getIndex(x-1, y)].charAt(1) <= token.charAt(1)) {
+							moves.add(new int[] {x, y, x-1, y});
+							System.out.println("[" + x + "," + y + " | " + (x-1) + "," + y + "]");
+						}	
+					}
+				}
+				//Right
+				if(isOnBoard(x+1,y)) {
+					if(field[getIndex(x+1, y)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, x+1, y});
+						System.out.println("[" + x + "," + y + " | " + (x+1) + "," + y + "]");
+					}else if(correctColor(token.charAt(0), field[getIndex(x+1,y)].charAt(0))) {
+						if(field[getIndex(x+1, y)].charAt(1) <= token.charAt(1)) {
+							moves.add(new int[] {x, y, x+1, y});
+							System.out.println("[" + x + "," + y + " | " + (x+1) + "," + y + "]");
+						}	
+					}
+				}
 			}
 		}
 		
