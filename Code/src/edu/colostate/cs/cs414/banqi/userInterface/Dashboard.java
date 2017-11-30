@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
+import edu.colostate.cs.cs414.banqi.model.Color;
 import edu.colostate.cs.cs414.banqi.model.Game;
 import edu.colostate.cs.cs414.banqi.model.User;
 
@@ -54,7 +55,7 @@ public class Dashboard {
 	 */
 	private void initialize() {
 		frame = new JFrame(activeUser.getUsername());
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 350);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 				
@@ -71,7 +72,7 @@ public class Dashboard {
 				}
 			}
 		});
-		btnDeregister.setBounds(310, 215, 110, 25);
+		btnDeregister.setBounds(310, 265, 110, 25);
 		frame.getContentPane().add(btnDeregister);
 		
 		JButton btnViewProfile = new JButton("View My Profile");
@@ -81,7 +82,7 @@ public class Dashboard {
 				profWindow.main((String)activeUser.getUsername(),(String)activeUser.getUsername());
 			}
 		});
-		btnViewProfile.setBounds(12, 51, 137, 25);
+		btnViewProfile.setBounds(12, 101, 137, 25);
 		frame.getContentPane().add(btnViewProfile);
 		
 		
@@ -104,11 +105,11 @@ public class Dashboard {
 				}
 			}
 		});
-		gamesBox.setBounds(12, 129, 176, 22);
+		gamesBox.setBounds(12, 179, 176, 22);
 		frame.getContentPane().add(gamesBox);
 		
 		
-		//Controller.getUsers()
+		//Player profile box
 		JComboBox PlayersBox = new JComboBox(Controller.getUsers());
 		PlayersBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
@@ -119,17 +120,25 @@ public class Dashboard {
 				}
 			}
 		});
-		PlayersBox.setBounds(239, 129, 160, 22);
+		PlayersBox.setBounds(239, 179, 160, 22);
 		frame.getContentPane().add(PlayersBox);
+		//end player box
+		
 		
 		JLabel lblActiveGamesinvites = new JLabel("Games");
-		lblActiveGamesinvites.setBounds(12, 104, 160, 16);
+		lblActiveGamesinvites.setBounds(12, 154, 160, 16);
 		frame.getContentPane().add(lblActiveGamesinvites);
 		
 		JLabel lblViewPlayerProfiles = new JLabel("View Player Profiles");
-		lblViewPlayerProfiles.setBounds(239, 104, 160, 16);
+		lblViewPlayerProfiles.setBounds(239, 154, 160, 16);
 		frame.getContentPane().add(lblViewPlayerProfiles);
 		
+		
+		//Invitations Label
+		JLabel lblInvitations = new JLabel("Invitations");
+		lblInvitations.setBounds(12, 243, 76, 16);
+		frame.getContentPane().add(lblInvitations);
+		//Invitations BOX
 		JComboBox inviteBox = new JComboBox(Controller.getInvites(activeUser));
 		inviteBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -154,15 +163,14 @@ public class Dashboard {
 				}
 			}
 		});
-		inviteBox.setBounds(12, 216, 176, 22);
+		inviteBox.setBounds(12, 266, 176, 22);
 		frame.getContentPane().add(inviteBox);
-		
-		JLabel lblInvitations = new JLabel("Invitations");
-		lblInvitations.setBounds(12, 193, 76, 16);
-		frame.getContentPane().add(lblInvitations);
+		//end invitations box
 		
 		
-		//refresh drop down boxes
+		
+		
+		//refresh drop down boxes button
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -193,13 +201,39 @@ public class Dashboard {
 				doBoxAction=true;
 			}
 		});
-		btnRefresh.setBounds(239, 51, 97, 25);
+		btnRefresh.setBounds(323, 63, 97, 25);
 		frame.getContentPane().add(btnRefresh);
-	}
-	
-	private void referesh(){
+		//end Refresh buton
+		
+		//AI button
+		JButton btnPracticeWithAi = new JButton("Practice with AI");
+		btnPracticeWithAi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Game aiGame = new Game();
+				aiGame.setPlayers(activeUser.getUsername(), "AI");
+				aiGame.setCreatorColor(Color.RED);
+				aiGame.setCurrentColor(Color.RED);
+				aiGame.setCurrentPlayer(activeUser.getUsername());
+				aiGame.setGameID("AI");
+				
+				GameBoard aiWindow = new GameBoard(aiGame, activeUser.getUsername());
+				aiWindow.main(aiGame, activeUser.getUsername());
+				
+				
+				
+				
+				
+				
+			}
+		});
+		btnPracticeWithAi.setBounds(239, 101, 160, 25);
+		frame.getContentPane().add(btnPracticeWithAi);
+		//end AI button
+		
 		
 	}
+	
+	
 	
 	public User getUser(){
 		return activeUser;

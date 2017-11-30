@@ -37,6 +37,7 @@ public class Game {
 		}
 	}
 	
+	
 	public Color getCreatorColor() {
 		return creatorColor;
 	}
@@ -151,7 +152,7 @@ public class Game {
 	
 
 	public boolean moveToken(String username, int startX, int startY, int endX, int endY) {
-		System.out.println("currentPlayer=<"+currentPlayer+">  username=<"+username+">");
+		//System.out.println("currentPlayer=<"+currentPlayer+">  username=<"+username+">");
 		if(!username.equals(currentPlayer)) {
 			return false;
 		}
@@ -289,7 +290,7 @@ public class Game {
 		
 		String[] split = state.split("\\.");
 		
-		System.out.println("split:" + Arrays.toString(split));
+		//System.out.println("split:" + Arrays.toString(split));
 		
 		String board = split[0];
 		String graveyard = split[1];

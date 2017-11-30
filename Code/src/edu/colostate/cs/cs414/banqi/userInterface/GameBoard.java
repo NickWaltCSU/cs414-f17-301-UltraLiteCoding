@@ -5,11 +5,14 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
+import edu.colostate.cs.cs414.banqi.model.AI;
+import edu.colostate.cs.cs414.banqi.model.Color;
 import edu.colostate.cs.cs414.banqi.model.Game;
 
 import javax.swing.JButton;
@@ -19,6 +22,7 @@ public class GameBoard {
 	private JFrame frame;
 	private Game game;
 	private String user;
+	private AI aiPlayer;
 	
 	private int posX;
 	private int posY;
@@ -59,6 +63,10 @@ public class GameBoard {
 	/**
 	 * Create the application.
 	 */
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public GameBoard(Game aGame, String aUser) {
 		this.user=aUser;
 		this.game=aGame;
@@ -80,6 +88,9 @@ public class GameBoard {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		if(game.getGameID().equals("AI")){
+			aiPlayer = new AI(Color.BLACK);
+		}
 		frame = new JFrame(game.toString()+"---You are "+game.getPlayerColor(user)+isMyTurn());
 		frame.setBounds(posX, posY, 850, 939);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -103,22 +114,45 @@ public class GameBoard {
 		frame.getContentPane().add(btnCancel);
 		
 		
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setToolTipText("Refresh the game screen.");
+		
+		
+		JButton btnRefresh;
+		if(game.getGameID().equals("AI")){
+			btnRefresh = new JButton("Make AI Move");
+			btnRefresh.setToolTipText("Click for the AI to make its move.");
+		}else{
+			btnRefresh = new JButton("Refresh");
+			btnRefresh.setToolTipText("Refresh the game screen.");
+		}
 		btnRefresh.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				
-				String tempID=game.getGameID();
-				game = Controller.getGame(tempID);
-				
-				GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-								
-				freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-				
-				frame.dispose();
+				Random random = new Random();
+				if(game.getGameID().equals("AI")){
+					//AI makes move here
+					if(game.getCurrentPlayer().equals("AI")){
+						String gameState = game.getBoard().saveBoard();
+						int[][] moveArray;
+						int randMove;
+						moveArray = aiPlayer.validMoves(gameState);
+						int moveNum = moveArray.length;
+						randMove = random.nextInt(moveNum);
+						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
+						
+						//board gets refreshed
+						GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+						freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+						frame.dispose();
+					}
+				}else{
+					String tempID=game.getGameID();
+					game = Controller.getGame(tempID);
+					GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+					freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+					frame.dispose();
+				}
 			}
 		});
-		btnRefresh.setBounds(350, 835, 97, 25);
+		btnRefresh.setBounds(350, 835, 125, 25);
 		frame.getContentPane().add(btnRefresh);
 		
 		
