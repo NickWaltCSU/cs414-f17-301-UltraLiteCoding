@@ -106,6 +106,7 @@ public class Login {
 		
 		
 		
+		
 		JButton btnCreateAccount = new JButton("Create account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,6 +118,9 @@ public class Login {
 		});
 		btnCreateAccount.setBounds(197, 129, 124, 25);
 		frame.getContentPane().add(btnCreateAccount);
+		
+		
+		
 		
 		JLabel lblWelcomeToBanqi = new JLabel("Welcome to Banqi!");
 		lblWelcomeToBanqi.setForeground(Color.BLUE);

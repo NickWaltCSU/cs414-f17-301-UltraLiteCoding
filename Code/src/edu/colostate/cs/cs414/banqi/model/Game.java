@@ -45,6 +45,18 @@ public class Game {
 		creatorColor = color;
 	}
 	
+	public edu.colostate.cs.cs414.banqi.model.Color getPlayerColor(String player){
+		
+		if(player.equals(currentPlayer)){
+			return currentColor;
+		}else if(currentColor==edu.colostate.cs.cs414.banqi.model.Color.RED){
+			return edu.colostate.cs.cs414.banqi.model.Color.BLACK;
+		}else{
+			return edu.colostate.cs.cs414.banqi.model.Color.RED;
+		}
+		
+	}
+	
 	public Status getStatus() {
 		return status;
 	}
