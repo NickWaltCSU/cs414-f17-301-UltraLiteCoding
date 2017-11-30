@@ -16,7 +16,6 @@ public class AI {
 	
 	
 	public int[] makeFirstMove_temp(String state) {
-
 		Random random = new Random();
 		
 		int randomX2;
@@ -37,7 +36,6 @@ public class AI {
 		
 		
 		return new int[]{randomX1, randomY1, randomX2, randomY2};
-
 	}
 	
 	public void setColor(Color color) {
