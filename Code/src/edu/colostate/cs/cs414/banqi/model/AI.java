@@ -86,15 +86,15 @@ public class AI {
 			y = 4;
 		}
 		
-		if(index >= 7) {
+		if(index > 7) {
 			y = 3;
 		}
 		
-		if(index >= 15) {
+		if(index > 15) {
 			y = 2;
 		}
 		
-		if(index >= 23) {
+		if(index > 23) {
 			y = 1;
 		}
 		
@@ -118,13 +118,13 @@ public class AI {
 			thisColor = Color.RED;
 		}else if(thisLetter == 'B') {
 			thisColor = Color.BLACK;
-		}else System.err.println("Error checking color!");
+		}else return false;
 		
 		if(otherLetter == 'R') {
 			otherColor = Color.RED;
 		}else if(otherLetter == 'B') {
 			otherColor = Color.BLACK;
-		}else System.err.println("Error checking color!");
+		}else return false;
 		
 		if(thisColor == color) {
 			if(otherColor == thisColor) {
@@ -169,11 +169,19 @@ public class AI {
 				//Cannon
 				//TODO
 				
+				//General
+				//TODO
+				
+				//Soldier
+				//TODO
+				
 				//Up
 				if(isOnBoard(x,y+1)) {
-					if(field[getIndex(x,y+1)].charAt(0) == 'X') {
-						moves.add(new int[] {x, y, x, y+1});
-						System.out.println("[" + x + "," + y + " | " + x + "," + (y+1) + "]");
+					if(correctColor(token.charAt(0), field[getIndex(x,y+1)].charAt(0))) {
+						if(field[getIndex(x,y+1)].charAt(0) == 'X') {
+							moves.add(new int[] {x, y, x, y+1});
+							System.out.println("[" + x + "," + y + " | " + x + "," + (y+1) + "]");
+						}
 					}else if(correctColor(token.charAt(0), field[getIndex(x,y+1)].charAt(0))) {
 						if(field[getIndex(x,y+1)].charAt(1) <= token.charAt(1)) {
 							moves.add(new int[] {x, y, x, y+1});
@@ -183,9 +191,11 @@ public class AI {
 				}
 				//Down
 				if(isOnBoard(x,y-1)) {
-					if(field[getIndex(x,y-1)].charAt(0) == 'X') {
-						moves.add(new int[] {x, y, x, y-1});
-						System.out.println("[" + x + "," + y + " | " + x + "," + (y-1) + "]");
+					if(correctColor(token.charAt(0), field[getIndex(x,y-1)].charAt(0))) {
+						if(field[getIndex(x,y-1)].charAt(0) == 'X') {
+							moves.add(new int[] {x, y, x, y-1});
+							System.out.println("[" + x + "," + y + " | " + x + "," + (y-1) + "]");
+						}
 					}else if(correctColor(token.charAt(0), field[getIndex(x,y-1)].charAt(0))) {
 						if(field[getIndex(x,y-1)].charAt(1) <= token.charAt(1)) {
 							moves.add(new int[] {x, y, x, y-1});
@@ -195,9 +205,11 @@ public class AI {
 				}
 				//Left
 				if(isOnBoard(x-1,y)) {
-					if(field[getIndex(x-1, y)].charAt(0) == 'X') {
-						moves.add(new int[] {x, y, x-1, y});
-						System.out.println("[" + x + "," + y + " | " + (x-1) + "," + y + "]");
+					if(correctColor(token.charAt(0), field[getIndex(x-1,y)].charAt(0))) {
+						if(field[getIndex(x-1, y)].charAt(0) == 'X') {
+							moves.add(new int[] {x, y, x-1, y});
+							System.out.println("[" + x + "," + y + " | " + (x-1) + "," + y + "]");
+						}
 					}else if(correctColor(token.charAt(0), field[getIndex(x-1,y)].charAt(0))) {
 						if(field[getIndex(x-1, y)].charAt(1) <= token.charAt(1)) {
 							moves.add(new int[] {x, y, x-1, y});
@@ -207,9 +219,11 @@ public class AI {
 				}
 				//Right
 				if(isOnBoard(x+1,y)) {
-					if(field[getIndex(x+1, y)].charAt(0) == 'X') {
-						moves.add(new int[] {x, y, x+1, y});
-						System.out.println("[" + x + "," + y + " | " + (x+1) + "," + y + "]");
+					if(correctColor(token.charAt(0), field[getIndex(x+1,y)].charAt(0))) {
+						if(field[getIndex(x+1, y)].charAt(0) == 'X') {
+							moves.add(new int[] {x, y, x+1, y});
+							System.out.println("[" + x + "," + y + " | " + (x+1) + "," + y + "]");
+						}
 					}else if(correctColor(token.charAt(0), field[getIndex(x+1,y)].charAt(0))) {
 						if(field[getIndex(x+1, y)].charAt(1) <= token.charAt(1)) {
 							moves.add(new int[] {x, y, x+1, y});
@@ -219,12 +233,6 @@ public class AI {
 				}
 			}
 		}
-		
-		//then, for each face up piece on the board:
-			//look at all places to which it can move
-				//(meaning an opposite colored token of a lower power level or a special circumstance)
-			//add that move to moves
-		
 		
 		//then turn out data into an actual output as expected
 		int[][] output = new int[moves.size()][4];
@@ -402,9 +410,11 @@ public class AI {
 	
 	public static void main(String[] args) {
 		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX B1D R4D R1D . B6U";
-		AI ai = new AI(Color.RED);
+		AI ai = new AI(Color.BLACK);
+		ai.printBoard(state);
 		for(int[] move : ai.validMoves(state)) {
-			//System.out.println(Arrays.toString(move));
+			//Store into move[]
 		}
+		ai.printBoard(state);
 	}
 }
