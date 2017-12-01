@@ -154,6 +154,25 @@ public class AI {
 		}
 	}
 	
+//	private void checkDirectionSoldier(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
+//		if(token.charAt(1) == '1') {
+//			if(isOnBoard(newX, newY)) {
+//				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+//					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+//						moves.add(new int[] {x, y, newX, newY});
+//						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+//					}
+//				}
+//				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+//					if(field[getIndex(newX, newY)].charAt(1) <= token.charAt(1)) {
+//						moves.add(new int[] {x, y, newX, newY});
+//						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+//					}	
+//				}
+//			}
+//		}
+//	}
+	
 	/**
 	 * For some given string state, returns a list of all moves possible. A move is an integer array of 4 numbers: {x1, y1, x2, y2}.
 	 * @param state = "FIELD . GRAVEYARD"

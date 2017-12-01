@@ -123,9 +123,9 @@ public class Game {
     
 	//Game actions and logic starts here
 	public void switchPlayer() {
-		if(currentPlayer == players.get(0)) {
+		if(currentPlayer.equals(players.get(0))) {
 			currentPlayer = players.get(1);
-		}else if(currentPlayer == players.get(1)) {
+		}else if(currentPlayer.equals(players.get(1))) {
 			currentPlayer = players.get(0);
 		}else {
 			System.out.println("currentPlayer is not one of this game's players");
