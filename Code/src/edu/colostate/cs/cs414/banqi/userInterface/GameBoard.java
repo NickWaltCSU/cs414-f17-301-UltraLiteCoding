@@ -28,6 +28,29 @@ public class GameBoard {
 	private int posY;
 	
 	
+	//testing AI main
+	public static void main(String[] args) {
+		Game aiGame= new Game();
+		String tUser = "Tester";
+		aiGame.setPlayers(tUser, "AI");
+		aiGame.setCreatorColor(Color.RED);
+		aiGame.setCurrentColor(Color.RED);
+		aiGame.setCurrentPlayer(tUser);
+		aiGame.setGameID("AI");
+		
+		
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GameBoard window = new GameBoard(aiGame, tUser);
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	
 	
 
@@ -155,12 +178,16 @@ public class GameBoard {
 		btnRefresh.setBounds(350, 835, 125, 25);
 		frame.getContentPane().add(btnRefresh);
 		
-		
+		//Quit
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.setToolTipText("In Banqi it is common to forfit if you can see no way of winning.");
 		btnQuit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				Controller.forfeitGame(user, game.getGameID());
+				if(game.getGameID().equals("AI")){
+					frame.dispose();
+				}else{
+					Controller.forfeitGame(user, game.getGameID());
+				}
 			}
 		});
 		btnQuit.setBounds(705, 835, 97, 25);
