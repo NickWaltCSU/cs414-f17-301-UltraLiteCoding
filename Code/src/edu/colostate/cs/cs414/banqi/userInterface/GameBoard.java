@@ -26,6 +26,7 @@ public class GameBoard {
 	
 	private int posX;
 	private int posY;
+	private static boolean testing= false;
 	
 	
 	//testing AI main
@@ -37,6 +38,8 @@ public class GameBoard {
 		aiGame.setCurrentColor(Color.RED);
 		aiGame.setCurrentPlayer(tUser);
 		aiGame.setGameID("AI");
+		
+		testing = true;
 		
 		
 		
@@ -138,7 +141,7 @@ public class GameBoard {
 		
 		
 		
-		
+		//Refresh button and AI move button
 		JButton btnRefresh;
 		if(game.getGameID().equals("AI")){
 			btnRefresh = new JButton("Make AI Move");
@@ -153,13 +156,36 @@ public class GameBoard {
 				if(game.getGameID().equals("AI")){
 					//AI makes move here
 					if(game.getCurrentPlayer().equals("AI")){
-						String gameState = game.getBoard().saveBoard();
+							String gameState = game.getBoard().saveBoard();//This is where it gets an active game state, this will throw errors when using the AI test board
+						//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+						//helper variables
 						int[][] moveArray;
 						int randMove;
+						
+						//get all valid moves
 						moveArray = aiPlayer.validMoves(gameState);
+						
+						//make a random number in index range
 						int moveNum = moveArray.length;
 						randMove = random.nextInt(moveNum);
+						
+						//make a random move
 						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
+						//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+						
+						/**replacement instructions for AI method
+						 * 
+						 * remove or comment out everything between the arrow lines "vvv,^^^"
+						 * 
+						 * add AI method and make move
+						 * eg.
+						 * aiMove[] = aiPlayer.smartMove(gameState);
+						 * game.moveToken("AI", aiMove[0], aiMove[1], aiMove[2], aiMove[3]);
+						 * 
+						 */
+						
+						
+						
 						
 						//board gets refreshed
 						GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
