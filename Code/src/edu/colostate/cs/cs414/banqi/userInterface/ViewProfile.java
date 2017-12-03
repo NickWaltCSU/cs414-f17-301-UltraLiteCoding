@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
-import edu.colostate.cs.cs414.banqi.model.User;
+import edu.colostate.cs.cs414.banqi.model.*;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -72,7 +72,39 @@ public class ViewProfile {
 			btnInviteToGame.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(JOptionPane.showConfirmDialog(null, "Do you want to invite this person to a game?","Accept", JOptionPane.YES_NO_OPTION)==0){
-						Controller.createInvitation(user1, user2);
+						
+						//have them select the first token to flip
+							//do this by generating a board state, and having them flip a token. Reveal what the token was, and then tell them they're now awaiting input
+							//from the other user
+						Game game = new Game();
+						Color flippedColor = null;
+						
+						//index has the -1 at the end to indicate the off-by-one nature of how i displayed the tokens
+						int index = Integer.parseInt(JOptionPane.showInputDialog("Please enter in the number of the token to-be-flipped:"
+								+ "\n01 - 02 - 03 - 04 - 05 - 06 - 07 - 08"
+								+ "\n09 - 10 - 11 - 12 - 13 - 14 - 15 - 16"
+								+ "\n17 - 18 - 19 - 20 - 21 - 22 - 23 - 24"
+								+ "\n25 - 26 - 27 - 28 - 29 - 30 - 31 - 32"))-1;
+						
+						int[] xy = getXY(index);
+						game.flipToken(xy[0], xy[1]);
+						
+						flippedColor = game.getBoard().getToken(xy[0], xy[1]).getColor();
+						
+						if(flippedColor == Color.RED) {
+							game.setCurrentColor(Color.BLACK);
+						}else {
+							game.setCurrentColor(Color.RED);
+						}
+						
+						String state = game.getBoardWithColor();						
+												
+						String creatorColor = "R";
+						if(flippedColor == Color.BLACK) {
+							creatorColor = "B";
+						}
+						
+						Controller.createInvitation(creatorColor, state, user1, user2);
 					}
 				}
 			});
@@ -82,5 +114,31 @@ public class ViewProfile {
 				btnInviteToGame.setVisible(false);
 			}
 		//}
+	}
+	private int[] getXY(int index) {
+		//getting x
+		int x = index % 8;
+		
+		//getting y
+		int y = -1;
+		
+		if(index <= 7) {
+			y = 4;
+		}
+		
+		if(index > 7) {
+			y = 3;
+		}
+		
+		if(index > 15) {
+			y = 2;
+		}
+		
+		if(index > 23) {
+			y = 1;
+		}
+		
+		//it is x+1 because the board is indexed at 1 and not 0
+		return new int[] {x+1, y};
 	}
 }
