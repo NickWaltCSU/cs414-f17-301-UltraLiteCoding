@@ -241,20 +241,24 @@ public class Controller {
 		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
 		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
 		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
+		String creatorColor = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
 
 		state = state.substring(0, state.length()-1);
 		userCreator = userCreator.substring(0, userCreator.length()-1);
 		userOther = userOther.substring(0, userOther.length()-1);
-		
-		System.out.println(state);
-		
+		creatorColor = creatorColor.substring(0, creatorColor.length()-1);
+				
 		game.setBoardWithColor(state);
 		
-		game.setCreatorColor(Color.RED);
+		if(creatorColor.equals("R")) {
+			game.setCreatorColor(Color.RED);
+		}else if(creatorColor.equals("B")) {
+			game.setCreatorColor(Color.BLACK);
+		}
 		
 		game.setPlayers(userCreator, userOther);
 		
-		if(game.getCurrentColor() == Color.RED) {
+		if(game.getCurrentColor() == game.getCreatorColor()) {
 			game.setCurrentPlayer(userCreator);
 		}else {
 			game.setCurrentPlayer(userOther);
@@ -334,7 +338,7 @@ public class Controller {
 			
 			if(values[3].equals(nickname)) {//index out of bounds
 				wins++;
-			}else {
+			}else if(values[4].equals(nickname)){
 				losses++;
 			}
 			logs += "\n\nLogID: " + values[0] + "\n\tStart Time: " + values[1] + "\n\tEnd Time: " + values[2] + "\n\tWinner: " + values[3] + "\n\tLoser: " + values[4];
@@ -342,6 +346,8 @@ public class Controller {
 		
 		if(losses == 0) {
 			winLossRatio = wins;
+		}else if(wins == 0){
+			winLossRatio = -1 * losses;
 		}else {
 			winLossRatio = wins/losses;
 		}
@@ -350,23 +356,29 @@ public class Controller {
 		return output;
 	}
 	
-	public static void createInvitation(String sender_nickname, String recipient_nickname) {
-        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "');");	
+	public static void createInvitation(String creatorColor, String state, String sender_nickname, String recipient_nickname) {
+        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, state, creatorColor) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "', '" + state + "', '" + creatorColor + "');");	
 	}
 	
-	private static String createGame(String creator_nickname, String other_nickname) {
+	private static String createGame(String creator_nickname, String other_nickname, String state, String creatorColor) {
         String startTime = client.sendQuery("1;SELECT NOW()");
         client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "');");
         
         String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
         logID = logID.substring(0, logID.length()-1);
         
-        Game game = new Game();
+        Game game = new Game();           
         
-        game.setCurrentColor(Color.RED);
-        game.setCreatorColor(Color.RED);
-                        
-        String query = "2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', 'R');";
+        game.setBoardWithColor(state);
+        if(creatorColor.equals("B")) {
+        	game.setCreatorColor(Color.BLACK);
+        	game.setCurrentColor(Color.RED);
+        }else {
+        	game.setCreatorColor(Color.RED);
+        	game.setCurrentColor(Color.BLACK);
+        }
+        
+        String query = "2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', '" + creatorColor + "');";
         client.sendQuery(query);
         
         return client.sendQuery("1;SELECT game.id FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
@@ -379,16 +391,18 @@ public class Controller {
 	 */
 	public static String acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
-		String invitation = client.sendQuery("1;SELECT userSender, userReceiver FROM invitation WHERE id='" + invitationID + "';");
-                
+		String invitation = client.sendQuery("1;SELECT userSender, userReceiver, state, creatorColor FROM invitation WHERE id='" + invitationID + "';");
+		
 		//trim the hanging pipe ('|')
 		invitation = invitation.substring(0, invitation.length()-1);
 		
         String[] invitationArray = invitation.split(",");
         String sender = invitationArray[0];
         String receiver = invitationArray[1];
+        String state = invitationArray[2];
+        String creatorColor = invitationArray[3];
         client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "';");
-        return createGame(sender, receiver);
+        return createGame(sender, receiver, state, creatorColor);
 	}
 	
 	public static void rejectInvitation(String invitationID) {
@@ -401,9 +415,13 @@ public class Controller {
         client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColorAsString() + "' WHERE id='" + game.getGameID() + "';");
         if(game.isOver()) {
             String endTime = client.sendQuery("1;SELECT NOW()");
-            client.sendQuery("2;UPDATE log SET endTime='" + endTime + "';");
-            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer() + "';");
-            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer() + "';"); 
+            
+            String logID = client.sendQuery("1;SELECT logID FROM game WHERE id='" + game.getGameID() + "';");
+            logID = logID .substring(0, logID .length()-1); //trim the hanging pipe ('|')
+            
+    		client.sendQuery("2;UPDATE log SET endTime='" + endTime + "' WHERE log.id='" + logID + "';");
+            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer() + "' WHERE log.id='" + logID + "';");
+            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer() + "' WHERE log.id='" + logID + "';");
         }
 	}
 	
