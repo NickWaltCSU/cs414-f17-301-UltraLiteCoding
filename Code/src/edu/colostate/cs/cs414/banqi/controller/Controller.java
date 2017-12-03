@@ -334,7 +334,7 @@ public class Controller {
 			
 			if(values[3].equals(nickname)) {//index out of bounds
 				wins++;
-			}else {
+			}else if(values[4].equals(nickname)){
 				losses++;
 			}
 			logs += "\n\nLogID: " + values[0] + "\n\tStart Time: " + values[1] + "\n\tEnd Time: " + values[2] + "\n\tWinner: " + values[3] + "\n\tLoser: " + values[4];
@@ -342,6 +342,8 @@ public class Controller {
 		
 		if(losses == 0) {
 			winLossRatio = wins;
+		}else if(wins == 0){
+			winLossRatio = -1 * losses;
 		}else {
 			winLossRatio = wins/losses;
 		}
@@ -350,7 +352,9 @@ public class Controller {
 		return output;
 	}
 	
-	public static void createInvitation(String sender_nickname, String recipient_nickname) {
+	public static void createInvitation(Color creatorColor, String state, String sender_nickname, String recipient_nickname) {
+		//now that they've 
+		
         client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "');");	
 	}
 	
