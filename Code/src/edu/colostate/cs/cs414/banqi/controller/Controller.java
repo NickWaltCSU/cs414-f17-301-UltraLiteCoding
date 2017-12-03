@@ -352,25 +352,29 @@ public class Controller {
 		return output;
 	}
 	
-	public static void createInvitation(Color creatorColor, String state, String sender_nickname, String recipient_nickname) {
-		//now that they've 
-		
-        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "');");	
+	public static void createInvitation(String creatorColor, String state, String sender_nickname, String recipient_nickname) {
+        client.sendQuery("2;INSERT INTO invitation (userSender, userReceiver, state, creatorColor) VALUES ('" + sender_nickname + "', '" + recipient_nickname + "', '" + state + "', '" + creatorColor + "');");	
 	}
 	
-	private static String createGame(String creator_nickname, String other_nickname) {
+	private static String createGame(String creator_nickname, String other_nickname, String state, String creatorColor) {
         String startTime = client.sendQuery("1;SELECT NOW()");
         client.sendQuery("2;INSERT INTO log (startTime) VALUES ('" + startTime + "');");
         
         String logID = client.sendQuery("1;SELECT LAST_INSERT_ID()");
         logID = logID.substring(0, logID.length()-1);
         
-        Game game = new Game();
+        Game game = new Game();           
         
-        game.setCurrentColor(Color.RED);
-        game.setCreatorColor(Color.RED);
-                        
-        String query = "2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', 'R');";
+        game.setBoardWithColor(state);
+        if(creatorColor.equals("B")) {
+        	game.setCreatorColor(Color.BLACK);
+        	game.setCurrentColor(Color.RED);
+        }else {
+        	game.setCreatorColor(Color.RED);
+        	game.setCurrentColor(Color.BLACK);
+        }
+        
+        String query = "2;INSERT INTO game (state, logID, userCreator, userOther, creatorColor) VALUES ('" + game.getBoardWithColor() + "', '" + logID + "', '" + creator_nickname + "', '" + other_nickname + "', '" + creatorColor + "');";
         client.sendQuery(query);
         
         return client.sendQuery("1;SELECT game.id FROM game WHERE state='" + game.getBoardWithColor() + "' AND logID='" + logID + "';");
@@ -383,16 +387,18 @@ public class Controller {
 	 */
 	public static String acceptInvitation(String invitationID) {
 		//accepts it, closes it, also creates the game
-		String invitation = client.sendQuery("1;SELECT userSender, userReceiver FROM invitation WHERE id='" + invitationID + "';");
-                
+		String invitation = client.sendQuery("1;SELECT userSender, userReceiver, state, creatorColor FROM invitation WHERE id='" + invitationID + "';");
+		
 		//trim the hanging pipe ('|')
 		invitation = invitation.substring(0, invitation.length()-1);
 		
         String[] invitationArray = invitation.split(",");
         String sender = invitationArray[0];
         String receiver = invitationArray[1];
+        String state = invitationArray[2];
+        String creatorColor = invitationArray[3];
         client.sendQuery("2;DELETE FROM invitation WHERE id='" + invitationID + "';");
-        return createGame(sender, receiver);
+        return createGame(sender, receiver, state, creatorColor);
 	}
 	
 	public static void rejectInvitation(String invitationID) {
