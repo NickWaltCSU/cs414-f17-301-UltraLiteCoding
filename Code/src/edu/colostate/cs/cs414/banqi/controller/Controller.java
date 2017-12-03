@@ -241,16 +241,20 @@ public class Controller {
 		String state = client.sendQuery("1;SELECT state FROM game WHERE game.id='" + gameID + "';");
 		String userCreator = client.sendQuery("1;SELECT userCreator FROM game WHERE game.id='" + gameID + "';");
 		String userOther = client.sendQuery("1;SELECT userOther FROM game WHERE game.id='" + gameID + "';");
+		String creatorColor = client.sendQuery("1;SELECT creatorColor FROM game WHERE game.id='" + gameID + "';");
 
 		state = state.substring(0, state.length()-1);
 		userCreator = userCreator.substring(0, userCreator.length()-1);
 		userOther = userOther.substring(0, userOther.length()-1);
-		
-		System.out.println(state);
-		
+		creatorColor = creatorColor.substring(0, creatorColor.length()-1);
+				
 		game.setBoardWithColor(state);
 		
-		game.setCreatorColor(Color.RED);
+		if(creatorColor.equals("R")) {
+			game.setCreatorColor(Color.RED);
+		}else if(creatorColor.equals("B")) {
+			game.setCreatorColor(Color.BLACK);
+		}
 		
 		game.setPlayers(userCreator, userOther);
 		

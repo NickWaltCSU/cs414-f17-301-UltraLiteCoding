@@ -81,10 +81,10 @@ public class ViewProfile {
 						
 						//index has the -1 at the end to indicate the off-by-one nature of how i displayed the tokens
 						int index = Integer.parseInt(JOptionPane.showInputDialog("Please enter in the number of the token to-be-flipped:"
-								+ "\n01 - 02 - 03 - 04 - 05 - 06 - 07 - 08"
-								+ "\n09 - 10 - 11 - 12 - 13 - 14 - 15 - 16"
+								+ "\n25 - 26 - 27 - 28 - 29 - 30 - 31 - 32"
 								+ "\n17 - 18 - 19 - 20 - 21 - 22 - 23 - 24"
-								+ "\n25 - 26 - 27 - 28 - 29 - 30 - 31 - 32"))-1;
+								+ "\n09 - 10 - 11 - 12 - 13 - 14 - 15 - 16"
+								+ "\n01 - 02 - 03 - 04 - 05 - 06 - 07 - 08"))-1;
 						
 						int[] xy = getXY(index);
 						game.flipToken(xy[0], xy[1]);
