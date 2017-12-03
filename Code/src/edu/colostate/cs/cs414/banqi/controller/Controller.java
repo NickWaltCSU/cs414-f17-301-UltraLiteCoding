@@ -258,7 +258,7 @@ public class Controller {
 		
 		game.setPlayers(userCreator, userOther);
 		
-		if(game.getCurrentColor() == Color.RED) {
+		if(game.getCurrentColor() == game.getCreatorColor()) {
 			game.setCurrentPlayer(userCreator);
 		}else {
 			game.setCurrentPlayer(userOther);
@@ -415,9 +415,13 @@ public class Controller {
         client.sendQuery("2;UPDATE game SET creatorColor='" + game.getCreatorColorAsString() + "' WHERE id='" + game.getGameID() + "';");
         if(game.isOver()) {
             String endTime = client.sendQuery("1;SELECT NOW()");
-            client.sendQuery("2;UPDATE log SET endTime='" + endTime + "';");
-            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer() + "';");
-            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer() + "';"); 
+            
+            String logID = client.sendQuery("1;SELECT logID FROM game WHERE id='" + game.getGameID() + "';");
+            logID = logID .substring(0, logID .length()-1); //trim the hanging pipe ('|')
+            
+    		client.sendQuery("2;UPDATE log SET endTime='" + endTime + "' WHERE log.id='" + logID + "';");
+            client.sendQuery("2;UPDATE log SET userWinner='" + game.getWinningPlayer() + "' WHERE log.id='" + logID + "';");
+            client.sendQuery("2;UPDATE log SET userLoser='" + game.getLosingPlayer() + "' WHERE log.id='" + logID + "';");
         }
 	}
 	
