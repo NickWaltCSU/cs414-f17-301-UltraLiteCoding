@@ -192,6 +192,51 @@ public class AI {
 		}
 	}
 	
+	private void checkCannon(ArrayList<int[]> moves, String[] field, String token, int startX, int startY, int endX, int endY) {
+		if(field[getIndex(endX, endY)].charAt(2) == 'U') {
+			int jumped = 0;
+			//check Y path
+			if(startX==endX && Math.abs(startY-endY)>=2){
+				if(startY<endY){
+					for(int y=startY+1; y<endY; y++){//Y move down
+						if(field[getIndex(startX, y)].charAt(1) != 'X'){
+							jumped++;
+						}
+					}
+				}else{
+					for(int y=startY-1; y>endY; y--){//Y move up
+						if(field[getIndex(startX, y)].charAt(1) != 'X'){
+							jumped++;
+						}
+					}
+				}
+				
+			//check X path
+			}else if(startY==endY && Math.abs(startX-endX)>=2){
+				
+				if(startX<endX){
+					for(int x=startX+1; x<endX; x++){//X move right
+						if(field[getIndex(x, startY)].charAt(1) != 'X'){
+							jumped++;
+						}
+					}
+				}else{
+					for(int x=startX-1; x>endX; x--){//X move left
+						if(field[getIndex(x, startY)].charAt(1) != 'X'){
+							jumped++;
+						}
+					}
+				}
+			}
+			
+			//System.out.println(jumped);
+			if(jumped==1){
+				moves.add(new int[] {startX, startY, endX, endY});
+				if(debug) System.out.println("[" + startX + "," + startY + " | " + endX + "," + endY + "]");
+			}
+		}
+	}
+	
 	/**
 	 * For some given string state, returns a list of all moves possible. A move is an integer array of 4 numbers: {x1, y1, x2, y2}.
 	 * @param state = "FIELD . GRAVEYARD"
@@ -226,10 +271,16 @@ public class AI {
 				int y = xy[1];
 				
 				//Cannon
-				//TODO
-				
+				if(token.charAt(1) == '2') {
+					for(int cannonX=1; cannonX<9; cannonX++) {
+						checkCannon(moves, field, token, x, y, cannonX, y);
+					}
+					for(int cannonY=1; cannonY<5; cannonY++) {
+						checkCannon(moves, field, token, x, y, x, cannonY);
+					}
+				}
 				//General
-				if(token.charAt(1) == '7') {
+				else if(token.charAt(1) == '7') {
 					checkDirectionGeneral(moves, field, token, x, y, x, y+1);
 					checkDirectionGeneral(moves, field, token, x, y, x, y-1);
 					checkDirectionGeneral(moves, field, token, x, y, x-1, y);
@@ -425,7 +476,7 @@ public class AI {
 	}
 	
 	public static void main(String[] args) {
-		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX R4D B1D R7D . B6U";
+		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX XXX XXX R2U . B6U";
 		AI ai = new AI(Color.RED);
 		ai.printBoard(state);
 		for(int[] move : ai.validMoves(state)) {
