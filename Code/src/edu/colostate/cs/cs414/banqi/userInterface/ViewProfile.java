@@ -80,7 +80,7 @@ public class ViewProfile {
 						Color flippedColor = null;
 						
 						//index has the -1 at the end to indicate the off-by-one nature of how i displayed the tokens
-						int index = Integer.parseInt(JOptionPane.showInputDialog("Please enter in the number of the token to-be-flipped:"
+						int index = Integer.parseInt(JOptionPane.showInputDialog("Please enter in the number of the token to-be-flipped first:"
 								+ "\n25 - 26 - 27 - 28 - 29 - 30 - 31 - 32"
 								+ "\n17 - 18 - 19 - 20 - 21 - 22 - 23 - 24"
 								+ "\n09 - 10 - 11 - 12 - 13 - 14 - 15 - 16"
