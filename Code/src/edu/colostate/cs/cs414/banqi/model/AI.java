@@ -449,6 +449,37 @@ public class AI {
 		return newState;
 	}
 	
+	public int[] pickBestMove(int[][] flips, int[][] moves, int[][] attacks, String state) {
+		//Check if it can attack
+		if(attacks.length > 0) {
+			int savedIndex = 0;
+			int savedScore = 0;
+			int score = 0;
+			
+			for(int i = 0; i < attacks.length; i++) {
+				score = calculateScore(attacks[i], state);
+				if(score > savedScore) {
+					savedIndex = i;
+					savedScore = score;
+				}
+			}
+			
+			//Make attack that has best score (1 layer deep)
+			return attacks[savedIndex];
+		}
+		
+		//If not, can it move towards a place to attack?
+		
+		
+		//If not, check if it can flip
+			//Try to flip in a smart way
+		else{
+			//TODO Fix this section
+			return flips[0];
+		}
+		
+	}
+	
 
 	/**
 	 * For some given move, and some given state, it calculates the score of that state-move combination for use in traversing the tree later.
