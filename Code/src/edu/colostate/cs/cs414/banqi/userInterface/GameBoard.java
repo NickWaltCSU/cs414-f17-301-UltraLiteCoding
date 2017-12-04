@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JFrame;
-
+import javax.swing.JOptionPane;
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
 import edu.colostate.cs.cs414.banqi.model.AI;
@@ -206,13 +206,18 @@ public class GameBoard {
 		
 		//Quit
 		JButton btnQuit = new JButton("Quit");
-		btnQuit.setToolTipText("In Banqi it is common to forfit if you can see no way of winning.");
+		btnQuit.setToolTipText("In Banqi it is common to forfeit if you can see no way of winning.");
 		btnQuit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
+				
 				if(game.getGameID().equals("AI")){
 					frame.dispose();
 				}else{
-					Controller.forfeitGame(user, game.getGameID());
+					if(0==JOptionPane.showConfirmDialog(null, "Are you sure you want to forfeit? This will count as a loss.", "Deregister Confirm.", JOptionPane.YES_NO_OPTION)){
+						Controller.forfeitGame(user, game.getGameID());
+						frame.dispose();
+					}
+					
 				}
 			}
 		});

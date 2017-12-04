@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.banqi.userInterface;
 
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -9,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import edu.colostate.cs.cs414.banqi.controller.Controller;
 import edu.colostate.cs.cs414.banqi.model.Color;
@@ -63,6 +65,7 @@ public class Dashboard {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("icon.png")));
 		
 		JButton btnDeregister = new JButton("Deregister");
+		btnDeregister.setToolTipText("Click if you wish to deregister from the system entirely.");
 		btnDeregister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to deregister?\nAll history will be lost!", "Deregister", JOptionPane.YES_NO_OPTION)==0){
@@ -76,6 +79,7 @@ public class Dashboard {
 		frame.getContentPane().add(btnDeregister);
 		
 		JButton btnViewProfile = new JButton("View My Profile");
+		btnViewProfile.setToolTipText("Click to view your profile.");
 		btnViewProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ViewProfile profWindow = new ViewProfile((String)activeUser.getUsername(),(String)activeUser.getUsername());
@@ -172,6 +176,7 @@ public class Dashboard {
 		
 		//refresh drop down boxes button
 		JButton btnRefresh = new JButton("Refresh");
+		btnRefresh.setToolTipText("Click to update players, game, and invitations.");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				doBoxAction=false;//this prevents box actions from being performed with addItem...
@@ -207,6 +212,7 @@ public class Dashboard {
 		
 		//AI button
 		JButton btnPracticeWithAi = new JButton("Practice with AI");
+		btnPracticeWithAi.setToolTipText("Practice playing Banqi with the computer!");
 		btnPracticeWithAi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Game aiGame = new Game();
@@ -228,6 +234,13 @@ public class Dashboard {
 		});
 		btnPracticeWithAi.setBounds(239, 101, 160, 25);
 		frame.getContentPane().add(btnPracticeWithAi);
+		
+		JLabel lblWelcome = new JLabel("Welcome "+activeUser.getUsername());
+		lblWelcome.setForeground(java.awt.Color.BLUE);
+		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblWelcome.setBounds(12, 13, 299, 58);
+		frame.getContentPane().add(lblWelcome);
 		//end AI button
 		
 		
