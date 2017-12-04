@@ -139,24 +139,7 @@ public class AI {
 	
 	private void checkDirection(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(isOnBoard(newX, newY)) {
-			if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-				if(field[getIndex(newX, newY)].charAt(0) == 'X') {
-					moves.add(new int[] {x, y, newX, newY});
-					if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
-				}
-			}
-			if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-				if(field[getIndex(newX, newY)].charAt(1) <= token.charAt(1)) {
-					attacks.add(new int[] {x, y, newX, newY});
-					if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
-				}	
-			}
-		}
-	}
-	
-	private void checkDirectionSoldier(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
-		if(token.charAt(1) == '1') {
-			if(isOnBoard(newX, newY)) {
+			if(field[getIndex(newX, newY)].charAt(2) == 'U') {
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
 						moves.add(new int[] {x, y, newX, newY});
@@ -164,10 +147,31 @@ public class AI {
 					}
 				}
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-					if(field[getIndex(newX, newY)].charAt(1) == '1' || field[getIndex(newX, newY)].charAt(1) == '7') {
+					if(field[getIndex(newX, newY)].charAt(1) <= token.charAt(1)) {
 						attacks.add(new int[] {x, y, newX, newY});
 						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
 					}	
+				}
+			}
+		}
+	}
+	
+	private void checkDirectionSoldier(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
+		if(token.charAt(1) == '1') {
+			if(isOnBoard(newX, newY)) {
+				if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+					if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+						if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+							moves.add(new int[] {x, y, newX, newY});
+							if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+						}
+					}
+					if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+						if(field[getIndex(newX, newY)].charAt(1) == '1' || field[getIndex(newX, newY)].charAt(1) == '7') {
+							attacks.add(new int[] {x, y, newX, newY});
+							if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+						}	
+					}
 				}
 			}
 		}
@@ -176,17 +180,19 @@ public class AI {
 	private void checkDirectionGeneral(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(token.charAt(1) == '7') {
 			if(isOnBoard(newX, newY)) {
-				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
-						moves.add(new int[] {x, y, newX, newY});
-						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+				if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+					if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+						if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+							moves.add(new int[] {x, y, newX, newY});
+							if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+						}
 					}
-				}
-				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-					if(field[getIndex(newX, newY)].charAt(1) != '1') {
-						attacks.add(new int[] {x, y, newX, newY});
-						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
-					}	
+					if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+						if(field[getIndex(newX, newY)].charAt(1) != '1') {
+							attacks.add(new int[] {x, y, newX, newY});
+							if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+						}	
+					}
 				}
 			}
 		}
@@ -194,10 +200,12 @@ public class AI {
 	
 	private void checkDirectionCannon(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(isOnBoard(newX, newY)) {
-			if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-				if(field[getIndex(newX, newY)].charAt(0) == 'X') {
-					moves.add(new int[] {x, y, newX, newY});
-					if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+			if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, newX, newY});
+						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+					}
 				}
 			}
 		}
@@ -205,44 +213,46 @@ public class AI {
 	
 	private void checkCannon(ArrayList<int[]> attacks, String[] field, String token, int startX, int startY, int endX, int endY) {
 		if(field[getIndex(endX, endY)].charAt(2) == 'U') {
-			int jumped = 0;
-			//check Y path
-			if(startX==endX && Math.abs(startY-endY)>=2){
-				if(startY<endY){
-					for(int y=startY+1; y<endY; y++){//Y move down
-						if(field[getIndex(startX, y)].charAt(1) != 'X'){
-							jumped++;
+			if(correctColor(token.charAt(0), field[getIndex(endX, endY)].charAt(0))) {
+				int jumped = 0;
+				//check Y path
+				if(startX==endX && Math.abs(startY-endY)>=2){
+					if(startY<endY){
+						for(int y=startY+1; y<endY; y++){//Y move down
+							if(field[getIndex(startX, y)].charAt(1) != 'X'){
+								jumped++;
+							}
+						}
+					}else{
+						for(int y=startY-1; y>endY; y--){//Y move up
+							if(field[getIndex(startX, y)].charAt(1) != 'X'){
+								jumped++;
+							}
 						}
 					}
-				}else{
-					for(int y=startY-1; y>endY; y--){//Y move up
-						if(field[getIndex(startX, y)].charAt(1) != 'X'){
-							jumped++;
+					
+				//check X path
+				}else if(startY==endY && Math.abs(startX-endX)>=2){
+					
+					if(startX<endX){
+						for(int x=startX+1; x<endX; x++){//X move right
+							if(field[getIndex(x, startY)].charAt(1) != 'X'){
+								jumped++;
+							}
+						}
+					}else{
+						for(int x=startX-1; x>endX; x--){//X move left
+							if(field[getIndex(x, startY)].charAt(1) != 'X'){
+								jumped++;
+							}
 						}
 					}
 				}
 				
-			//check X path
-			}else if(startY==endY && Math.abs(startX-endX)>=2){
-				
-				if(startX<endX){
-					for(int x=startX+1; x<endX; x++){//X move right
-						if(field[getIndex(x, startY)].charAt(1) != 'X'){
-							jumped++;
-						}
-					}
-				}else{
-					for(int x=startX-1; x>endX; x--){//X move left
-						if(field[getIndex(x, startY)].charAt(1) != 'X'){
-							jumped++;
-						}
-					}
+				if(jumped==1){
+					attacks.add(new int[] {startX, startY, endX, endY});
+					if(debug) System.out.println("[" + startX + "," + startY + " | " + endX + "," + endY + "]");
 				}
-			}
-			
-			if(jumped==1){
-				attacks.add(new int[] {startX, startY, endX, endY});
-				if(debug) System.out.println("[" + startX + "," + startY + " | " + endX + "," + endY + "]");
 			}
 		}
 	}
@@ -486,7 +496,11 @@ public class AI {
 		return newState;
 	}
 	
-	public int[] pickBestMove(int[][] moves, int[][] flips, int[][] attacks, String state) {
+	public int[] pickBestMove(ArrayList<int[][]> allOptions, String state) {
+		int[][] moves = allOptions.get(0);
+		int[][] flips = allOptions.get(1);
+		int[][] attacks = allOptions.get(2);
+		
 		//Check if it can attack
 		if(attacks.length > 0) {
 			int savedIndex = 0;
@@ -506,14 +520,19 @@ public class AI {
 		}
 		
 		//If not, can it move towards a place to attack?
-		
+		//TODO move towards better attack position
 		
 		//If not, check if it can flip
 			//Try to flip in a smart way
-		else{
-			//TODO Fix this section
+		else if(flips.length > 0){
+			//TODO Make this section better
 			int rand = new Random().nextInt(flips.length);
 			return flips[rand];
+		}
+		
+		else {
+			int rand = new Random().nextInt(moves.length);
+			return moves[rand];
 		}
 		
 	}
@@ -543,8 +562,9 @@ public class AI {
 		String[] field = field_raw.split(" ");
 		
 		int i = 0;
-		for(int y=0; y<4; y++) {
-			for(int x=0; x<8; x++) {
+		for(int y=4; y>0; y--) {
+			for(int x=1; x<9; x++) {
+				//System.out.print("[" + x + "," + y + "] ");
 				System.out.print(field[i] + " ");
 				i++;
 			}
@@ -553,16 +573,13 @@ public class AI {
 	}
 	
 	public static void main(String[] args) {
-		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX XXX XXX R2U . B6U";
+		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX B3D XXX R2U . B6U";
 		AI ai = new AI(Color.RED);
-		ai.printBoard(state);
 		ArrayList<int[][]> allOptions = ai.validMoves(state);
-		int[][] allMoves = allOptions.get(0);
-		int[][] allFlips = allOptions.get(1);
-		int[][] allAttacks = allOptions.get(2);
 		
-		int[] bestMove = ai.pickBestMove(allMoves, allFlips, allAttacks, state);
+		int[] bestMove = ai.pickBestMove(allOptions, state);
 		System.out.println("Best Move:");
 		System.out.println("[" + bestMove[0] + "," + bestMove[1] + " | " + bestMove[2] + "," + bestMove[3] + "]");
+		ai.printBoard(state);
 	}
 }
