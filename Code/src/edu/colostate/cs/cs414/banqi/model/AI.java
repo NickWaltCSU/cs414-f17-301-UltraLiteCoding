@@ -139,7 +139,7 @@ public class AI {
 	
 	private void checkDirection(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(isOnBoard(newX, newY)) {
-			if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+			if(field[getIndex(newX, newY)].charAt(2) == 'U' || field[getIndex(newX, newY)].charAt(2) == 'X') {
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
 						moves.add(new int[] {x, y, newX, newY});
@@ -159,7 +159,7 @@ public class AI {
 	private void checkDirectionSoldier(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(token.charAt(1) == '1') {
 			if(isOnBoard(newX, newY)) {
-				if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+				if(field[getIndex(newX, newY)].charAt(2) == 'U' || field[getIndex(newX, newY)].charAt(2) == 'X') {
 					if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 						if(field[getIndex(newX, newY)].charAt(0) == 'X') {
 							moves.add(new int[] {x, y, newX, newY});
@@ -180,7 +180,7 @@ public class AI {
 	private void checkDirectionGeneral(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(token.charAt(1) == '7') {
 			if(isOnBoard(newX, newY)) {
-				if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+				if(field[getIndex(newX, newY)].charAt(2) == 'U' || field[getIndex(newX, newY)].charAt(2) == 'X') {
 					if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 						if(field[getIndex(newX, newY)].charAt(0) == 'X') {
 							moves.add(new int[] {x, y, newX, newY});
@@ -200,7 +200,7 @@ public class AI {
 	
 	private void checkDirectionCannon(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(isOnBoard(newX, newY)) {
-			if(field[getIndex(newX, newY)].charAt(2) == 'U') {
+			if(field[getIndex(newX, newY)].charAt(2) == 'U' || field[getIndex(newX, newY)].charAt(2) == 'X') {
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
 						moves.add(new int[] {x, y, newX, newY});
@@ -574,6 +574,7 @@ public class AI {
 	
 	public static void main(String[] args) {
 		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX B3D XXX R2U . B6U";
+		//String state = "B1U XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX . ";
 		AI ai = new AI(Color.RED);
 		ArrayList<int[][]> allOptions = ai.validMoves(state);
 		

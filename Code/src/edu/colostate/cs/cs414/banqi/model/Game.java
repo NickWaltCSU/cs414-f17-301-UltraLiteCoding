@@ -111,6 +111,10 @@ public class Game {
 	public Color getWinningColor() {
 		return winningColor;
 	}
+	
+	public void setWinningColor(Color _winningColor) {
+		winningColor = _winningColor;
+	}
     
     public String getGameID() {
         return gameID;
@@ -320,6 +324,8 @@ public class Game {
 		if(currentColor == Color.BLACK) {
 			colorOfWinningMove = Color.RED;
 		}
+		
+		setWinningColor(colorOfWinningMove);
 		
 		//currentPlayer is winner if currentColor = winningColor
 		if(colorOfWinningMove == winningColor) {
