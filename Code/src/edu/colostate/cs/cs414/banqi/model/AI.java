@@ -137,7 +137,7 @@ public class AI {
 		}else return false;
 	}
 	
-	private void checkDirection(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
+	private void checkDirection(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(isOnBoard(newX, newY)) {
 			if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 				if(field[getIndex(newX, newY)].charAt(0) == 'X') {
@@ -147,14 +147,14 @@ public class AI {
 			}
 			if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 				if(field[getIndex(newX, newY)].charAt(1) <= token.charAt(1)) {
-					moves.add(new int[] {x, y, newX, newY});
+					attacks.add(new int[] {x, y, newX, newY});
 					if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
 				}	
 			}
 		}
 	}
 	
-	private void checkDirectionSoldier(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
+	private void checkDirectionSoldier(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(token.charAt(1) == '1') {
 			if(isOnBoard(newX, newY)) {
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
@@ -165,7 +165,7 @@ public class AI {
 				}
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 					if(field[getIndex(newX, newY)].charAt(1) == '1' || field[getIndex(newX, newY)].charAt(1) == '7') {
-						moves.add(new int[] {x, y, newX, newY});
+						attacks.add(new int[] {x, y, newX, newY});
 						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
 					}	
 				}
@@ -173,7 +173,7 @@ public class AI {
 		}
 	}
 	
-	private void checkDirectionGeneral(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
+	private void checkDirectionGeneral(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
 		if(token.charAt(1) == '7') {
 			if(isOnBoard(newX, newY)) {
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
@@ -184,7 +184,7 @@ public class AI {
 				}
 				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
 					if(field[getIndex(newX, newY)].charAt(1) != '1') {
-						moves.add(new int[] {x, y, newX, newY});
+						attacks.add(new int[] {x, y, newX, newY});
 						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
 					}	
 				}
@@ -192,7 +192,18 @@ public class AI {
 		}
 	}
 	
-	private void checkCannon(ArrayList<int[]> moves, String[] field, String token, int startX, int startY, int endX, int endY) {
+	private void checkDirectionCannon(ArrayList<int[]> moves, ArrayList<int[]> attacks, String[] field, String token, int x, int y, int newX, int newY) {
+		if(isOnBoard(newX, newY)) {
+			if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+				if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+					moves.add(new int[] {x, y, newX, newY});
+					if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+				}
+			}
+		}
+	}
+	
+	private void checkCannon(ArrayList<int[]> attacks, String[] field, String token, int startX, int startY, int endX, int endY) {
 		if(field[getIndex(endX, endY)].charAt(2) == 'U') {
 			int jumped = 0;
 			//check Y path
@@ -229,9 +240,8 @@ public class AI {
 				}
 			}
 			
-			//System.out.println(jumped);
 			if(jumped==1){
-				moves.add(new int[] {startX, startY, endX, endY});
+				attacks.add(new int[] {startX, startY, endX, endY});
 				if(debug) System.out.println("[" + startX + "," + startY + " | " + endX + "," + endY + "]");
 			}
 		}
@@ -240,10 +250,12 @@ public class AI {
 	/**
 	 * For some given string state, returns a list of all moves possible. A move is an integer array of 4 numbers: {x1, y1, x2, y2}.
 	 * @param state = "FIELD . GRAVEYARD"
-	 * @return An array of all integer arrays, each of which represents one move.
+	 * @return An ArrayList containing moves[][], flips[][], and attacks[][]
 	 */
-	public int[][] validMoves(String state){
+	public ArrayList<int[][]> validMoves(String state){
 		ArrayList<int[]> moves = new ArrayList<int[]>();
+		ArrayList<int[]> flips = new ArrayList<int[]>();
+		ArrayList<int[]> attacks = new ArrayList<int[]>();
 		
 		//first, split the field/graveyard and then the tokens themselves
 		String[] splitState = state.split(" . ");
@@ -256,7 +268,7 @@ public class AI {
 			String token = field[c];
 			if(token.charAt(2) == ('D')) {
 				int[] xy = getXY(c);
-				moves.add(new int[] {xy[0], xy[1], xy[0], xy[1]});
+				flips.add(new int[] {xy[0], xy[1], xy[0], xy[1]});
 				if(debug) System.out.println("[" + xy[0] + "," + xy[1] + " | " + xy[0] + "," + xy[1] + "]");
 			}
 		}
@@ -273,41 +285,66 @@ public class AI {
 				//Cannon
 				if(token.charAt(1) == '2') {
 					for(int cannonX=1; cannonX<9; cannonX++) {
-						checkCannon(moves, field, token, x, y, cannonX, y);
+						checkCannon(attacks, field, token, x, y, cannonX, y);
 					}
 					for(int cannonY=1; cannonY<5; cannonY++) {
-						checkCannon(moves, field, token, x, y, x, cannonY);
+						checkCannon(attacks, field, token, x, y, x, cannonY);
 					}
+					
+					checkDirectionCannon(moves, attacks, field, token, x, y, x, y+1);
+					checkDirectionCannon(moves, attacks, field, token, x, y, x, y-1);
+					checkDirectionCannon(moves, attacks, field, token, x, y, x-1, y);
+					checkDirectionCannon(moves, attacks, field, token, x, y, x+1, y);
 				}
 				//General
 				else if(token.charAt(1) == '7') {
-					checkDirectionGeneral(moves, field, token, x, y, x, y+1);
-					checkDirectionGeneral(moves, field, token, x, y, x, y-1);
-					checkDirectionGeneral(moves, field, token, x, y, x-1, y);
-					checkDirectionGeneral(moves, field, token, x, y, x+1, y);
+					checkDirectionGeneral(moves, attacks, field, token, x, y, x, y+1);
+					checkDirectionGeneral(moves, attacks, field, token, x, y, x, y-1);
+					checkDirectionGeneral(moves, attacks, field, token, x, y, x-1, y);
+					checkDirectionGeneral(moves, attacks, field, token, x, y, x+1, y);
 				}
 				//Soldier
 				else if(token.charAt(1) == '1') {
-					checkDirectionSoldier(moves, field, token, x, y, x, y+1);
-					checkDirectionSoldier(moves, field, token, x, y, x, y-1);
-					checkDirectionSoldier(moves, field, token, x, y, x-1, y);
-					checkDirectionSoldier(moves, field, token, x, y, x+1, y);
+					checkDirectionSoldier(moves, attacks, field, token, x, y, x, y+1);
+					checkDirectionSoldier(moves, attacks, field, token, x, y, x, y-1);
+					checkDirectionSoldier(moves, attacks, field, token, x, y, x-1, y);
+					checkDirectionSoldier(moves, attacks, field, token, x, y, x+1, y);
 				}else {
-					checkDirection(moves, field, token, x, y, x, y+1);
-					checkDirection(moves, field, token, x, y, x, y-1);
-					checkDirection(moves, field, token, x, y, x-1, y);
-					checkDirection(moves, field, token, x, y, x+1, y);
+					checkDirection(moves, attacks, field, token, x, y, x, y+1);
+					checkDirection(moves, attacks, field, token, x, y, x, y-1);
+					checkDirection(moves, attacks, field, token, x, y, x-1, y);
+					checkDirection(moves, attacks, field, token, x, y, x+1, y);
 				}
 			}
 		}
 		
 		//then turn out data into an actual output as expected
-		int[][] output = new int[moves.size()][4];
+		int[][] allMoves = new int[moves.size()][4];
+		int[][] allFlips = new int[flips.size()][4];
+		int[][] allAttacks = new int[attacks.size()][4];
+
 		int counter = 0;
 		for(int[] move : moves) {
-			output[counter] = move;
+			allMoves[counter] = move;
 			counter++;
 		}
+		
+		counter = 0;
+		for(int[] flip : flips) {
+			allFlips[counter] = flip;
+			counter++;
+		}
+		
+		counter = 0;
+		for(int[] attack : attacks) {
+			allAttacks[counter] = attack;
+			counter++;
+		}
+		
+		ArrayList<int[][]> output = new ArrayList<int[][]>();
+		output.add(allMoves);
+		output.add(allFlips);
+		output.add(allAttacks);
 		return output;
 	}
 	
@@ -449,7 +486,7 @@ public class AI {
 		return newState;
 	}
 	
-	public int[] pickBestMove(int[][] flips, int[][] moves, int[][] attacks, String state) {
+	public int[] pickBestMove(int[][] moves, int[][] flips, int[][] attacks, String state) {
 		//Check if it can attack
 		if(attacks.length > 0) {
 			int savedIndex = 0;
@@ -475,7 +512,8 @@ public class AI {
 			//Try to flip in a smart way
 		else{
 			//TODO Fix this section
-			return flips[0];
+			int rand = new Random().nextInt(flips.length);
+			return flips[rand];
 		}
 		
 	}
@@ -488,7 +526,15 @@ public class AI {
 	 * @return the score of the move-state combination.
 	 */
 	public Integer calculateScore(int[] move, String state) {
-		return null;
+		String[] field = state.split(" . ")[0].split(" ");
+		String token1 = field[getIndex(move[0], move[1])];
+		String token2 = field[getIndex(move[2], move[3])];
+		
+		int rank1 = Character.getNumericValue(token1.charAt(1));
+		int rank2 = Character.getNumericValue(token2.charAt(1));
+		
+		//TODO More work can be done here to determine a balanced score
+		return rank2;
 	}
 	
 	public void printBoard(String state) {
@@ -510,8 +556,13 @@ public class AI {
 		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX XXX XXX R2U . B6U";
 		AI ai = new AI(Color.RED);
 		ai.printBoard(state);
-		for(int[] move : ai.validMoves(state)) {
-			//Store into move[]
-		}
+		ArrayList<int[][]> allOptions = ai.validMoves(state);
+		int[][] allMoves = allOptions.get(0);
+		int[][] allFlips = allOptions.get(1);
+		int[][] allAttacks = allOptions.get(2);
+		
+		int[] bestMove = ai.pickBestMove(allMoves, allFlips, allAttacks, state);
+		System.out.println("Best Move:");
+		System.out.println("[" + bestMove[0] + "," + bestMove[1] + " | " + bestMove[2] + "," + bestMove[3] + "]");
 	}
 }
