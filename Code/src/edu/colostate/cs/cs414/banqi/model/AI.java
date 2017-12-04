@@ -154,24 +154,43 @@ public class AI {
 		}
 	}
 	
-//	private void checkDirectionSoldier(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
-//		if(token.charAt(1) == '1') {
-//			if(isOnBoard(newX, newY)) {
-//				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-//					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
-//						moves.add(new int[] {x, y, newX, newY});
-//						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
-//					}
-//				}
-//				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
-//					if(field[getIndex(newX, newY)].charAt(1) <= token.charAt(1)) {
-//						moves.add(new int[] {x, y, newX, newY});
-//						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
-//					}	
-//				}
-//			}
-//		}
-//	}
+	private void checkDirectionSoldier(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
+		if(token.charAt(1) == '1') {
+			if(isOnBoard(newX, newY)) {
+				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, newX, newY});
+						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+					}
+				}
+				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+					if(field[getIndex(newX, newY)].charAt(1) == '1' || field[getIndex(newX, newY)].charAt(1) == '7') {
+						moves.add(new int[] {x, y, newX, newY});
+						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+					}	
+				}
+			}
+		}
+	}
+	
+	private void checkDirectionGeneral(ArrayList<int[]> moves, String[] field, String token, int x, int y, int newX, int newY) {
+		if(token.charAt(1) == '7') {
+			if(isOnBoard(newX, newY)) {
+				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+					if(field[getIndex(newX, newY)].charAt(0) == 'X') {
+						moves.add(new int[] {x, y, newX, newY});
+						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+					}
+				}
+				if(correctColor(token.charAt(0), field[getIndex(newX, newY)].charAt(0))) {
+					if(field[getIndex(newX, newY)].charAt(1) != '1') {
+						moves.add(new int[] {x, y, newX, newY});
+						if(debug) System.out.println("[" + x + "," + y + " | " + newX + "," + newY + "]");
+					}	
+				}
+			}
+		}
+	}
 	
 	/**
 	 * For some given string state, returns a list of all moves possible. A move is an integer array of 4 numbers: {x1, y1, x2, y2}.
@@ -210,22 +229,24 @@ public class AI {
 				//TODO
 				
 				//General
-				//TODO
-				
+				if(token.charAt(1) == '7') {
+					checkDirectionGeneral(moves, field, token, x, y, x, y+1);
+					checkDirectionGeneral(moves, field, token, x, y, x, y-1);
+					checkDirectionGeneral(moves, field, token, x, y, x-1, y);
+					checkDirectionGeneral(moves, field, token, x, y, x+1, y);
+				}
 				//Soldier
-				//TODO
-				
-				//Up
-				checkDirection(moves, field, token, x, y, x, y+1);
-
-				//Down
-				checkDirection(moves, field, token, x, y, x, y-1);
-
-				//Left
-				checkDirection(moves, field, token, x, y, x-1, y);
-
-				//Right
-				checkDirection(moves, field, token, x, y, x+1, y);
+				else if(token.charAt(1) == '1') {
+					checkDirectionSoldier(moves, field, token, x, y, x, y+1);
+					checkDirectionSoldier(moves, field, token, x, y, x, y-1);
+					checkDirectionSoldier(moves, field, token, x, y, x-1, y);
+					checkDirectionSoldier(moves, field, token, x, y, x+1, y);
+				}else {
+					checkDirection(moves, field, token, x, y, x, y+1);
+					checkDirection(moves, field, token, x, y, x, y-1);
+					checkDirection(moves, field, token, x, y, x-1, y);
+					checkDirection(moves, field, token, x, y, x+1, y);
+				}
 			}
 		}
 		
@@ -404,7 +425,7 @@ public class AI {
 	}
 	
 	public static void main(String[] args) {
-		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX B1D R4D R1D . B6U";
+		String state = "B1D R1D B2D R5D R3D R1D R5D R7D R3D B1D B6D B5D R1D B4D R2D B1D B2D B1D B3D R2D R1D R6D B7D R4D B4D B3U B5U R6U XXX R4D B1D R7D . B6U";
 		AI ai = new AI(Color.RED);
 		ai.printBoard(state);
 		for(int[] move : ai.validMoves(state)) {
