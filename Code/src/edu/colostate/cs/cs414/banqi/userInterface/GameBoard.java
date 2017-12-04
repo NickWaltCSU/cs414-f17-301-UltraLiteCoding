@@ -157,53 +157,68 @@ public class GameBoard {
 				if(game.getGameID().equals("AI")){
 					//AI makes move here
 					if(game.getCurrentPlayer().equals("AI")){
+						//System.out.println(game.getWinningPlayer());
+						if(game.isOver()){
+							JOptionPane.showMessageDialog(null, "The game is Over!\nThe winner is "+game.getWinningPlayer());
+							frame.dispose();
+						}else{
+						
 							String gameState = game.getBoard().saveBoard();//This is where it gets an active game state, this will throw errors when using the AI test board
-						//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-//						//helper variables
-//						int[][] moveArray;
-//						int randMove;
-//						
-//						//get all valid moves
-//						moveArray = aiPlayer.validMoves(gameState);
-//						
-//						//make a random number in index range
-//						int moveNum = moveArray.length;
-//						randMove = random.nextInt(moveNum);
-//						
-//						//make a random move
-//						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
-						//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-						
-						ArrayList<int[][]> moveArray = aiPlayer.validMoves(gameState);
-						aiPlayer.printBoard(gameState);
-						int[] bestMove = aiPlayer.pickBestMove(moveArray, gameState);
-						game.moveToken("AI", bestMove[0], bestMove[1], bestMove[2], bestMove[3]);
+							//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+	//						//helper variables
+	//						int[][] moveArray;
+	//						int randMove;
+	//						
+	//						//get all valid moves
+	//						moveArray = aiPlayer.validMoves(gameState);
+	//						
+	//						//make a random number in index range
+	//						int moveNum = moveArray.length;
+	//						randMove = random.nextInt(moveNum);
+	//						
+	//						//make a random move
+	//						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
+							//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 							
-						/**replacement instructions for AI method
-						 * 
-						 * remove or comment out everything between the arrow lines "vvv,^^^"
-						 * 
-						 * add AI method and make move
-						 * eg.
-						 * aiMove[] = aiPlayer.smartMove(gameState);
-						 * game.moveToken("AI", aiMove[0], aiMove[1], aiMove[2], aiMove[3]);
-						 * 
-						 */
+							ArrayList<int[][]> moveArray = aiPlayer.validMoves(gameState);
+							aiPlayer.printBoard(gameState);
+							int[] bestMove = aiPlayer.pickBestMove(moveArray, gameState);
+							game.moveToken("AI", bestMove[0], bestMove[1], bestMove[2], bestMove[3]);
+								
+							/**replacement instructions for AI method
+							 * 
+							 * remove or comment out everything between the arrow lines "vvv,^^^"
+							 * 
+							 * add AI method and make move
+							 * eg.
+							 * aiMove[] = aiPlayer.smartMove(gameState);
+							 * game.moveToken("AI", aiMove[0], aiMove[1], aiMove[2], aiMove[3]);
+							 * 
+							 */
+							
+							
+							
+							
+							//board gets refreshed
+							GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+							freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
+							frame.dispose();
+							
+						}
 						
 						
-						
-						
-						//board gets refreshed
+					}
+				}else{
+					if(game.isOver()){
+						JOptionPane.showMessageDialog(null, "The game is Over!\nThe winner is "+game.getWinningPlayer());
+						frame.dispose();						
+					}else{
+						String tempID=game.getGameID();
+						game = Controller.getGame(tempID);
 						GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
 						freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
 						frame.dispose();
 					}
-				}else{
-					String tempID=game.getGameID();
-					game = Controller.getGame(tempID);
-					GameBoard freshGameBoard = new GameBoard(game, user, (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-					freshGameBoard.main(game, user,  (int) frame.getLocation().getX(), (int) frame.getLocation().getY());
-					frame.dispose();
 				}
 			}
 		});
