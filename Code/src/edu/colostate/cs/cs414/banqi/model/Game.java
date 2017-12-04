@@ -111,6 +111,10 @@ public class Game {
 	public Color getWinningColor() {
 		return winningColor;
 	}
+	
+	public void setWinningColor(Color _winningColor) {
+		winningColor = _winningColor;
+	}
     
     public String getGameID() {
         return gameID;
@@ -123,9 +127,9 @@ public class Game {
     
 	//Game actions and logic starts here
 	public void switchPlayer() {
-		if(currentPlayer == players.get(0)) {
+		if(currentPlayer.equals(players.get(0))) {
 			currentPlayer = players.get(1);
-		}else if(currentPlayer == players.get(1)) {
+		}else if(currentPlayer.equals(players.get(1))) {
 			currentPlayer = players.get(0);
 		}else {
 			System.out.println("currentPlayer is not one of this game's players");
@@ -320,6 +324,8 @@ public class Game {
 		if(currentColor == Color.BLACK) {
 			colorOfWinningMove = Color.RED;
 		}
+		
+		setWinningColor(colorOfWinningMove);
 		
 		//currentPlayer is winner if currentColor = winningColor
 		if(colorOfWinningMove == winningColor) {

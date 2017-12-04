@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -158,21 +159,26 @@ public class GameBoard {
 					if(game.getCurrentPlayer().equals("AI")){
 							String gameState = game.getBoard().saveBoard();//This is where it gets an active game state, this will throw errors when using the AI test board
 						//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-						//helper variables
-						int[][] moveArray;
-						int randMove;
-						
-						//get all valid moves
-						moveArray = aiPlayer.validMoves(gameState);
-						
-						//make a random number in index range
-						int moveNum = moveArray.length;
-						randMove = random.nextInt(moveNum);
-						
-						//make a random move
-						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
+//						//helper variables
+//						int[][] moveArray;
+//						int randMove;
+//						
+//						//get all valid moves
+//						moveArray = aiPlayer.validMoves(gameState);
+//						
+//						//make a random number in index range
+//						int moveNum = moveArray.length;
+//						randMove = random.nextInt(moveNum);
+//						
+//						//make a random move
+//						game.moveToken("AI", moveArray[randMove][0], moveArray[randMove][1], moveArray[randMove][2], moveArray[randMove][3]);
 						//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 						
+						ArrayList<int[][]> moveArray = aiPlayer.validMoves(gameState);
+						aiPlayer.printBoard(gameState);
+						int[] bestMove = aiPlayer.pickBestMove(moveArray, gameState);
+						game.moveToken("AI", bestMove[0], bestMove[1], bestMove[2], bestMove[3]);
+							
 						/**replacement instructions for AI method
 						 * 
 						 * remove or comment out everything between the arrow lines "vvv,^^^"
